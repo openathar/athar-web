@@ -164,9 +164,9 @@ export const dictionaries: Record<Locale, Dict> = {
     roadmap: {
       heading: "Roadmap",
       phases: [
-        { title: "Calculation core", body: "Prayer times, Qibla and Hijri conversion as one shared library — the single source of truth for web, API and mobile.", state: "In progress" },
+        { title: "Web tools", body: "Prayer times (live, location-aware), Qibla compass and Hijri calendar — running in your browser now.", state: "Live" },
+        { title: "Calculation core", body: "A single shared library for prayer times, Qibla and Hijri conversion, used by web, API and mobile alike. The web currently computes these itself in JavaScript — this phase replaces that with one portable engine.", state: "In progress" },
         { title: "Public API", body: "Free and rate-limited, documented for third-party developers.", state: "Next" },
-        { title: "Web tools", body: "Prayer times, Qibla and calendar directly in the browser.", state: "Planned" },
         { title: "Mobile apps", body: "Android and iOS — offline-first, reliable Adhan notifications, widgets and Live Activities.", state: "Planned" },
       ],
     },
@@ -299,9 +299,9 @@ export const dictionaries: Record<Locale, Dict> = {
     roadmap: {
       heading: "Roadmap",
       phases: [
-        { title: "Berechnungs-Kern", body: "Gebetszeiten, Qibla und Hijri-Konvertierung als eine gemeinsame Bibliothek — die einzige Quelle der Wahrheit für Web, API und Mobile.", state: "In Arbeit" },
+        { title: "Web-Werkzeuge", body: "Gebetszeiten (live, standortbezogen), Qibla-Kompass und Hijri-Kalender — laufen jetzt in deinem Browser.", state: "Live" },
+        { title: "Berechnungs-Kern", body: "Eine gemeinsame Bibliothek für Gebetszeiten, Qibla und Hijri-Konvertierung, genutzt von Web, API und Mobile gleichermaßen. Das Web rechnet aktuell selbst in JavaScript — diese Phase ersetzt das durch eine einzige portable Engine.", state: "In Arbeit" },
         { title: "Öffentliche API", body: "Kostenlos und rate-limitiert, dokumentiert für Fremdentwickler.", state: "Als Nächstes" },
-        { title: "Web-Werkzeuge", body: "Gebetszeiten, Qibla und Kalender direkt im Browser.", state: "Geplant" },
         { title: "Mobile Apps", body: "Android und iOS — offline-first, zuverlässige Adhan-Benachrichtigungen, Widgets und Live Activities.", state: "Geplant" },
       ],
     },
@@ -434,9 +434,9 @@ export const dictionaries: Record<Locale, Dict> = {
     roadmap: {
       heading: "خارطة الطريق",
       phases: [
-        { title: "نواة الحساب", body: "مواقيت الصلاة والقبلة وتحويل التقويم الهجري كمكتبة واحدة مشتركة — المرجع الوحيد للويب والواجهة البرمجية والتطبيقات.", state: "قيد العمل" },
+        { title: "أدوات الويب", body: "مواقيت الصلاة (مباشرة وحسب الموقع)، بوصلة القبلة، والتقويم الهجري — تعمل الآن في متصفحك.", state: "متاح" },
+        { title: "نواة الحساب", body: "مكتبة واحدة مشتركة لمواقيت الصلاة والقبلة وتحويل التقويم، يستخدمها الويب والواجهة البرمجية والتطبيقات معاً. يحسبها الويب حالياً بنفسه بلغة JavaScript — هذه المرحلة تستبدل ذلك بمحرك واحد قابل للنقل.", state: "قيد العمل" },
         { title: "الواجهة البرمجية العامة", body: "مجانية ومحدودة المعدّل وموثّقة للمطوّرين.", state: "التالي" },
-        { title: "أدوات الويب", body: "مواقيت الصلاة والقبلة والتقويم مباشرة في المتصفح.", state: "مخطط" },
         { title: "تطبيقات الجوال", body: "أندرويد وiOS — تعمل دون اتصال، تنبيهات أذان موثوقة، ودجات وأنشطة مباشرة.", state: "مخطط" },
       ],
     },
