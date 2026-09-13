@@ -6,6 +6,7 @@ import { getPrayerTimes } from "~/lib/prayer-times";
 import { PrayerCard } from "~/components/prayer-card";
 import { QiblaTool } from "~/components/qibla-tool";
 import { CalendarTool } from "~/components/calendar-tool";
+import { MoonSection } from "~/components/moon-section";
 import { Mark } from "~/components/mark";
 
 export function generateStaticParams() {
@@ -73,6 +74,12 @@ export default async function ToolsPage({
           <h2 className="display mb-2 text-2xl">{t.tools.calendar.heading}</h2>
           <p className="mb-6 max-w-prose text-muted">{t.tools.calendar.intro}</p>
           <CalendarTool locale={l} labels={t.tools.calendar} />
+        </section>
+
+        <section className="mt-14">
+          <h2 className="display mb-2 text-2xl">{t.tools.moon.heading}</h2>
+          <p className="mb-6 max-w-prose text-muted">{t.tools.moon.intro}</p>
+          <MoonSection locale={l} labels={t.tools.moon} />
         </section>
       </main>
     </div>

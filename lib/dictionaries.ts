@@ -54,6 +54,14 @@ type Dict = {
       heading: string; intro: string; toHijri: string; toGregorian: string;
       day: string; month: string; year: string; result: string; notFound: string;
     };
+    moon: {
+      heading: string; intro: string; illumination: string; age: string; days: string;
+      caveat: string;
+      phases: Record<
+        "new" | "waxing-crescent" | "first-quarter" | "waxing-gibbous" | "full" | "waning-gibbous" | "last-quarter" | "waning-crescent",
+        string
+      >;
+    };
   };
   footer: { madeAs: string; source: string; imprint: string };
 };
@@ -186,6 +194,16 @@ export const dictionaries: Record<Locale, Dict> = {
         heading: "Hijri calendar", intro: "Convert between Gregorian and Hijri dates.", toHijri: "To Hijri",
         toGregorian: "To Gregorian", day: "Day", month: "Month",
         year: "Year", result: "Date", notFound: "No matching date found.",
+      },
+      moon: {
+        heading: "Moon", intro: "Today's real moon phase, rendered in 3D — drag to look around.", illumination: "Illumination",
+        age: "Age", days: "days", caveat: "Approximation (±0.5 day). Not a substitute for actual moon sighting when determining religious dates.",
+        phases: {
+          "new": "New Moon", "waxing-crescent": "Waxing Crescent",
+          "first-quarter": "First Quarter", "waxing-gibbous": "Waxing Gibbous",
+          "full": "Full Moon", "waning-gibbous": "Waning Gibbous",
+          "last-quarter": "Last Quarter", "waning-crescent": "Waning Crescent",
+        },
       },
     },
     footer: {
@@ -322,6 +340,16 @@ export const dictionaries: Record<Locale, Dict> = {
         toGregorian: "Zu Gregorianisch", day: "Tag", month: "Monat",
         year: "Jahr", result: "Datum", notFound: "Kein passendes Datum gefunden.",
       },
+      moon: {
+        heading: "Mond", intro: "Die tatsächliche heutige Mondphase, in 3D dargestellt — ziehen zum Umsehen.", illumination: "Beleuchtung",
+        age: "Alter", days: "Tage", caveat: "Näherung (±0,5 Tage). Kein Ersatz für die tatsächliche Mondsichtung bei religiösen Terminen.",
+        phases: {
+          "new": "Neumond", "waxing-crescent": "Zunehmende Sichel",
+          "first-quarter": "Erstes Viertel", "waxing-gibbous": "Zunehmender Mond",
+          "full": "Vollmond", "waning-gibbous": "Abnehmender Mond",
+          "last-quarter": "Letztes Viertel", "waning-crescent": "Abnehmende Sichel",
+        },
+      },
     },
     footer: {
       madeAs: "Gebaut als Sadaqah Jariyah.",
@@ -456,6 +484,16 @@ export const dictionaries: Record<Locale, Dict> = {
         heading: "التقويم الهجري", intro: "التحويل بين التاريخ الميلادي والهجري.", toHijri: "إلى هجري",
         toGregorian: "إلى ميلادي", day: "اليوم", month: "الشهر",
         year: "السنة", result: "التاريخ", notFound: "لم يُعثر على تاريخ مطابق.",
+      },
+      moon: {
+        heading: "القمر", intro: "طور القمر الحقيقي اليوم، معروض ثلاثي الأبعاد — اسحب للتدوير.", illumination: "الإضاءة",
+        age: "العمر", days: "يوم", caveat: "تقريب (±٠٫٥ يوم). ليس بديلاً عن رؤية الهلال الفعلية عند تحديد المواعيد الدينية.",
+        phases: {
+          "new": "محاق", "waxing-crescent": "هلال متزايد",
+          "first-quarter": "التربيع الأول", "waxing-gibbous": "أحدب متزايد",
+          "full": "بدر", "waning-gibbous": "أحدب متناقص",
+          "last-quarter": "التربيع الأخير", "waning-crescent": "هلال متناقص",
+        },
       },
     },
     footer: {
