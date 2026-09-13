@@ -30,7 +30,14 @@ type Dict = {
     draft: string;
     source: string;
   };
-  campaign: { label: string; heading: string; body: string; closing: string; cta: string; meta: string[] };
+  campaign: {
+    label: string;
+    heading: string;
+    body: string[];
+    closing: string;
+    cta: string;
+    meta: string[];
+  };
   roadmap: { heading: string; phases: { title: string; body: string; state: string }[] };
   theme: { light: string; dark: string };
   footer: { madeAs: string; source: string; imprint: string };
@@ -125,8 +132,11 @@ export const dictionaries: Record<Locale, Dict> = {
       label: "my athar",
       heading: "My Athar",
       meta: ["commit  athar", "author  ahmad al zoubi", "date    2026 —"],
-      body:
-        "This platform is my trace. I build it so that it remains: free, without ads, without surveillance — as long as someone prays with it, the reward continues. My athar is to inspire people. Yours is something else. Perhaps a line of code, perhaps a tree, perhaps a child who watched how you lived.",
+      body: [
+        "I build this platform so that it remains: free, without ads, without tracking.",
+        "And as long as someone uses it to pray, the reward continues.",
+        "My athar is to inspire. Yours might be a line of code, or a tree, or a mark on the heart of a child who saw how you lived.",
+      ],
       closing: "Find your Athar.",
       cta: "Follow the project",
     },
@@ -234,8 +244,11 @@ export const dictionaries: Record<Locale, Dict> = {
       label: "mein Athar",
       heading: "Mein Athar",
       meta: ["commit  athar", "autor   ahmad al zoubi", "datum   2026 —"],
-      body:
-        "Diese Plattform ist meine Spur. Ich baue sie, damit sie bleibt: kostenlos, ohne Werbung, ohne Überwachung — solange jemand mit ihr betet, läuft der Lohn weiter. Mein Athar ist es, Menschen zu inspirieren. Deins ist ein anderes. Vielleicht eine Zeile Code, vielleicht ein Baum, vielleicht ein Kind, das gesehen hat, wie du gelebt hast.",
+      body: [
+        "Ich baue diese Plattform, damit sie bleibt: kostenlos, ohne Werbung, ohne Tracking.",
+        "Und solange jemand mit ihr betet, läuft der Lohn weiter.",
+        "Mein Athar ist es, zu inspirieren. Deins ist vielleicht eine Zeile Code, oder ein Baum, oder eine Spur im Herzen eines Kindes, das gesehen hat, wie du gelebt hast.",
+      ],
       closing: "Finde dein Athar.",
       cta: "Das Projekt verfolgen",
     },
@@ -340,12 +353,15 @@ export const dictionaries: Record<Locale, Dict> = {
       ],
     },
     campaign: {
-      label: "أثري",
-      heading: "أثري",
-      meta: ["commit  athar", "المؤلف   أحمد الزعبي", "التاريخ  ٢٠٢٦ —"],
-      body:
-        "هذه المنصة أثري. أبنيها لتبقى: مجانية، بلا إعلانات، بلا مراقبة — وما دام أحدهم يصلّي بها، يستمر الأجر. أثري أن أُلهم الناس. وأثرك غيره؛ لعلّه سطر برمجي، أو شجرة، أو ولدٌ رأى كيف عشت.",
-      closing: "اعثر على أثرك.",
+      label: "أَثَرِي",
+      heading: "أَثَرِي",
+      meta: ["Commit:  athar", "المؤلف:  أحمد الزعبي", "التاريخ: ٢٠٢٦"],
+      body: [
+        "أَبْنِي هَذِهِ المَنَصَّةَ لِتَبْقَى: مَجَّانِيَّةً، بِلَا إِعْلَانَاتٍ، وَبِلَا تَتَبُّعٍ.",
+        "وَمَا دَامَ هُنَاكَ مَنْ يَسْتَعِينُ بِهَا عَلَى الصَّلَاةِ، يَسْتَمِرُّ الأَجْرُ.",
+        "أَثَرِي أَنْ أُلْهِمَ.. وَأَثَرُكَ لَعَلَّهُ سَطْرُ كُودٍ، أَوْ شَجَرَةٌ، أَوْ أَثَرٌ فِي قَلْبِ طِفْلٍ رَأَى كَيْفَ عِشْتَ.",
+      ],
+      closing: "اعْثُرْ عَلَى أَثَرِكَ.",
       cta: "تابع المشروع",
     },
     roadmap: {

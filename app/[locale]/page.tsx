@@ -256,9 +256,11 @@ export default async function Home({
             <h2 className="display mt-8 text-[clamp(34px,5vw,58px)]">
               {t.campaign.heading}
             </h2>
-            <p className="mt-6 max-w-prose text-lg leading-relaxed">
-              {t.campaign.body}
-            </p>
+            <div className="mt-6 max-w-prose space-y-4 text-lg leading-relaxed">
+              {t.campaign.body.map((para) => (
+                <p key={para}>{para}</p>
+              ))}
+            </div>
             <p className="display mt-10 text-[clamp(26px,3.4vw,40px)] text-accent">
               {t.campaign.closing}
             </p>

@@ -2,8 +2,8 @@ import {
   Spectral,
   Inter,
   JetBrains_Mono,
+  Amiri,
   Amiri_Quran,
-  Reem_Kufi,
   IBM_Plex_Sans_Arabic,
 } from "next/font/google";
 
@@ -47,10 +47,17 @@ export const quran = Amiri_Quran({
   display: "swap",
 });
 
-/** Geometrische Kufi — nimmt die Khatam-Geometrie der Seite auf. */
-export const arabicDisplay = Reem_Kufi({
+/**
+ * Amiri fuer arabische Ueberschriften.
+ *
+ * Bewusst keine geometrische Kufi (Reem Kufi o.ae.): Die Texte sind
+ * vollvokalisiert, und Kufi-Schnitte setzen Tashkil eng und unsauber.
+ * Amiri ist ein Naskh mit ausgearbeiteter Vokalisierung — die Zeichen sitzen
+ * dort, wo sie hingehoeren.
+ */
+export const arabicDisplay = Amiri({
   subsets: ["arabic"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "700"],
   variable: "--font-arabic-display",
   display: "swap",
 });

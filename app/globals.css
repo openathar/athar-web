@@ -58,12 +58,13 @@ html[lang="ar"] body {
   line-height: 1.95;
 }
 
-/* Kufi fuer Ueberschriften — nimmt die Geometrie des Signets auf. */
+/* Vokalisierte Ueberschriften brauchen Luft nach oben, sonst stossen die
+   Zeichen an die Zeile darueber. */
 html[lang="ar"] .display {
   font-family: var(--font-ar-display);
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 0;
-  line-height: 1.45;
+  line-height: 1.7;
 }
 
 /* JetBrains Mono hat keine arabischen Glyphen; ohne Zuweisung wuerde der
