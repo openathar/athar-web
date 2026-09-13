@@ -21,6 +21,7 @@ type Dict = {
     localised: string;
   };
   legacy: { label: string; heading: string; body: string[] };
+  dates: { label: string; heading: string; intro: string; hijriYear: string };
   signs: {
     label: string;
     heading: string;
@@ -40,6 +41,20 @@ type Dict = {
   };
   roadmap: { heading: string; phases: { title: string; body: string; state: string }[] };
   theme: { light: string; dark: string };
+  tools: {
+    nav: string;
+    heading: string;
+    intro: string;
+    prayerHeading: string;
+    qibla: {
+      heading: string; intro: string; city: string; bearing: string; distance: string; km: string;
+      deviceCompass: string; deviceCompassOn: string; deviceCompassDenied: string; fallbackNote: string;
+    };
+    calendar: {
+      heading: string; intro: string; toHijri: string; toGregorian: string;
+      day: string; month: string; year: string; result: string; notFound: string;
+    };
+  };
   footer: { madeAs: string; source: string; imprint: string };
 };
 
@@ -120,6 +135,12 @@ export const dictionaries: Record<Locale, Dict> = {
       draft: "drafted with {model}, running locally · editorially reviewed",
       source: "Source",
     },
+    dates: {
+      label: "the islamic calendar",
+      heading: "What's coming",
+      intro: "Computed locally from today's date — not a fixed list, always the next real occurrence.",
+      hijriYear: "AH",
+    },
     legacy: {
       label: "the question behind it",
       heading: "Code outlives its authors",
@@ -150,6 +171,23 @@ export const dictionaries: Record<Locale, Dict> = {
       ],
     },
     theme: { light: "Switch to light", dark: "Switch to dark" },
+    tools: {
+      nav: "Tools",
+      heading: "Tools",
+      intro: "Prayer times, Qibla and calendar conversion — computed on this device, right now.",
+      prayerHeading: "Prayer times",
+      qibla: {
+        heading: "Qibla", intro: "Direction to the Kaaba, computed locally from your location.", city: "Location",
+        bearing: "Bearing", distance: "Distance", km: "km",
+        deviceCompass: "Use device compass", deviceCompassOn: "Device compass active — the dial follows your phone.",
+        deviceCompassDenied: "Compass access was not granted. The bearing above is still correct.", fallbackNote: "Detected from your browser's time zone, not from precise location.",
+      },
+      calendar: {
+        heading: "Hijri calendar", intro: "Convert between Gregorian and Hijri dates.", toHijri: "To Hijri",
+        toGregorian: "To Gregorian", day: "Day", month: "Month",
+        year: "Year", result: "Date", notFound: "No matching date found.",
+      },
+    },
     footer: {
       madeAs: "Built as Sadaqah Jariyah.",
       source: "Source code",
@@ -232,6 +270,12 @@ export const dictionaries: Record<Locale, Dict> = {
       draft: "Entwurf mit {model}, lokal erzeugt · redaktionell geprüft",
       source: "Quelle",
     },
+    dates: {
+      label: "der islamische Kalender",
+      heading: "Was ansteht",
+      intro: "Lokal aus dem heutigen Datum berechnet — keine feste Liste, immer der nächste tatsächliche Termin.",
+      hijriYear: "n.H.",
+    },
     legacy: {
       label: "die Frage dahinter",
       heading: "Code überlebt seine Autoren",
@@ -262,6 +306,23 @@ export const dictionaries: Record<Locale, Dict> = {
       ],
     },
     theme: { light: "Zu hell wechseln", dark: "Zu dunkel wechseln" },
+    tools: {
+      nav: "Werkzeuge",
+      heading: "Werkzeuge",
+      intro: "Gebetszeiten, Qibla und Kalender-Umrechnung — berechnet auf diesem Gerät, jetzt gerade.",
+      prayerHeading: "Gebetszeiten",
+      qibla: {
+        heading: "Qibla", intro: "Richtung zur Kaaba, lokal aus deinem Standort berechnet.", city: "Ort",
+        bearing: "Peilung", distance: "Entfernung", km: "km",
+        deviceCompass: "Gerätekompass nutzen", deviceCompassOn: "Gerätekompass aktiv — das Ziffernblatt folgt deinem Telefon.",
+        deviceCompassDenied: "Kompass-Zugriff wurde nicht erlaubt. Die Peilung oben stimmt trotzdem.", fallbackNote: "Aus der Zeitzone deines Browsers erkannt, nicht aus einer genauen Standortabfrage.",
+      },
+      calendar: {
+        heading: "Hijri-Kalender", intro: "Umrechnung zwischen gregorianischem und Hijri-Datum.", toHijri: "Zu Hijri",
+        toGregorian: "Zu Gregorianisch", day: "Tag", month: "Monat",
+        year: "Jahr", result: "Datum", notFound: "Kein passendes Datum gefunden.",
+      },
+    },
     footer: {
       madeAs: "Gebaut als Sadaqah Jariyah.",
       source: "Quellcode",
@@ -344,6 +405,12 @@ export const dictionaries: Record<Locale, Dict> = {
       draft: "مسوّدة بنموذج {model} يعمل محلياً · روجعت تحريرياً",
       source: "المصدر",
     },
+    dates: {
+      label: "التقويم الإسلامي",
+      heading: "ما هو قادم",
+      intro: "يُحسب محلياً من تاريخ اليوم — ليست قائمة ثابتة، بل الموعد الفعلي القادم دائماً.",
+      hijriYear: "هـ",
+    },
     legacy: {
       label: "السؤال خلف ذلك",
       heading: "الشيفرة تبقى بعد كاتبها",
@@ -374,6 +441,23 @@ export const dictionaries: Record<Locale, Dict> = {
       ],
     },
     theme: { light: "الوضع الفاتح", dark: "الوضع الداكن" },
+    tools: {
+      nav: "أدوات",
+      heading: "أدوات",
+      intro: "مواقيت الصلاة والقبلة وتحويل التقويم — تُحسب على هذا الجهاز، الآن.",
+      prayerHeading: "مواقيت الصلاة",
+      qibla: {
+        heading: "القبلة", intro: "اتجاه الكعبة، يُحسب محلياً من موقعك.", city: "الموقع",
+        bearing: "الاتجاه", distance: "المسافة", km: "كم",
+        deviceCompass: "استخدم بوصلة الجهاز", deviceCompassOn: "بوصلة الجهاز مفعّلة — يتبع القرص هاتفك.",
+        deviceCompassDenied: "لم يُسمح بالوصول إلى البوصلة. الاتجاه أعلاه صحيح رغم ذلك.", fallbackNote: "اكتُشف من المنطقة الزمنية للمتصفح، لا من تحديد موقع دقيق.",
+      },
+      calendar: {
+        heading: "التقويم الهجري", intro: "التحويل بين التاريخ الميلادي والهجري.", toHijri: "إلى هجري",
+        toGregorian: "إلى ميلادي", day: "اليوم", month: "الشهر",
+        year: "السنة", result: "التاريخ", notFound: "لم يُعثر على تاريخ مطابق.",
+      },
+    },
     footer: {
       madeAs: "بُنيت كصدقة جارية.",
       source: "الشيفرة المصدرية",

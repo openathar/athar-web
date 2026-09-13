@@ -1,5 +1,5 @@
 import {
-  Fraunces,
+  Newsreader,
   Plus_Jakarta_Sans,
   JetBrains_Mono,
   Amiri,
@@ -20,18 +20,18 @@ import {
  */
 
 /**
- * Fraunces als Display-Schrift.
+ * Newsreader als Display-Schrift.
  *
- * Variable Old-Style-Antiqua mit optischer Groessenachse: Im Grossen wird der
- * Strichkontrast staerker, im Kleinen robuster — dieselbe Logik, nach der
- * Bleisatz frueher je Groesse eigene Schnitte hatte. Der kalligrafische
- * Ursprung passt zum Amiri-Satz auf der arabischen Seite.
+ * Variable Antiqua mit optischer Groessenachse (fuer redaktionelle
+ * Ueberschriften entworfen, nicht fuer Fliesstext). Ruhiger und
+ * zurueckhaltender als Fraunces, das im Hero zu kraftvoll/dekorativ wirkte —
+ * passt besser zum kontemplativen Ton der Seite und laesst dem arabischen
+ * Amiri-Satz den Vortritt, statt mit ihm zu konkurrieren.
  */
-export const serif = Fraunces({
+export const serif = Newsreader({
   subsets: ["latin"],
-  // Kein `weight`: Bei Achsenangabe muss die Schrift variabel geladen werden,
-  // sonst lehnt next/font sie ab.
-  axes: ["SOFT", "opsz"],
+  axes: ["opsz"],
+  style: ["normal", "italic"],
   variable: "--font-serif",
   display: "swap",
 });

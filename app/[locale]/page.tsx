@@ -2,11 +2,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { locales, localeNames, isRtl, type Locale } from "~/lib/i18n";
 import { dictionaries } from "~/lib/dictionaries";
-import { Mark, LogoMark, Ornament, Rosette } from "~/components/mark";
+import { Mark, Ornament, Rosette } from "~/components/mark";
 import { getPrayerTimes } from "~/lib/prayer-times";
 import { PrayerCard } from "~/components/prayer-card";
 import { getVerse } from "~/lib/quran";
 import reflections from "~/data/reflections.json";
+import { upcomingIslamicDates } from "~/lib/islamic-dates";
 import { ThemeToggle } from "~/components/theme";
 
 const GITHUB_ORG = "https://github.com/openathar";
@@ -27,6 +28,7 @@ export default async function Home({
   // dasselbe zeigen und der Wechsel nachvollziehbar bleibt.
   const dayIndex = Math.floor(Date.now() / 86_400_000) % reflections.entries.length;
   const sign = reflections.entries[dayIndex];
+  const upcoming = upcomingIslamicDates(l);
   const verse = await getVerse(sign.verse, l, {
     arabic: sign.fallback.arabic,
     rendered: l === "ar" ? sign.fallback.arabic : (sign.fallback[l] ?? ""),
@@ -42,8 +44,9 @@ export default async function Home({
       <div className="mx-auto max-w-[72rem] px-6 sm:px-10">
         <header className="flex flex-wrap items-center justify-between gap-4 border-b border-rule py-6">
           <span className="flex items-center gap-3">
-            <LogoMark size={52} className="text-accent" />
+            <Mark size={30} className="text-accent" />
             <span className="display text-xl">Athar</span>
+            <span className="quran text-xl text-muted">أثر</span>
           </span>
           <nav className="flex items-center gap-5 text-sm">
             {locales.map((c) => (
@@ -64,6 +67,12 @@ export default async function Home({
               |
             </span>
             <ThemeToggle labels={t.theme} />
+            <Link
+              href={`/${l}/tools`}
+              className="border border-rule px-3 py-1.5 text-ink transition hover:border-accent hover:text-accent"
+            >
+              {t.tools.nav}
+            </Link>
           </nav>
         </header>
 
@@ -185,6 +194,40 @@ export default async function Home({
                 </p>
               </div>
             </div>
+          </section>
+
+          {/* ---------- Islamischer Kalender: naechste Termine ---------- */}
+          <section className="border-t border-rule py-20">
+            <Label>{t.dates.label}</Label>
+            <h2 className="display text-[clamp(32px,5vw,60px)] font-light">
+              {t.dates.heading}
+            </h2>
+            <p className="mt-6 max-w-prose text-muted">{t.dates.intro}</p>
+
+            <ol className="mt-12 divide-y divide-rule border-y border-rule">
+              {upcoming.map((ev) => (
+                <li
+                  key={ev.key}
+                  className="grid gap-x-6 gap-y-1 py-6 sm:grid-cols-[auto_1fr_auto] sm:items-baseline"
+                >
+                  <span className="mono text-gold tabular-nums">
+                    {ev.gregorian
+                      ? new Intl.DateTimeFormat(
+                          l === "de" ? "de-DE" : l === "ar" ? "ar-JO" : "en-GB",
+                          { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" },
+                        ).format(ev.gregorian)
+                      : "—"}
+                  </span>
+                  <div>
+                    <h3 className="display text-xl">{ev.name}</h3>
+                    <p className="mt-1 text-muted">{ev.note}</p>
+                  </div>
+                  <span className="mono text-muted text-sm">
+                    {ev.hijri.day} · {ev.hijri.month} · {ev.hijri.year} {t.dates.hijriYear}
+                  </span>
+                </li>
+              ))}
+            </ol>
           </section>
 
           {/* ---------- Warum ich das weiss: GATE24 ---------- */}

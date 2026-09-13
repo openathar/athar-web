@@ -77,10 +77,10 @@ html[lang="ar"] .mono {
 .display {
   font-family: var(--font-display);
   font-weight: 400;
-  letter-spacing: -0.015em;
-  line-height: 1.08;
-  /* Optische Groesse mitfuehren, sonst wirkt Fraunces im Grossen zu derb. */
-  font-variation-settings: "opsz" 48, "SOFT" 30;
+  letter-spacing: -0.012em;
+  line-height: 1.12;
+  /* Optische Groesse mitfuehren, sonst wirkt Newsreader im Grossen zu duenn. */
+  font-variation-settings: "opsz" 40;
 }
 
 .mono {
