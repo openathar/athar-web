@@ -1,6 +1,6 @@
 import {
-  Spectral,
-  Inter,
+  Fraunces,
+  Plus_Jakarta_Sans,
   JetBrains_Mono,
   Amiri,
   Amiri_Quran,
@@ -19,15 +19,27 @@ import {
  * einer modernen Sans.
  */
 
-export const serif = Spectral({
+/**
+ * Fraunces als Display-Schrift.
+ *
+ * Variable Old-Style-Antiqua mit optischer Groessenachse: Im Grossen wird der
+ * Strichkontrast staerker, im Kleinen robuster — dieselbe Logik, nach der
+ * Bleisatz frueher je Groesse eigene Schnitte hatte. Der kalligrafische
+ * Ursprung passt zum Amiri-Satz auf der arabischen Seite.
+ */
+export const serif = Fraunces({
   subsets: ["latin"],
-  weight: ["300", "400", "600"],
+  // Kein `weight`: Bei Achsenangabe muss die Schrift variabel geladen werden,
+  // sonst lehnt next/font sie ab.
+  axes: ["SOFT", "opsz"],
   variable: "--font-serif",
   display: "swap",
 });
 
-export const sans = Inter({
+/** Etwas mehr Eigenart als Inter, ohne unruhig zu werden. */
+export const sans = Plus_Jakarta_Sans({
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
   variable: "--font-sans",
   display: "swap",
 });

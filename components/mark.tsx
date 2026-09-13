@@ -11,7 +11,7 @@ type Ring = {
   reverse?: boolean;
 };
 
-/** Khatam — achtzackiger Stern aus zwei überlagerten Quadraten, um den Ursprung konstruiert. */
+/** Khatam — achtzackiger Stern aus zwei ueberlagerten Quadraten, um den Ursprung konstruiert. */
 function Khatam({ scale = 1, rotate = 0 }: { scale?: number; rotate?: number }) {
   return (
     <g transform={`rotate(${rotate}) scale(${scale})`}>
@@ -166,6 +166,55 @@ export function Ornament({ className }: { className?: string }) {
           <path d="M0 -40 L40 0 L0 40 L-40 0 Z" vectorEffect="non-scaling-stroke" />
         </g>
       ))}
+    </svg>
+  );
+}
+
+/**
+ * Signet mit eingeschriebenem Wort.
+ *
+ * Das arabische أثر steht nicht neben der Marke, sondern im Stern — das
+ * entspricht der klassischen Anordnung von Kalligrafie in geometrischer
+ * Fassung (Siegel, Tughra). Der Text bleibt echte Schrift, keine Pfade:
+ * Nur so bleiben Formgebung und Ligaturen korrekt.
+ *
+ * Die inneren Ringe entfallen hier bewusst — sie wuerden dem Wort den Platz
+ * nehmen und es unleserlich machen.
+ */
+export function LogoMark({
+  size = 44,
+  className,
+}: {
+  size?: number;
+  className?: string;
+}) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="-50 -50 100 100"
+      className={className}
+      role="img"
+      aria-label="Athar — أثر"
+    >
+      <g fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinejoin="round">
+        <Khatam scale={1} />
+        <Khatam scale={0.82} rotate={22.5} />
+      </g>
+      <text
+        x="0"
+        y="2"
+        textAnchor="middle"
+        dominantBaseline="central"
+        direction="rtl"
+        xmlLang="ar"
+        fill="currentColor"
+        stroke="none"
+        fontSize="38"
+        style={{ fontFamily: "var(--font-ar-display), serif" }}
+      >
+        أثر
+      </text>
     </svg>
   );
 }

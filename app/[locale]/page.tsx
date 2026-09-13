@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { locales, localeNames, isRtl, type Locale } from "~/lib/i18n";
 import { dictionaries } from "~/lib/dictionaries";
-import { Mark, Ornament, Rosette } from "~/components/mark";
+import { Mark, LogoMark, Ornament, Rosette } from "~/components/mark";
 import { getPrayerTimes } from "~/lib/prayer-times";
 import { PrayerCard } from "~/components/prayer-card";
 import { getVerse } from "~/lib/quran";
@@ -42,9 +42,8 @@ export default async function Home({
       <div className="mx-auto max-w-[72rem] px-6 sm:px-10">
         <header className="flex flex-wrap items-center justify-between gap-4 border-b border-rule py-6">
           <span className="flex items-center gap-3">
-            <Mark size={30} className="text-accent" />
+            <LogoMark size={52} className="text-accent" />
             <span className="display text-xl">Athar</span>
-            <span className="quran text-xl text-muted">أثر</span>
           </span>
           <nav className="flex items-center gap-5 text-sm">
             {locales.map((c) => (
