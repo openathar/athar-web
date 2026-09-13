@@ -1,25 +1,37 @@
 # AGENTS.md — athar-web
 
-Next.js-Frontend der Athar-Plattform (openathar).
+Next.js frontend of the Athar platform (openathar).
 
-## Verknuepfungen
-- Architektur/Roadmap: Superproject `openathar/athar` (`AGENTS.md`)
-- Repo-Regeln: `~/Development/harness/agents/business-repo.md`
+## Links
 
-## Verbindliche Regeln
+- Architecture/roadmap: superproject `openathar/athar` (`AGENTS.md`)
+- Repo conventions: `~/Development/harness/agents/business-repo.md`
 
-- **RTL zuerst mitdenken**: ausschliesslich logische CSS-Eigenschaften
+## Binding rules
+
+- **Think RTL-first**: only logical CSS properties
   (`padding-inline`, `border-inline-start`, Tailwind `ps-/pe-/ms-/me-/border-s`).
-  Niemals `left`/`right`. Arabisch ist gleichwertige Sprache, kein Nachtrag.
-- **Arabische Schrift nie als Bild**: immer echte Webfont-Typografie (Amiri),
-  damit Shaping/Ligaturen korrekt bleiben. Keine generierten Buchstabenformen.
-- **Keine figurativen Motive** (Menschen, Tiere, Propheten, Moscheen-Fotos).
-  Bildsprache ist Geometrie (Khatam/Girih als SVG).
-- **Kein Tracking, keine Ads, keine Fremd-Skripte** — das ist das Produkt-
-  versprechen der Seite und gilt auch fuer ihre eigene Implementierung.
-  Falls Analytics: nur self-hosted Umami, cookieless, transparent benannt.
-- Accessibility ist Teil der Definition of Done: Skip-Link, `:focus-visible`,
-  `prefers-reduced-motion`, Kontraste WCAG AA.
+  Never `left`/`right`. Arabic is a first-class language here, not an
+  afterthought.
+- **Arabic script is never an image**: always real webfont typography
+  (Amiri), so shaping/ligatures stay correct. No generated letterforms.
+- **No figurative imagery** (people, animals, prophets, mosque photos).
+  Visual language is geometry (Khatam/Girih as SVG).
+- **No tracking, no ads, no third-party scripts** — that's the site's
+  product promise, and it applies to its own implementation too. If
+  analytics are ever added: self-hosted Umami only, cookieless, clearly
+  disclosed.
+- Accessibility is part of the definition of done: skip link,
+  `:focus-visible`, `prefers-reduced-motion`, WCAG AA contrast.
 
-## Sprachen
-DE / EN / AR — Texte in `lib/dictionaries.ts`, Locale-Routing ueber `app/[locale]`.
+## Current honest state
+
+Prayer times are fetched from the external Aladhan API (placeholder, not
+final). Hijri conversion is already computed locally in JS
+(`lib/hijri.ts`). Both migrate to `athan-core-java` once that repo has code
+— see the superproject's `docs/architecture.md` for the concrete sequence.
+
+## Languages
+
+DE / EN / AR — copy lives in `lib/dictionaries.ts`, locale routing via
+`app/[locale]`.

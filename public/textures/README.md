@@ -1,23 +1,23 @@
 # Textures
 
-Echte Planeten-Texturen, lokal ausgeliefert — kein Fremd-Server wird beim
-Anzeigen kontaktiert (Produktversprechen der Seite).
+Real planetary textures, served locally — no third-party server is
+contacted when the page displays them (that's the site's product promise).
 
-## Quellen & Lizenz
+## Sources & license
 
-- **Erde (Tag, Nacht, Wolken) und Mond**: Solar System Scope
-  (https://www.solarsystemscope.com/textures/), basierend auf NASA-Daten
-  (Blue Marble u.a.). Lizenziert unter
+- **Earth (day, night, clouds) and Moon**: Solar System Scope
+  (https://www.solarsystemscope.com/textures/), based on NASA data (Blue
+  Marble and others). Licensed under
   [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
-- **Erde — Specular-Map**: `earth_specular_2048.jpg` aus den
-  three.js-Beispielen (https://threejs.org), ebenfalls NASA-basiert.
+- **Earth — specular map**: `earth_specular_2048.jpg` from the three.js
+  examples (https://threejs.org), also NASA-based.
 
-Dateien:
+Files:
 
-| Datei | Inhalt |
+| File | Content |
 | --- | --- |
-| `2k_earth_daymap.jpg` | Erde, Tagseite (2048×1024, equirectangular) |
-| `2k_earth_nightmap.jpg` | Erde, Nachtseite mit Stadtlichtern |
-| `2k_earth_clouds.jpg` | Wolken als Alpha-Schicht |
-| `earth_specular_2048.jpg` | Ozean-Glanz (Specular) |
-| `2k_moon.jpg` | Mondoberfläche (2048×1024) |
+| `2k_earth_daymap.jpg` | Earth, day side (2048×1024, equirectangular) |
+| `2k_earth_nightmap.jpg` | Earth, night side with city lights |
+| `2k_earth_clouds.jpg` | Clouds as an alpha layer |
+| `earth_specular_2048.jpg` | Ocean specular highlight |
+| `2k_moon.jpg` | Moon surface (2048×1024) |
