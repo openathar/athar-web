@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { locales, localeNames, isRtl, type Locale } from "~/lib/i18n";
 import { dictionaries } from "~/lib/dictionaries";
 import { Mark, Ornament, Rosette } from "~/components/mark";
+import { getPrayerTimes, prayerKeys, toArabicDigits } from "~/lib/prayer-times";
 import { ThemeToggle } from "~/components/theme";
 
 const GITHUB_ORG = "https://github.com/openathar";
@@ -17,6 +18,23 @@ export default async function Home({
   const l = locale as Locale;
   const t = dictionaries[l];
   const rtl = isRtl(l);
+  const prayer = await getPrayerTimes(l);
+
+  // Im arabischen Satz wirken lateinische Ziffern wie ein Fremdkoerper.
+  const num = (v: string | number) => (rtl ? toArabicDigits(v) : String(v));
+
+  const basisFor = (key: (typeof prayerKeys)[number]) => {
+    const template = t.compute.basis[key];
+    if (key === "asr") return template.replace("{factor}", num(prayer.asrFactor));
+    if (key === "maghrib") {
+      return prayer.maghribOffset
+        ? template +
+            t.compute.maghribOffset.replace("{offset}", num(prayer.maghribOffset))
+        : template;
+    }
+    const angle = key === "fajr" ? prayer.fajrAngle : prayer.ishaAngle;
+    return template.replace("{angle}", num(angle));
+  };
 
   return (
     <>
@@ -57,16 +75,27 @@ export default async function Home({
           {/* ---------- Hero ---------- */}
           <section className="grid gap-14 py-20 sm:py-24 md:grid-cols-[1.3fr_1fr] md:items-center">
             <div>
-              <h1 className="display text-[clamp(60px,9vw,112px)] font-light">
+              <h1 className="display rise text-[clamp(60px,9vw,112px)] font-light">
                 {t.hero.name}
               </h1>
-              <p className="mono mt-4 text-muted">{t.hero.meaning}</p>
-              <p className="mt-9 max-w-prose text-lg leading-relaxed">
+              <p
+                className="mono rise mt-4 text-muted"
+                style={{ animationDelay: "0.1s" }}
+              >
+                {t.hero.meaning}
+              </p>
+              <p
+                className="rise mt-9 max-w-prose text-lg leading-relaxed"
+                style={{ animationDelay: "0.2s" }}
+              >
                 {t.hero.tagline}
               </p>
-              <div className="mt-10 flex flex-wrap gap-3">
+              <div
+                className="rise mt-10 flex flex-wrap gap-3"
+                style={{ animationDelay: "0.3s" }}
+              >
                 <a
-                  href={GITHUB_ORG}
+                  href="#athar"
                   className="bg-accent px-6 py-3 text-paper transition hover:opacity-90"
                 >
                   {t.hero.cta}
@@ -81,8 +110,11 @@ export default async function Home({
             </div>
 
             {/* Ayah — Offenbartes bekommt eigene Flaeche und eigene Schrift */}
-            <figure className="relative overflow-hidden border border-rule bg-surface px-8 py-10">
-              <Rosette className="pointer-events-none absolute -bottom-20 -end-20 h-56 w-56 text-gold opacity-20" />
+            <figure
+              className="rise relative overflow-hidden border border-rule bg-surface px-8 py-10"
+              style={{ animationDelay: "0.35s" }}
+            >
+              <Rosette className="pointer-events-none absolute bottom-5 end-5 h-24 w-24 text-gold opacity-35" />
               <blockquote
                 lang="ar"
                 dir="rtl"
@@ -103,41 +135,71 @@ export default async function Home({
                 <h2 className="display text-[clamp(32px,4vw,46px)]">
                   {t.compute.heading}
                 </h2>
-                <p className="mt-6 max-w-prose text-muted">{t.geometry.body}</p>
+                <p className="mt-6 max-w-prose text-muted">{t.compute.body}</p>
               </div>
 
               {/* Ausgabe-Block: Maschinen-Stimme */}
               <div className="border border-rule bg-surface">
-                <div className="mono flex items-center justify-between border-b border-rule px-5 py-3 text-muted">
-                  <span>{t.compute.note}</span>
-                  <span aria-hidden className="text-accent">
-                    ●
+                <div className="mono flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-rule px-5 py-3">
+                  <span className="text-ink">
+                    {prayer.city} · {prayer.gregorian}
+                  </span>
+                  <span className="flex items-center gap-2 text-muted">
+                    {prayer.hijri && <span className="quran">{prayer.hijri}</span>}
+                    <span
+                      aria-hidden
+                      className={prayer.live ? "text-accent" : "text-muted"}
+                    >
+                      ●
+                    </span>
+                    <span>{prayer.live ? t.compute.live : t.compute.offline}</span>
                   </span>
                 </div>
+
                 <dl className="mono divide-y divide-rule">
-                  {t.compute.rows.map((row) => (
+                  {prayerKeys.map((key) => (
                     <div
-                      key={row.name}
+                      key={key}
                       className="grid grid-cols-[1fr_auto] items-baseline gap-x-6 px-5 py-3"
                     >
-                      <dt className="text-ink">{row.name}</dt>
-                      <dd className="text-gold tabular-nums">{row.time}</dd>
-                      <dd className="col-span-2 text-muted">{row.basis}</dd>
+                      <dt className="text-ink">{t.compute.names[key]}</dt>
+                      <dd className="text-gold tabular-nums">
+                        {num(prayer.timings[key])}
+                      </dd>
+                      <dd className="col-span-2 text-muted">{basisFor(key)}</dd>
                     </div>
                   ))}
                 </dl>
+
+                <p className="mono border-t border-rule px-5 py-3 text-muted">
+                  {t.compute.source}:{" "}
+                  <a
+                    href="https://aladhan.com/prayer-times-api"
+                    className="underline underline-offset-4 transition hover:text-ink"
+                  >
+                    Aladhan API
+                  </a>{" "}
+                  · {prayer.method}
+                </p>
               </div>
             </div>
           </section>
 
-          {/* ---------- Muster & Regel ---------- */}
+          {/* ---------- Warum ich das weiss: GATE24 ---------- */}
           <section className="border-t border-rule py-20">
-            <Label>{t.geometry.label}</Label>
-            <div className="grid items-center gap-12 md:grid-cols-[1fr_auto]">
-              <h2 className="display text-[clamp(36px,6vw,72px)] font-light">
-                {t.geometry.heading}
-              </h2>
-              <Rosette className="h-48 w-48 text-accent sm:h-64 sm:w-64" />
+            <Label>{t.legacy.label}</Label>
+            <div className="grid items-center gap-14 md:grid-cols-[1.25fr_auto]">
+              <div>
+                <h2 className="display text-[clamp(32px,5vw,60px)] font-light">
+                  {t.legacy.heading}
+                </h2>
+                <div className="mt-8 max-w-prose space-y-5 text-muted">
+                  {t.legacy.body.map((para) => (
+                    <p key={para}>{para}</p>
+                  ))}
+                </div>
+              </div>
+              <Rosette className="h-48 w-48 text-accent sm:h-60 sm:w-60" />
             </div>
           </section>
 
@@ -175,7 +237,10 @@ export default async function Home({
           </section>
 
           {/* ---------- Kampagne: dein Commit als deine Spur ---------- */}
-          <section className="relative overflow-hidden border border-rule bg-surface px-8 py-14 sm:px-14">
+          <section
+            id="athar"
+            className="relative overflow-hidden border border-rule bg-surface px-8 py-14 sm:px-14"
+          >
             <Ornament className="pointer-events-none absolute inset-x-0 bottom-0 text-rule" />
             <Label>{t.campaign.label}</Label>
             <div className="mono space-y-1 text-muted">
@@ -191,8 +256,11 @@ export default async function Home({
             <p className="mt-6 max-w-prose text-lg leading-relaxed">
               {t.campaign.body}
             </p>
+            <p className="display mt-10 text-[clamp(26px,3.4vw,40px)] text-accent">
+              {t.campaign.closing}
+            </p>
             <a
-              href={GITHUB_ORG}
+              href={`${GITHUB_ORG}/athar`}
               className="mono mt-8 inline-block border-b border-accent pb-1 text-accent transition hover:opacity-80"
             >
               {t.campaign.cta} →

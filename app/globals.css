@@ -100,11 +100,71 @@ html[lang="ar"] .mono {
   transform: translateY(0);
 }
 
+/* ---------- Bewegung ---------- */
+
+/*
+ * Rotation um den eigenen Mittelpunkt.
+ *
+ * NICHT `transform-box: view-box` verwenden: Chrome loest `transform-origin:
+ * 50% 50%` dann zu (50,50) im Benutzer-Koordinatensystem auf statt zur Mitte
+ * der viewBox. Bei einer viewBox mit negativen Startwerten (-50 -50 100 100)
+ * liegt der Drehpunkt damit 70 Einheiten neben der Geometrie — die Ringe
+ * kreisen sichtbar, statt sich zu drehen.
+ *
+ * `fill-box` nimmt die eigene Bounding-Box der Gruppe. Da jeder Stern
+ * symmetrisch um den Ursprung konstruiert ist, ist deren Mitte exakt der
+ * Sternmittelpunkt — unabhaengig von der viewBox.
+ */
+.ring {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: athar-spin linear infinite;
+  will-change: transform;
+}
+
+.ring--rev {
+  animation-name: athar-spin-rev;
+}
+
+@keyframes athar-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes athar-spin-rev {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+/* Sanftes Aufziehen beim Laden — einmalig, nicht beim Scrollen. */
+@keyframes athar-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise {
+  animation: athar-rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  /* Ohne Drehung liegen die Echos deckungsgleich — sie wuerden den Stern
+     nur unnoetig verdichten. */
+  .ring--echo {
+    display: none;
   }
 }

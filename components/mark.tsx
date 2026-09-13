@@ -1,27 +1,20 @@
-/**
- * Khatam — achtzackiger Stern aus zwei überlagerten Quadraten.
- * Pfade um den Ursprung konstruiert, damit Skalieren/Rotieren ohne
- * Korrekturrechnung funktioniert.
- */
-function Khatam({
-  cx = 0,
-  cy = 0,
-  scale = 1,
-  rotate = 0,
-  opacity = 1,
-}: {
-  cx?: number;
-  cy?: number;
-  scale?: number;
-  rotate?: number;
-  opacity?: number;
-}) {
+type Ring = {
+  scale: number;
+  rotate: number;
+  opacity: number;
+  /**
+   * Sekunden pro Umdrehung. `0` heisst: steht fest.
+   * Der aeussere Ring bleibt bewusst statisch — er definiert die Silhouette.
+   * Rotiert er mit, wirkt das Signet groesser und unruhig.
+   */
+  duration: number;
+  reverse?: boolean;
+};
+
+/** Khatam — achtzackiger Stern aus zwei überlagerten Quadraten, um den Ursprung konstruiert. */
+function Khatam({ scale = 1, rotate = 0 }: { scale?: number; rotate?: number }) {
   return (
-    <g
-      opacity={opacity}
-      transform={`translate(${cx} ${cy}) rotate(${rotate}) scale(${scale})`}
-    >
-      {/* vectorEffect gehört auf die Shapes — auf dem <svg> bleibt es wirkungslos */}
+    <g transform={`rotate(${rotate}) scale(${scale})`}>
       <path d="M-28 -28 H28 V28 H-28 Z" vectorEffect="non-scaling-stroke" />
       <path d="M0 -40 L40 0 L0 40 L-40 0 Z" vectorEffect="non-scaling-stroke" />
     </g>
@@ -29,15 +22,75 @@ function Khatam({
 }
 
 /**
- * Athar-Signet: ein Stern, zweifach nach innen gestaffelt und verblassend —
- * die Spur, die bleibt. Rein geometrisch, symmetrisch, RTL-neutral.
+ * Ein rotierender Ring plus nachlaufende Echos.
+ *
+ * Die Spur entsteht nicht durch Unschärfe, sondern durch Phasenversatz:
+ * dieselbe Drehung, verzögert gestartet — die Echos bleiben dauerhaft ein
+ * Stück hinter dem Ring zurück und verblassen nach hinten.
  */
+function SpinningRing({ ring, trail }: { ring: Ring; trail: number }) {
+  if (ring.duration === 0) {
+    return (
+      <g opacity={ring.opacity}>
+        <Khatam scale={ring.scale} rotate={ring.rotate} />
+      </g>
+    );
+  }
+
+  const layers = Array.from({ length: trail + 1 }, (_, j) => j);
+  return (
+    <>
+      {layers.map((j) => (
+        <g
+          key={j}
+          className={[
+            "ring",
+            ring.reverse ? "ring--rev" : "",
+            j > 0 ? "ring--echo" : "",
+          ]
+            .filter(Boolean)
+            .join(" ")}
+          style={{
+            animationDuration: `${ring.duration}s`,
+            // Positiver Versatz: die Echos laufen der Drehung hinterher.
+            // Negativ waeren sie ihr voraus — das liest sich nicht als Spur.
+            animationDelay: `${j * 0.8}s`,
+            opacity: ring.opacity * (j === 0 ? 1 : j === 1 ? 0.4 : 0.18),
+          }}
+        >
+          <Khatam scale={ring.scale} rotate={ring.rotate} />
+        </g>
+      ))}
+    </>
+  );
+}
+
+const MARK_RINGS: Ring[] = [
+  { scale: 1, rotate: 0, opacity: 1, duration: 0 },
+  { scale: 0.62, rotate: 22.5, opacity: 0.55, duration: 0 },
+  { scale: 0.3, rotate: 45, opacity: 0.3, duration: 0 },
+];
+
+const ROSETTE_RINGS: Ring[] = [
+  { scale: 1, rotate: 0, opacity: 0.9, duration: 0 },
+  { scale: 0.78, rotate: 22.5, opacity: 0.6, duration: 90, reverse: true },
+  { scale: 0.56, rotate: 45, opacity: 0.45, duration: 66 },
+  { scale: 0.34, rotate: 67.5, opacity: 0.3, duration: 48, reverse: true },
+  { scale: 0.16, rotate: 90, opacity: 0.2, duration: 32 },
+];
+
 export function Mark({
   size = 40,
   className,
+  // Das Logo bleibt statisch. Ein dauerhaft bewegtes Signet zieht den Blick
+  // vom Inhalt ab und laesst die Marke unruhig wirken.
+  animate = false,
+  trail = 1,
 }: {
   size?: number;
   className?: string;
+  animate?: boolean;
+  trail?: number;
 }) {
   return (
     <svg
@@ -48,21 +101,44 @@ export function Mark({
       stroke="currentColor"
       strokeWidth={1.5}
       strokeLinejoin="round"
-      className={className}
+      className={`${animate ? "spin-host" : ""} ${className ?? ""}`}
       role="img"
       aria-label="Athar"
     >
-      <Khatam scale={1} />
-      <Khatam scale={0.62} rotate={22.5} opacity={0.5} />
-      <Khatam scale={0.3} rotate={45} opacity={0.25} />
+      {MARK_RINGS.map((r) => (
+        <SpinningRing key={r.scale} ring={r} trail={animate ? trail : 0} />
+      ))}
     </svg>
   );
 }
 
-/**
- * Trenner: fünf Sterne, zur Mitte hin kräftiger — leises Ornament,
- * kein Blickfang.
- */
+export function Rosette({
+  className,
+  animate = true,
+  trail = 2,
+}: {
+  className?: string;
+  animate?: boolean;
+  trail?: number;
+}) {
+  return (
+    <svg
+      className={`${animate ? "spin-host" : ""} ${className ?? ""}`}
+      aria-hidden
+      viewBox="-50 -50 100 100"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1}
+      strokeLinejoin="round"
+    >
+      {ROSETTE_RINGS.map((r) => (
+        <SpinningRing key={r.scale} ring={r} trail={animate ? trail : 0} />
+      ))}
+    </svg>
+  );
+}
+
+/** Statischer Trenner — fünf Sterne, zur Mitte hin kräftiger. */
 export function Ornament({ className }: { className?: string }) {
   const stars = [
     { cx: 80, opacity: 0.25 },
@@ -71,7 +147,6 @@ export function Ornament({ className }: { className?: string }) {
     { cx: 320, opacity: 0.5 },
     { cx: 400, opacity: 0.25 },
   ];
-
   return (
     <svg
       className={className}
@@ -86,36 +161,10 @@ export function Ornament({ className }: { className?: string }) {
       preserveAspectRatio="xMidYMid meet"
     >
       {stars.map((s) => (
-        <Khatam key={s.cx} cx={s.cx} cy={36} scale={0.34} opacity={s.opacity} />
-      ))}
-    </svg>
-  );
-}
-
-/**
- * Grosse Rosette — dieselbe Regel, vier Mal angewandt. Dekoratives
- * Gegenstueck zum Text ueber Muster und Regel.
- */
-export function Rosette({ className }: { className?: string }) {
-  const rings = [
-    { scale: 1, rotate: 0, opacity: 0.9 },
-    { scale: 0.78, rotate: 22.5, opacity: 0.6 },
-    { scale: 0.56, rotate: 45, opacity: 0.42 },
-    { scale: 0.34, rotate: 67.5, opacity: 0.28 },
-    { scale: 0.16, rotate: 90, opacity: 0.18 },
-  ];
-  return (
-    <svg
-      className={className}
-      aria-hidden
-      viewBox="-50 -50 100 100"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1}
-      strokeLinejoin="round"
-    >
-      {rings.map((r) => (
-        <Khatam key={r.scale} scale={r.scale} rotate={r.rotate} opacity={r.opacity} />
+        <g key={s.cx} transform={`translate(${s.cx} 36) scale(0.34)`} opacity={s.opacity}>
+          <path d="M-28 -28 H28 V28 H-28 Z" vectorEffect="non-scaling-stroke" />
+          <path d="M0 -40 L40 0 L0 40 L-40 0 Z" vectorEffect="non-scaling-stroke" />
+        </g>
       ))}
     </svg>
   );

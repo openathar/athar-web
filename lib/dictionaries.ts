@@ -10,11 +10,17 @@ type Dict = {
   compute: {
     label: string;
     heading: string;
-    note: string;
-    rows: { name: string; time: string; basis: string }[];
+    body: string;
+    names: Record<"fajr" | "dhuhr" | "asr" | "maghrib" | "isha", string>;
+    /** {angle} und {factor} werden mit den echten Methodenparametern ersetzt */
+    basis: Record<"fajr" | "dhuhr" | "asr" | "maghrib" | "isha", string>;
+    maghribOffset: string;
+    live: string;
+    offline: string;
+    source: string;
   };
-  geometry: { label: string; heading: string; body: string };
-  campaign: { label: string; heading: string; body: string; cta: string; meta: string[] };
+  legacy: { label: string; heading: string; body: string[] };
+  campaign: { label: string; heading: string; body: string; closing: string; cta: string; meta: string[] };
   roadmap: { heading: string; phases: { title: string; body: string; state: string }[] };
   theme: { light: string; dark: string };
   footer: { madeAs: string; source: string; imprint: string };
@@ -36,7 +42,7 @@ export const dictionaries: Record<Locale, Dict> = {
       meaning: "the trace · the footprint · the lasting legacy",
       tagline:
         "A 100% free, ad-free and privacy-respecting Islamic platform — for web, Android and iOS, plus a public API for developers.",
-      cta: "Leave your Athar",
+      cta: "Find your Athar",
       ctaSecondary: "Read the architecture",
     },
     status: {
@@ -65,28 +71,43 @@ export const dictionaries: Record<Locale, Dict> = {
     compute: {
       label: "how a prayer time is found",
       heading: "Not stored. Derived.",
-      note: "example output · Amman · 13 Sep",
-      rows: [
-        { name: "Fajr", time: "04:47", basis: "sun 18° below the horizon" },
-        { name: "Dhuhr", time: "12:31", basis: "solar transit" },
-        { name: "Asr", time: "15:58", basis: "shadow length 1×" },
-        { name: "Maghrib", time: "19:44", basis: "sunset" },
-        { name: "Isha", time: "21:22", basis: "sun 17° below the horizon" },
+      body:
+        "In the app your device derives the times itself — from place, date and the position of the sun. No server needs to know where you pray. Until our own engine ships, this page shows real values from the open Aladhan API, not invented ones.",
+      names: {
+        fajr: "Fajr",
+        dhuhr: "Dhuhr",
+        asr: "Asr",
+        maghrib: "Maghrib",
+        isha: "Isha",
+      },
+      basis: {
+        fajr: "sun {angle}° below the horizon",
+        dhuhr: "solar transit",
+        asr: "shadow length {factor}×",
+        maghrib: "sunset",
+        isha: "sun {angle}° below the horizon",
+      },
+      maghribOffset: " + {offset} min",
+      live: "live",
+      offline: "last known values",
+      source: "source",
+    },
+    legacy: {
+      label: "the question behind it",
+      heading: "Code outlives its authors",
+      body: [
+        "Software written in the nineties still runs today. Its authors are long gone, their names appear nowhere — the code keeps working.",
+        "This platform is built on the same question: what of it still runs when no one tends it?",
       ],
     },
-    geometry: {
-      label: "pattern & rule",
-      heading: "The same craft",
-      body:
-        "A girih pattern is not drawn — it is derived. A few rules, repeated faithfully, produce something that never closes the same way twice. Software written well works the same: small, honest rules that survive repetition. Your prayer times are not a lookup table. They are geometry, recomputed on your own device.",
-    },
     campaign: {
-      label: "the trace you leave",
-      heading: "Leave your Athar",
-      meta: ["commit  8f3a19c", "author  you", "date    whenever you choose"],
+      label: "my athar",
+      heading: "My Athar",
+      meta: ["commit  athar", "author  ahmad al zoubi", "date    2026 —"],
       body:
-        "Every contribution stays. A line of code, a translation, a bug report — as long as someone uses this platform to pray, the reward continues. This is Sadaqah Jariyah written in software.",
-      cta: "Contribute on GitHub",
+        "This platform is my trace. I build it so that it remains: free, without ads, without surveillance — as long as someone prays with it, the reward continues. My athar is to inspire people. Yours is something else. Perhaps a line of code, perhaps a tree, perhaps a child who watched how you lived.",
+      closing: "Find your Athar.",
+      cta: "Follow the project",
     },
     roadmap: {
       heading: "Roadmap",
@@ -119,7 +140,7 @@ export const dictionaries: Record<Locale, Dict> = {
       meaning: "die Spur · der Fußabdruck · das bleibende Vermächtnis",
       tagline:
         "Eine zu 100% kostenlose, werbefreie und datenschutzfreundliche islamische Plattform — für Web, Android und iOS, dazu eine öffentliche API für Entwickler.",
-      cta: "Hinterlasse dein Athar",
+      cta: "Finde dein Athar",
       ctaSecondary: "Architektur lesen",
     },
     status: {
@@ -148,28 +169,43 @@ export const dictionaries: Record<Locale, Dict> = {
     compute: {
       label: "wie eine Gebetszeit entsteht",
       heading: "Nicht gespeichert. Berechnet.",
-      note: "Beispielausgabe · Amman · 13. Sep",
-      rows: [
-        { name: "Fadschr", time: "04:47", basis: "Sonne 18° unter dem Horizont" },
-        { name: "Dhuhr", time: "12:31", basis: "Sonnenhöchststand" },
-        { name: "Asr", time: "15:58", basis: "Schattenlänge 1×" },
-        { name: "Maghrib", time: "19:44", basis: "Sonnenuntergang" },
-        { name: "Ischa", time: "21:22", basis: "Sonne 17° unter dem Horizont" },
+      body:
+        "In der App rechnet dein Gerät die Zeiten selbst aus — aus Ort, Datum und dem Stand der Sonne. Kein Server muss wissen, wo du betest. Bis unsere eigene Engine steht, zeigt diese Seite echte Werte der offenen Aladhan-API, keine erfundenen.",
+      names: {
+        fajr: "Fadschr",
+        dhuhr: "Dhuhr",
+        asr: "Asr",
+        maghrib: "Maghrib",
+        isha: "Ischa",
+      },
+      basis: {
+        fajr: "Sonne {angle}° unter dem Horizont",
+        dhuhr: "Sonnenhöchststand",
+        asr: "Schattenlänge {factor}×",
+        maghrib: "Sonnenuntergang",
+        isha: "Sonne {angle}° unter dem Horizont",
+      },
+      maghribOffset: " + {offset} Min",
+      live: "live",
+      offline: "zuletzt bekannte Werte",
+      source: "Quelle",
+    },
+    legacy: {
+      label: "die Frage dahinter",
+      heading: "Code überlebt seine Autoren",
+      body: [
+        "Software aus den Neunzigern läuft bis heute. Ihre Autoren sind längst weg, ihre Namen stehen nirgends — der Code arbeitet weiter.",
+        "Diese Plattform ist mit derselben Frage gebaut: Was davon läuft noch, wenn niemand sie mehr betreut?",
       ],
     },
-    geometry: {
-      label: "Muster & Regel",
-      heading: "Dasselbe Handwerk",
-      body:
-        "Ein Girih-Muster wird nicht gezeichnet — es wird hergeleitet. Wenige Regeln, sauber wiederholt, ergeben etwas, das sich nie zweimal gleich schließt. Gut geschriebene Software funktioniert genauso: kleine, ehrliche Regeln, die Wiederholung aushalten. Deine Gebetszeiten sind keine Tabelle. Sie sind Geometrie, neu berechnet auf deinem eigenen Gerät.",
-    },
     campaign: {
-      label: "die Spur, die du hinterlässt",
-      heading: "Hinterlasse dein Athar",
-      meta: ["commit  8f3a19c", "autor   du", "datum   wann immer du willst"],
+      label: "mein Athar",
+      heading: "Mein Athar",
+      meta: ["commit  athar", "autor   ahmad al zoubi", "datum   2026 —"],
       body:
-        "Jeder Beitrag bleibt. Eine Zeile Code, eine Übersetzung, ein Fehlerbericht — solange jemand mit dieser Plattform betet, läuft der Lohn weiter. Das ist Sadaqah Jariyah in Software geschrieben.",
-      cta: "Auf GitHub mitmachen",
+        "Diese Plattform ist meine Spur. Ich baue sie, damit sie bleibt: kostenlos, ohne Werbung, ohne Überwachung — solange jemand mit ihr betet, läuft der Lohn weiter. Mein Athar ist es, Menschen zu inspirieren. Deins ist ein anderes. Vielleicht eine Zeile Code, vielleicht ein Baum, vielleicht ein Kind, das gesehen hat, wie du gelebt hast.",
+      closing: "Finde dein Athar.",
+      cta: "Das Projekt verfolgen",
     },
     roadmap: {
       heading: "Roadmap",
@@ -202,7 +238,7 @@ export const dictionaries: Record<Locale, Dict> = {
       meaning: "الأثر · الخطوة الباقية · الإرث الدائم",
       tagline:
         "منصة إسلامية مجانية بالكامل، بلا إعلانات وتحترم خصوصيتك — للويب وأندرويد وiOS، مع واجهة برمجية عامة للمطوّرين.",
-      cta: "اترك أثرك",
+      cta: "اعثر على أثرك",
       ctaSecondary: "اقرأ البنية التقنية",
     },
     status: {
@@ -231,28 +267,43 @@ export const dictionaries: Record<Locale, Dict> = {
     compute: {
       label: "كيف يُستخرج وقت الصلاة",
       heading: "لا تُخزَّن. بل تُحسب.",
-      note: "مثال · عمّان · ١٣ أيلول",
-      rows: [
-        { name: "الفجر", time: "٠٤:٤٧", basis: "الشمس ١٨° تحت الأفق" },
-        { name: "الظهر", time: "١٢:٣١", basis: "زوال الشمس" },
-        { name: "العصر", time: "١٥:٥٨", basis: "ظل المثل" },
-        { name: "المغرب", time: "١٩:٤٤", basis: "غروب الشمس" },
-        { name: "العشاء", time: "٢١:٢٢", basis: "الشمس ١٧° تحت الأفق" },
+      body:
+        "في التطبيق يحسب جهازك المواقيت بنفسه — من الموقع والتاريخ وموضع الشمس، فلا يحتاج خادم أن يعرف أين تصلّي. وإلى أن يجهز محرّكنا الخاص، تعرض هذه الصفحة قيماً حقيقية من واجهة Aladhan المفتوحة، لا أرقاماً مخترعة.",
+      names: {
+        fajr: "الفجر",
+        dhuhr: "الظهر",
+        asr: "العصر",
+        maghrib: "المغرب",
+        isha: "العشاء",
+      },
+      basis: {
+        fajr: "الشمس {angle}° تحت الأفق",
+        dhuhr: "زوال الشمس",
+        asr: "ظل المثل {factor}×",
+        maghrib: "غروب الشمس",
+        isha: "الشمس {angle}° تحت الأفق",
+      },
+      maghribOffset: " + {offset} دقيقة",
+      live: "مباشر",
+      offline: "آخر قيم معروفة",
+      source: "المصدر",
+    },
+    legacy: {
+      label: "السؤال خلف ذلك",
+      heading: "الشيفرة تبقى بعد كاتبها",
+      body: [
+        "برمجيات كُتبت في التسعينات ما زالت تعمل اليوم. كتّابها رحلوا منذ زمن ولا تُذكر أسماؤهم — والشيفرة تواصل عملها.",
+        "وهذه المنصة مبنية على السؤال نفسه: ما الذي سيبقى يعمل منها حين لا يرعاها أحد؟",
       ],
     },
-    geometry: {
-      label: "النقش والقاعدة",
-      heading: "الصنعة ذاتها",
-      body:
-        "النقش الگيريهي لا يُرسم، بل يُستنبط. قواعد قليلة تُكرَّر بأمانة فتُنتج ما لا ينغلق مرتين على الصورة نفسها. والبرمجة الجيدة كذلك: قواعد صغيرة صادقة تصمد أمام التكرار. مواقيتك ليست جدولاً محفوظاً، بل هندسة تُحسب من جديد على جهازك أنت.",
-    },
     campaign: {
-      label: "الأثر الذي تتركه",
-      heading: "اترك أثرك",
-      meta: ["commit  8f3a19c", "المساهم  أنت", "التاريخ  متى شئت"],
+      label: "أثري",
+      heading: "أثري",
+      meta: ["commit  athar", "المؤلف   أحمد الزعبي", "التاريخ  ٢٠٢٦ —"],
       body:
-        "كل مساهمة تبقى. سطر برمجي، ترجمة، أو تقرير خلل — ما دام أحدهم يصلّي بهذه المنصة، يستمر الأجر. هذه صدقة جارية مكتوبة بالبرمجة.",
-      cta: "ساهم على GitHub",
+        "هذه المنصة أثري. أبنيها لتبقى: مجانية، بلا إعلانات، بلا مراقبة — وما دام أحدهم يصلّي بها، يستمر الأجر. أثري أن أُلهم الناس. وأثرك غيره؛ لعلّه سطر برمجي، أو شجرة، أو ولدٌ رأى كيف عشت.",
+      closing: "اعثر على أثرك.",
+      cta: "تابع المشروع",
     },
     roadmap: {
       heading: "خارطة الطريق",
