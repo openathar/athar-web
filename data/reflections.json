@@ -1,0 +1,71 @@
+{
+  "provenance": {
+    "draftModel": "llama3.2",
+    "draftedAt": "2026-09-13",
+    "reviewedAt": "2026-09-13",
+    "note": "Entwürfe lokal mit llama3.2 erzeugt (scripts/generate-reflections.mjs), danach redaktionell geprüft und korrigiert. Die Rohausgaben enthielten Sachfehler (u.a. vertauschte Massenverhältnisse bei Umlaufbahnen, 99,9 % als Unterschied statt Übereinstimmung) und im Arabischen unbrauchbaren Mischsatz. ARABISCH STEHT NOCH UNTER VORBEHALT: muttersprachliche Freigabe durch Ahmad ausstehend.",
+    "arabicApproved": false
+  },
+  "entries": [
+    {
+      "verse": "36:38",
+      "field": { "de": "Astronomie", "en": "Astronomy", "ar": "علم الفلك" },
+      "fallback": {
+        "arabic": "وَٱلشَّمْسُ تَجْرِى لِمُسْتَقَرٍّ لَّهَا ۚ ذَٰلِكَ تَقْدِيرُ ٱلْعَزِيزِ ٱلْعَلِيمِ",
+        "de": "Und die Sonne läuft zu einem für sie bestimmten Aufenthaltsort. Das ist die Anordnung des Allmächtigen und Allwissenden.",
+        "en": "And the sun travels to its fixed course. That is the design of the Almighty, All-Knowing."
+      },
+      "observation": {
+        "de": "Die Sonne umkreist das Zentrum der Milchstraße einmal in etwa 225 bis 250 Millionen Jahren. Sie bewegt sich dabei mit rund 220 Kilometern pro Sekunde.",
+        "en": "The Sun completes one orbit around the centre of the Milky Way in roughly 225 to 250 million years. It travels at about 220 kilometres per second.",
+        "ar": "تُتِمّ الشمس دورة واحدة حول مركز مجرّة درب التبّانة في نحو ٢٢٥ إلى ٢٥٠ مليون سنة، وتبلغ سرعتها في ذلك زهاء ٢٢٠ كيلومتراً في الثانية."
+      }
+    },
+    {
+      "verse": "21:33",
+      "field": {
+        "de": "Himmelsmechanik",
+        "en": "Orbital mechanics",
+        "ar": "ميكانيكا الأجرام"
+      },
+      "fallback": {
+        "arabic": "وَهُوَ ٱلَّذِى خَلَقَ ٱلَّيْلَ وَٱلنَّهَارَ وَٱلشَّمْسَ وَٱلْقَمَرَ ۖ كُلٌّ فِى فَلَكٍ يَسْبَحُونَ",
+        "de": "Und Er ist es, Der die Nacht und den Tag, die Sonne und den Mond erschaffen hat; alle bewegen sich in einer Umlaufbahn.",
+        "en": "And He is the One Who created the day and the night, the sun and the moon — each travelling in an orbit."
+      },
+      "observation": {
+        "de": "Ein Körper bleibt auf seiner Umlaufbahn, weil Bahngeschwindigkeit und Anziehungskraft des massereicheren Körpers einander ausgleichen. Wird er langsamer, fällt er nach innen; erreicht er die Fluchtgeschwindigkeit, verlässt er die Bahn.",
+        "en": "A body stays in orbit because its speed and the pull of the more massive body balance out. Too slow and it falls inward; at escape velocity it leaves the orbit altogether.",
+        "ar": "يبقى الجرم في مداره لأن سرعته وجاذبية الجرم الأكبر كتلةً تتوازنان. فإن تباطأ سقط نحو الداخل، وإن بلغ سرعة الإفلات غادر المدار."
+      }
+    },
+    {
+      "verse": "30:22",
+      "field": { "de": "Genetik", "en": "Genetics", "ar": "علم الوراثة" },
+      "fallback": {
+        "arabic": "وَمِنْ ءَايَـٰتِهِۦ خَلْقُ ٱلسَّمَـٰوَٰتِ وَٱلْأَرْضِ وَٱخْتِلَـٰفُ أَلْسِنَتِكُمْ وَأَلْوَٰنِكُمْ ۚ إِنَّ فِى ذَٰلِكَ لَـَٔايَـٰتٍ لِّلْعَـٰلِمِينَ",
+        "de": "Und zu Seinen Zeichen gehört die Erschaffung der Himmel und der Erde und die Verschiedenheit eurer Sprachen und Farben.",
+        "en": "And one of His signs is the creation of the heavens and the earth, and the diversity of your languages and colours."
+      },
+      "observation": {
+        "de": "Zwei beliebige Menschen stimmen in ihrer DNA zu etwa 99,9 Prozent überein. Die sichtbaren Unterschiede wie Hautfarbe oder Gesichtszüge gehen auf einen sehr kleinen Teil des verbleibenden Promilles zurück.",
+        "en": "Any two humans share about 99.9 percent of their DNA. Visible differences such as skin colour or features arise from a very small part of the remaining tenth of a percent.",
+        "ar": "يتشارك أيّ إنسانين نحو ٩٩٫٩ بالمئة من حمضهما النووي، والفروق الظاهرة كلون البشرة والملامح تنشأ من جزء ضئيل جداً مما تبقّى."
+      }
+    },
+    {
+      "verse": "13:28",
+      "field": { "de": "Psychologie", "en": "Psychology", "ar": "علم النفس" },
+      "fallback": {
+        "arabic": "ٱلَّذِينَ ءَامَنُوا۟ وَتَطْمَئِنُّ قُلُوبُهُم بِذِكْرِ ٱللَّهِ ۗ أَلَا بِذِكْرِ ٱللَّهِ تَطْمَئِنُّ ٱلْقُلُوبُ",
+        "de": "Diejenigen, die glauben und deren Herzen im Gedenken Allahs Ruhe finden. Sicherlich, im Gedenken Allahs finden die Herzen Ruhe.",
+        "en": "Those who believe and whose hearts find comfort in the remembrance of Allah. Surely in the remembrance of Allah do hearts find comfort."
+      },
+      "observation": {
+        "de": "Langsames, regelmäßiges Atmen von etwa sechs Zügen pro Minute erhöht messbar die Herzratenvariabilität. Sie gilt als Marker dafür, dass der beruhigende Teil des vegetativen Nervensystems die Führung übernimmt.",
+        "en": "Breathing slowly and regularly at about six breaths per minute measurably raises heart rate variability. That is treated as a marker of the calming branch of the autonomic nervous system taking over.",
+        "ar": "التنفّس البطيء المنتظم بمعدّل نحو ستّ مرّات في الدقيقة يرفع قياسياً تغيّر معدّل ضربات القلب، وهو مؤشّر على تولّي الشقّ المهدّئ من الجهاز العصبي الذاتي زمام الأمر."
+      }
+    }
+  ]
+}

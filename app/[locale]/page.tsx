@@ -4,6 +4,8 @@ import { locales, localeNames, isRtl, type Locale } from "~/lib/i18n";
 import { dictionaries } from "~/lib/dictionaries";
 import { Mark, Ornament, Rosette } from "~/components/mark";
 import { getPrayerTimes, prayerKeys, toArabicDigits } from "~/lib/prayer-times";
+import { getVerse } from "~/lib/quran";
+import reflections from "~/data/reflections.json";
 import { ThemeToggle } from "~/components/theme";
 
 const GITHUB_ORG = "https://github.com/openathar";
@@ -19,6 +21,15 @@ export default async function Home({
   const t = dictionaries[l];
   const rtl = isRtl(l);
   const prayer = await getPrayerTimes(l);
+
+  // Ein Vers pro Tag, deterministisch — kein Zufall, damit Server und Client
+  // dasselbe zeigen und der Wechsel nachvollziehbar bleibt.
+  const dayIndex = Math.floor(Date.now() / 86_400_000) % reflections.entries.length;
+  const sign = reflections.entries[dayIndex];
+  const verse = await getVerse(sign.verse, l, {
+    arabic: sign.fallback.arabic,
+    rendered: l === "ar" ? sign.fallback.arabic : (sign.fallback[l] ?? ""),
+  });
 
   // Im arabischen Satz wirken lateinische Ziffern wie ein Fremdkoerper.
   const num = (v: string | number) => (rtl ? toArabicDigits(v) : String(v));
@@ -180,6 +191,54 @@ export default async function Home({
                     Aladhan API
                   </a>{" "}
                   · {prayer.method}
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* ---------- Zwei Buecher: Vers neben Beobachtung ---------- */}
+          <section className="border-t border-rule py-20">
+            <Label>{t.signs.label}</Label>
+            <h2 className="display text-[clamp(32px,5vw,60px)] font-light">
+              {t.signs.heading}
+            </h2>
+            <p className="mt-6 max-w-prose text-muted">{t.signs.intro}</p>
+
+            <div className="mt-12 grid gap-px border border-rule bg-rule md:grid-cols-2">
+              {/* Offenbarung — unveraendert, zitiert, verlinkt */}
+              <div className="bg-paper p-8">
+                <p className="mono mb-6 text-gold">
+                  {t.signs.revealed} · {verse.key}
+                </p>
+                <p
+                  lang="ar"
+                  dir="rtl"
+                  className="quran text-[clamp(21px,2.4vw,28px)] leading-[2.1]"
+                >
+                  {verse.arabic}
+                </p>
+                <p className="mt-6 text-muted">{verse.rendered}</p>
+                <p className="mono mt-6 text-muted">
+                  {verse.attribution} ·{" "}
+                  <a
+                    href={verse.sourceUrl}
+                    className="underline underline-offset-4 transition hover:text-ink"
+                  >
+                    quran.com
+                  </a>
+                </p>
+              </div>
+
+              {/* Beobachtung — Maschinenstimme, klar als solche markiert */}
+              <div className="bg-paper p-8">
+                <p className="mono mb-6 text-accent">
+                  {t.signs.observed} · {sign.field[l]}
+                </p>
+                <p className="mono text-[0.95rem] leading-relaxed text-ink">
+                  {sign.observation[l]}
+                </p>
+                <p className="mono mt-6 text-muted">
+                  {t.signs.draft.replace("{model}", reflections.provenance.draftModel)}
                 </p>
               </div>
             </div>

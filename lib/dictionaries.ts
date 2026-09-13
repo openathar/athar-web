@@ -20,6 +20,15 @@ type Dict = {
     source: string;
   };
   legacy: { label: string; heading: string; body: string[] };
+  signs: {
+    label: string;
+    heading: string;
+    intro: string;
+    revealed: string;
+    observed: string;
+    draft: string;
+    source: string;
+  };
   campaign: { label: string; heading: string; body: string; closing: string; cta: string; meta: string[] };
   roadmap: { heading: string; phases: { title: string; body: string; state: string }[] };
   theme: { light: string; dark: string };
@@ -91,6 +100,16 @@ export const dictionaries: Record<Locale, Dict> = {
       live: "live",
       offline: "last known values",
       source: "source",
+    },
+    signs: {
+      label: "verse & observation",
+      heading: "Two books",
+      intro:
+        "One is recited, the other is measured. We place them side by side and let each keep its own voice — no claim that one proves the other.",
+      revealed: "Revelation",
+      observed: "Observation",
+      draft: "drafted with {model}, running locally · editorially reviewed",
+      source: "Source",
     },
     legacy: {
       label: "the question behind it",
@@ -190,6 +209,16 @@ export const dictionaries: Record<Locale, Dict> = {
       offline: "zuletzt bekannte Werte",
       source: "Quelle",
     },
+    signs: {
+      label: "Vers & Beobachtung",
+      heading: "Zwei Bücher",
+      intro:
+        "Das eine wird rezitiert, das andere gemessen. Wir stellen sie nebeneinander und lassen jedem seine eigene Stimme — ohne zu behaupten, das eine beweise das andere.",
+      revealed: "Offenbarung",
+      observed: "Beobachtung",
+      draft: "Entwurf mit {model}, lokal erzeugt · redaktionell geprüft",
+      source: "Quelle",
+    },
     legacy: {
       label: "die Frage dahinter",
       heading: "Code überlebt seine Autoren",
@@ -286,6 +315,16 @@ export const dictionaries: Record<Locale, Dict> = {
       maghribOffset: " + {offset} دقيقة",
       live: "مباشر",
       offline: "آخر قيم معروفة",
+      source: "المصدر",
+    },
+    signs: {
+      label: "آية ومشاهدة",
+      heading: "كتابان",
+      intro:
+        "أحدهما يُتلى والآخر يُقاس. نضعهما جنباً إلى جنب ونترك لكلٍّ صوته، دون ادّعاء أن أحدهما يُثبت الآخر.",
+      revealed: "الوحي",
+      observed: "المشاهدة",
+      draft: "مسوّدة بنموذج {model} يعمل محلياً · روجعت تحريرياً",
       source: "المصدر",
     },
     legacy: {

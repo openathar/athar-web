@@ -1,0 +1,70 @@
+{
+  "model": "llama3.2",
+  "generatedAt": "2026-09-13T07:47:34.894Z",
+  "entries": [
+    {
+      "verse": "36:38",
+      "field": {
+        "de": "Astronomie",
+        "en": "Astronomy",
+        "ar": "علم الفلك"
+      },
+      "topic": "Die Eigenbewegung der Sonne: Sie umkreist das Zentrum der Milchstrasse in etwa 225 bis 250 Millionen Jahren.",
+      "observation": {
+        "de": "Die Sonne bewegt sich um das Zentrum der Milchstraße in einer Eigenbewegung, die etwa 225 bis 250 Millionen Jahre dauert.",
+        "en": "The Sun's orbital period around the galactic center is approximately 225-250 million years.",
+        "ar": "النظام الشمسي: تُشكل منحدرة في مدارها حول مركز المجموعة الشمسية."
+      },
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    {
+      "verse": "21:33",
+      "field": {
+        "de": "Himmelsmechanik",
+        "en": "Orbital mechanics",
+        "ar": "ميكانيكا الأجرام"
+      },
+      "topic": "Bahnen von Himmelskörpern: Warum Körper auf stabilen Umlaufbahnen bleiben, statt zu stürzen oder zu entweichen.",
+      "observation": {
+        "de": "Die Umlaufbahnen von Himmelskörpern sind durch ihre Gravitationskräfte zwischen der Sonne und dem Körper selbst sowie durch die Wechselwirkung mit anderen Himmelskörpern bestimmt. Die Gravitationskräfte halten die Körper auf ihren stabilen Umlaufbahnen.",
+        "en": "The stability of celestial bodies' orbits is determined by their mass, size, and velocity. According to Newton's laws of motion, a massive object with a large size and sufficient velocity will maintain a stable orbit around a smaller, less massive object, such as a planet or star.",
+        "ar": "هنا معلومات عنbahnen من الكواكب: الكواكب الصحيحة في النظام الشمسي، مثل الأرض، المريخ، ومركبة ساتURN، يتبعون محورين محددين. هذا المحيرون يحددون مسار الكواكب حول الشمس."
+      },
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    {
+      "verse": "30:22",
+      "field": {
+        "de": "Genetik",
+        "en": "Genetics",
+        "ar": "علم الوراثة"
+      },
+      "topic": "Menschliche Vielfalt: Wie gering die genetischen Unterschiede zwischen Menschen sind, gemessen am gesamten Genom.",
+      "observation": {
+        "de": "Die genetischen Unterschiede zwischen Menschen sind relativ gering. Die genetische Vielfalt innerhalb der menschlichen Spezies wird durch Studien am gesamten Genom geschätzt.",
+        "en": "Human genetic diversity is estimated to be relatively low, with studies suggesting that the average genetic difference between individuals is around 0.1-0.2%. This variation is largely determined by genetic drift, mutation, and gene flow, which have shaped the human genome over thousands of years of evolution.",
+        "ar": "التنوع الجيني للبشر: ما هو extent الجenetيكية بين البشر، معترفًا بالكامل بالجينوم؟ المنطقة الجينية التي تمثل الاختلافات بين البشر تبلغ حوالي 99.9% من جينوم الإنسان."
+      },
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    {
+      "verse": "13:28",
+      "field": {
+        "de": "Psychologie",
+        "en": "Psychology",
+        "ar": "علم النفس"
+      },
+      "topic": "Wiederkehrende Rituale und Atemrhythmus: messbare Wirkung langsamer, regelmässiger Atmung auf Herzfrequenz und Stressreaktion.",
+      "observation": {
+        "de": "Wiederkehrende Rituale können eine messbare Wirkung auf den Atemrhythmus und die Herzfrequenz haben. Langsamer, regelmäßiger Atem haben kann die Herzfrequenz senken und Stressreaktionen reduzieren.",
+        "en": "Regular Rhythms and Breathing Patterns: Measurable Effects on Heart Rate and Stress Response Slower and more regular breathing patterns have been found to have a measurable impact on heart rate and stress response. Research has shown that individuals who practice slow, deliberate breathing exercises experience a decrease in heart rate and blood pressure, leading to a reduction in stress and anxiety.",
+        "ar": "مفردات واضحة: * تكرار الأنشطة الرياضية: تؤدي التكرار في الأنشطة الرياضية إلى تحسين أداء الجسم وتقليل التوتر. * تأثير الأتمس: تؤثر الأتمس على النشاطات اليومية وتؤدي إلى تحسين المزاج وتقليل التوتر. * تأثير الأتمس على القلب: تؤثر الأتمس على القلب وتؤدي إلى تحسين الدورة الدموية وتقليل الضغط. * تأثير الأتمس على التوتر: تؤثر الأتمس على التوتر وتؤدي إلى تقليل الضغط وتحسين المزاج."
+      },
+      "reviewedBy": null,
+      "reviewedAt": null
+    }
+  ]
+}
