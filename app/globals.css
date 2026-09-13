@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+@theme {
+  /* Papier/Tinte — gedämpft, warm, editorial */
+  --color-paper: #f5f2ea;
+  --color-paper-deep: #ece7da;
+  --color-ink: #272c22;
+  --color-muted: #61665a;
+  --color-rule: #d6d1c2;
+  --color-accent: #1c6349;
+
+  --font-display: var(--font-serif), Georgia, serif;
+  --font-body: var(--font-sans), system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Arabisch: eigene Schrift + mehr Durchschuss, sonst kollidieren Diakritika */
+html[lang="ar"] body {
+  font-family: var(--font-arabic), serif;
+  line-height: 2;
+}
+
+html[lang="ar"] .display {
+  font-family: var(--font-arabic), serif;
+  letter-spacing: 0;
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+}
+
+::selection {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+:is(a, button, summary):focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 6px;
+  border-radius: 1px;
+}
+
+.skip-link {
+  position: fixed;
+  inset-block-start: 12px;
+  inset-inline-start: 12px;
+  z-index: 100;
+  padding: 10px 20px;
+  background: var(--color-paper);
+  border: 1px solid var(--color-rule);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
