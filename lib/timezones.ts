@@ -117,3 +117,33 @@ export const timezonePlaces: Record<string, Place> = {
 export function placeFromTimezone(timezone: string): Place | null {
   return timezonePlaces[timezone] ?? null;
 }
+
+/** Entfernung zweier Koordinaten in Kilometern (Haversine). */
+export function haversineKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const R = 6371;
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const dφ = toRad(lat2 - lat1);
+  const dλ = toRad(lon2 - lon1);
+  const a =
+    Math.sin(dφ / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dλ / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+/**
+ * Naechste bekannte Stadt zu einer Koordinate — fuer einen Klick auf die
+ * Erde, damit dort ein Name steht statt nur Zahlen. `null`, wenn keine Stadt
+ * in der Naehe liegt (z.B. mitten im Ozean).
+ */
+export function nearestPlace(lat: number, lon: number, maxKm = 400): Place | null {
+  let best: Place | null = null;
+  let bestDist = Infinity;
+  for (const p of Object.values(timezonePlaces)) {
+    const d = haversineKm(lat, lon, p.lat, p.lon);
+    if (d < bestDist) {
+      bestDist = d;
+      best = p;
+    }
+  }
+  return best && bestDist <= maxKm ? best : null;
+}

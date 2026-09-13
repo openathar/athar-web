@@ -35,13 +35,13 @@
 
 /* Mushaf — Manuskript, Tageslicht */
 [data-theme="light"] {
-  --c-paper: #faf7f0;
-  --c-surface: #f1ece0;
-  --c-ink: #1b1e19;
-  --c-muted: #5f6459;
-  --c-rule: #ded8c8;
-  --c-accent: #1c6349;
-  --c-gold: #8d6a25;
+  --c-paper: #faf5ea;
+  --c-surface: #f2ecdd;
+  --c-ink: #23261f;
+  --c-muted: #5c6156;
+  --c-rule: #d8d0bb;
+  --c-accent: #0d7a55;
+  --c-gold: #9a6f1f;
   color-scheme: light;
 }
 
@@ -172,7 +172,7 @@ html[lang="ar"] .mono {
 }
 
 .rise {
-  animation: athar-rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation: athar-rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -187,5 +187,65 @@ html[lang="ar"] .mono {
      nur unnoetig verdichten. */
   .ring--echo {
     display: none;
+  }
+}
+
+/* ---------- Hero: Wortzeichen mit Sternenhimmel ---------- */
+
+/* Bühne für das goldene أثر: Galaxie (Canvas) + rotierendes Signet dahinter. */
+.hero-stage {
+  position: relative;
+  height: clamp(200px, 36vw, 360px);
+}
+
+/* Das Signet dreht sich sehr langsam hinter dem Wort — dezent, nicht laut.
+   Die Linien in Grün, damit das Gold dem Wortzeichen vorbehalten bleibt.
+   Es liegt auf derselben linken Achse wie das Wort (gleiche Breite, Inhalt
+   zentriert), statt in der Mitte der ganzen Bühne zu kreisen.
+   `translate` (Zentrierung) und `transform` (Rotation) sind getrennte
+   Eigenschaften und komponieren sich, ohne sich zu ueberschreiben. */
+.hero-mark {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 0;
+  width: min(74%, 480px);
+  translate: 0 -50%;
+  display: flex;
+  justify-content: center;
+  color: var(--c-accent);
+  opacity: 0.35;
+  animation: hero-spin 90s linear infinite;
+  will-change: transform;
+}
+
+.hero-word {
+  position: relative;
+  z-index: 10;
+  width: min(74%, 480px);
+  height: 100%;
+}
+
+/* Das Wortzeichen selbst leuchtet leicht (Canvas-Schein) und pulsiert sehr
+   langsam — kein grosser Heiligenschein mehr hinter der Bühne. */
+.hero-word canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  animation: hero-blink 7s ease-in-out infinite;
+}
+
+@keyframes hero-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes hero-blink {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 1;
   }
 }

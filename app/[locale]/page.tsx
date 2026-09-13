@@ -3,11 +3,12 @@ import { notFound } from "next/navigation";
 import { locales, localeNames, isRtl, type Locale } from "~/lib/i18n";
 import { dictionaries } from "~/lib/dictionaries";
 import { Mark, Ornament, Rosette } from "~/components/mark";
-import { getPrayerTimes } from "~/lib/prayer-times";
-import { PrayerCard } from "~/components/prayer-card";
 import { getVerse } from "~/lib/quran";
 import reflections from "~/data/reflections.json";
 import { upcomingIslamicDates } from "~/lib/islamic-dates";
+import { EarthMoonSection } from "~/components/earth-moon-section";
+import { Hero } from "~/components/hero";
+import { WorldMap } from "~/components/world-map";
 import { ThemeToggle } from "~/components/theme";
 
 const GITHUB_ORG = "https://github.com/openathar";
@@ -22,7 +23,6 @@ export default async function Home({
   const l = locale as Locale;
   const t = dictionaries[l];
   const rtl = isRtl(l);
-  const prayer = await getPrayerTimes(l);
 
   // Ein Vers pro Tag, deterministisch — kein Zufall, damit Server und Client
   // dasselbe zeigen und der Wechsel nachvollziehbar bleibt.
@@ -42,77 +42,56 @@ export default async function Home({
       </a>
 
       <div className="mx-auto max-w-[72rem] px-6 sm:px-10">
-        <header className="flex flex-wrap items-center justify-between gap-4 border-b border-rule py-6">
+        <header className="flex flex-wrap items-center justify-between gap-x-10 gap-y-4 border-b border-rule py-4">
+          {/* Logo — Athar mit أثر als verblassender Spur daneben */}
           <span className="flex items-center gap-3">
             <Mark size={30} className="text-accent" />
-            <span className="display text-xl">Athar</span>
-            <span className="quran text-xl text-muted">أثر</span>
-          </span>
-          <nav className="flex items-center gap-5 text-sm">
-            {locales.map((c) => (
-              <Link
-                key={c}
-                href={`/${c}`}
-                lang={c}
-                className={
-                  c === l
-                    ? "text-ink underline underline-offset-4"
-                    : "text-muted transition hover:text-ink"
-                }
+            <span className="flex items-baseline gap-1.5">
+              <span className="display text-xl font-bold leading-none text-gold">Athar</span>
+              <span
+                dir="rtl"
+                lang="ar"
+                className="quran flex h-8 items-center text-xl font-bold leading-none text-gold/30"
               >
-                {localeNames[c]}
-              </Link>
-            ))}
-            <span aria-hidden className="text-rule">
-              |
+                أثر
+              </span>
             </span>
-            <ThemeToggle labels={t.theme} />
-            <Link
-              href={`/${l}/tools`}
-              className="border border-rule px-3 py-1.5 text-ink transition hover:border-accent hover:text-accent"
+          </span>
+          <nav className="flex items-center gap-6">
+            {/* Sprachwahl — Segment-Control mit Sprachcodes */}
+            <div
+              role="group"
+              aria-label={t.nav.language}
+              className="flex items-center gap-1 rounded-full border border-rule bg-surface p-1"
             >
-              {t.tools.nav}
-            </Link>
+              {locales.map((c) => (
+                <Link
+                  key={c}
+                  href={`/${c}`}
+                  lang={c}
+                  title={localeNames[c]}
+                  aria-current={c === l ? "page" : undefined}
+                  className={`mono rounded-full px-3 py-1 text-xs uppercase tracking-wider transition ${
+                    c === l ? "bg-accent text-paper" : "text-muted hover:text-ink"
+                  }`}
+                >
+                  {c}
+                </Link>
+              ))}
+            </div>
+            <ThemeToggle labels={t.theme} />
           </nav>
         </header>
 
         <main id="main">
           {/* ---------- Hero ---------- */}
           <section className="grid gap-14 py-20 sm:py-24 md:grid-cols-[1.3fr_1fr] md:items-center">
-            <div>
-              <h1 className="display rise text-[clamp(60px,9vw,112px)] font-light">
-                {t.hero.name}
-              </h1>
-              <p
-                className="mono rise mt-4 text-muted"
-                style={{ animationDelay: "0.1s" }}
-              >
-                {t.hero.meaning}
-              </p>
-              <p
-                className="rise mt-9 max-w-prose text-lg leading-relaxed"
-                style={{ animationDelay: "0.2s" }}
-              >
-                {t.hero.tagline}
-              </p>
-              <div
-                className="rise mt-10 flex flex-wrap gap-3"
-                style={{ animationDelay: "0.3s" }}
-              >
-                <a
-                  href="#athar"
-                  className="bg-accent px-6 py-3 text-paper transition hover:opacity-90"
-                >
-                  {t.hero.cta}
-                </a>
-                <a
-                  href={`${GITHUB_ORG}/athar`}
-                  className="border border-rule px-6 py-3 transition hover:border-accent hover:text-accent"
-                >
-                  {t.hero.ctaSecondary}
-                </a>
-              </div>
-            </div>
+            <Hero
+              locale={l}
+              labels={t.hero}
+              ctaHref="#athar"
+              ctaSecondaryHref={`${GITHUB_ORG}/athar`}
+            />
 
             {/* Ayah — Offenbartes bekommt eigene Flaeche und eigene Schrift */}
             <figure
@@ -132,19 +111,27 @@ export default async function Home({
             </figure>
           </section>
 
-          {/* ---------- Berechnung: das konzeptionelle Herzstueck ---------- */}
+          {/* ---------- Erde & Mond ---------- */}
           <section className="border-t border-rule py-20">
-            <Label>{t.compute.label}</Label>
-            <div className="grid gap-12 md:grid-cols-[1fr_1.1fr] md:items-start">
-              <div>
-                <h2 className="display text-[clamp(32px,4vw,46px)]">
-                  {t.compute.heading}
-                </h2>
-                <p className="mt-6 max-w-prose text-muted">{t.compute.body}</p>
-              </div>
+            <Label>{t.earth.label}</Label>
+            <h2 className="display text-[clamp(32px,5vw,60px)] font-light">
+              {t.earth.heading}
+            </h2>
+            <p className="mt-6 max-w-prose text-muted">{t.earth.intro}</p>
+            <div className="mt-10">
+              <EarthMoonSection locale={l} labels={t.earth} />
+            </div>
+          </section>
 
-              {/* Ausgabe-Block: Maschinen-Stimme */}
-              <PrayerCard initial={prayer} labels={t.compute} locale={l} />
+          {/* ---------- Weltkarte & Gebetszeiten ---------- */}
+          <section className="border-t border-rule py-20">
+            <Label>{t.map.label}</Label>
+            <h2 className="display text-[clamp(32px,5vw,60px)] font-light">
+              {t.map.heading}
+            </h2>
+            <p className="mt-6 max-w-prose text-muted">{t.map.intro}</p>
+            <div className="mt-10">
+              <WorldMap locale={l} labels={t.map} />
             </div>
           </section>
 
@@ -197,34 +184,31 @@ export default async function Home({
           </section>
 
           {/* ---------- Islamischer Kalender: naechste Termine ---------- */}
-          <section className="border-t border-rule py-20">
+          <section className="border-t border-rule py-16">
             <Label>{t.dates.label}</Label>
-            <h2 className="display text-[clamp(32px,5vw,60px)] font-light">
-              {t.dates.heading}
-            </h2>
-            <p className="mt-6 max-w-prose text-muted">{t.dates.intro}</p>
+            <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
+              <h2 className="display text-2xl sm:text-3xl">{t.dates.heading}</h2>
+              <p className="max-w-md text-sm text-muted">{t.dates.intro}</p>
+            </div>
 
-            <ol className="mt-12 divide-y divide-rule border-y border-rule">
+            <ol className="mt-8 divide-y divide-rule border-y border-rule">
               {upcoming.map((ev) => (
-                <li
-                  key={ev.key}
-                  className="grid gap-x-6 gap-y-1 py-6 sm:grid-cols-[auto_1fr_auto] sm:items-baseline"
-                >
-                  <span className="mono text-gold tabular-nums">
-                    {ev.gregorian
-                      ? new Intl.DateTimeFormat(
-                          l === "de" ? "de-DE" : l === "ar" ? "ar-JO" : "en-GB",
-                          { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" },
-                        ).format(ev.gregorian)
-                      : "—"}
-                  </span>
-                  <div>
-                    <h3 className="display text-xl">{ev.name}</h3>
-                    <p className="mt-1 text-muted">{ev.note}</p>
+                <li key={ev.key} className="py-2">
+                  <div className="flex flex-wrap items-baseline gap-x-3">
+                    <span className="mono whitespace-nowrap text-xs text-gold tabular-nums">
+                      {ev.hijri.day} · {ev.hijri.month} · {ev.hijri.year} {t.dates.hijriYear}
+                    </span>
+                    <h3 className="display text-sm">{ev.name}</h3>
+                    <span className="mono ms-auto whitespace-nowrap text-xs text-muted">
+                      {ev.gregorian
+                        ? new Intl.DateTimeFormat(
+                            l === "de" ? "de-DE" : l === "ar" ? "ar-JO" : "en-GB",
+                            { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" },
+                          ).format(ev.gregorian)
+                        : "—"}
+                    </span>
                   </div>
-                  <span className="mono text-muted text-sm">
-                    {ev.hijri.day} · {ev.hijri.month} · {ev.hijri.year} {t.dates.hijriYear}
-                  </span>
+                  <p className="mt-0.5 text-xs leading-relaxed text-muted">{ev.note}</p>
                 </li>
               ))}
             </ol>

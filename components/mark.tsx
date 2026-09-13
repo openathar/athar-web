@@ -73,10 +73,10 @@ const MARK_RINGS: Ring[] = [
 
 const ROSETTE_RINGS: Ring[] = [
   { scale: 1, rotate: 0, opacity: 0.9, duration: 0 },
-  { scale: 0.78, rotate: 22.5, opacity: 0.6, duration: 90, reverse: true },
-  { scale: 0.56, rotate: 45, opacity: 0.45, duration: 66 },
-  { scale: 0.34, rotate: 67.5, opacity: 0.3, duration: 48, reverse: true },
-  { scale: 0.16, rotate: 90, opacity: 0.2, duration: 32 },
+  { scale: 0.78, rotate: 22.5, opacity: 0.6, duration: 60, reverse: true },
+  { scale: 0.56, rotate: 45, opacity: 0.45, duration: 44 },
+  { scale: 0.34, rotate: 67.5, opacity: 0.3, duration: 32, reverse: true },
+  { scale: 0.16, rotate: 90, opacity: 0.2, duration: 22 },
 ];
 
 export function Mark({
