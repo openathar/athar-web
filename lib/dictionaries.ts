@@ -7,8 +7,16 @@ type Dict = {
   status: { badge: string; text: string };
   what: { heading: string; items: { title: string; body: string }[] };
   promise: { heading: string; items: string[] };
-  campaign: { heading: string; body: string; cta: string };
+  compute: {
+    label: string;
+    heading: string;
+    note: string;
+    rows: { name: string; time: string; basis: string }[];
+  };
+  geometry: { label: string; heading: string; body: string };
+  campaign: { label: string; heading: string; body: string; cta: string; meta: string[] };
   roadmap: { heading: string; phases: { title: string; body: string; state: string }[] };
+  theme: { light: string; dark: string };
   footer: { madeAs: string; source: string; imprint: string };
 };
 
@@ -54,8 +62,28 @@ export const dictionaries: Record<Locale, Dict> = {
         "Fully open source, auditable by anyone.",
       ],
     },
+    compute: {
+      label: "how a prayer time is found",
+      heading: "Not stored. Derived.",
+      note: "example output · Amman · 13 Sep",
+      rows: [
+        { name: "Fajr", time: "04:47", basis: "sun 18° below the horizon" },
+        { name: "Dhuhr", time: "12:31", basis: "solar transit" },
+        { name: "Asr", time: "15:58", basis: "shadow length 1×" },
+        { name: "Maghrib", time: "19:44", basis: "sunset" },
+        { name: "Isha", time: "21:22", basis: "sun 17° below the horizon" },
+      ],
+    },
+    geometry: {
+      label: "pattern & rule",
+      heading: "The same craft",
+      body:
+        "A girih pattern is not drawn — it is derived. A few rules, repeated faithfully, produce something that never closes the same way twice. Software written well works the same: small, honest rules that survive repetition. Your prayer times are not a lookup table. They are geometry, recomputed on your own device.",
+    },
     campaign: {
+      label: "the trace you leave",
       heading: "Leave your Athar",
+      meta: ["commit  8f3a19c", "author  you", "date    whenever you choose"],
       body:
         "Every contribution stays. A line of code, a translation, a bug report — as long as someone uses this platform to pray, the reward continues. This is Sadaqah Jariyah written in software.",
       cta: "Contribute on GitHub",
@@ -69,6 +97,7 @@ export const dictionaries: Record<Locale, Dict> = {
         { title: "Mobile apps", body: "Android and iOS — offline-first, reliable Adhan notifications, widgets and Live Activities.", state: "Planned" },
       ],
     },
+    theme: { light: "Switch to light", dark: "Switch to dark" },
     footer: {
       madeAs: "Built as Sadaqah Jariyah.",
       source: "Source code",
@@ -116,8 +145,28 @@ export const dictionaries: Record<Locale, Dict> = {
         "Vollständig Open Source und für jeden überprüfbar.",
       ],
     },
+    compute: {
+      label: "wie eine Gebetszeit entsteht",
+      heading: "Nicht gespeichert. Berechnet.",
+      note: "Beispielausgabe · Amman · 13. Sep",
+      rows: [
+        { name: "Fadschr", time: "04:47", basis: "Sonne 18° unter dem Horizont" },
+        { name: "Dhuhr", time: "12:31", basis: "Sonnenhöchststand" },
+        { name: "Asr", time: "15:58", basis: "Schattenlänge 1×" },
+        { name: "Maghrib", time: "19:44", basis: "Sonnenuntergang" },
+        { name: "Ischa", time: "21:22", basis: "Sonne 17° unter dem Horizont" },
+      ],
+    },
+    geometry: {
+      label: "Muster & Regel",
+      heading: "Dasselbe Handwerk",
+      body:
+        "Ein Girih-Muster wird nicht gezeichnet — es wird hergeleitet. Wenige Regeln, sauber wiederholt, ergeben etwas, das sich nie zweimal gleich schließt. Gut geschriebene Software funktioniert genauso: kleine, ehrliche Regeln, die Wiederholung aushalten. Deine Gebetszeiten sind keine Tabelle. Sie sind Geometrie, neu berechnet auf deinem eigenen Gerät.",
+    },
     campaign: {
+      label: "die Spur, die du hinterlässt",
       heading: "Hinterlasse dein Athar",
+      meta: ["commit  8f3a19c", "autor   du", "datum   wann immer du willst"],
       body:
         "Jeder Beitrag bleibt. Eine Zeile Code, eine Übersetzung, ein Fehlerbericht — solange jemand mit dieser Plattform betet, läuft der Lohn weiter. Das ist Sadaqah Jariyah in Software geschrieben.",
       cta: "Auf GitHub mitmachen",
@@ -131,6 +180,7 @@ export const dictionaries: Record<Locale, Dict> = {
         { title: "Mobile Apps", body: "Android und iOS — offline-first, zuverlässige Adhan-Benachrichtigungen, Widgets und Live Activities.", state: "Geplant" },
       ],
     },
+    theme: { light: "Zu hell wechseln", dark: "Zu dunkel wechseln" },
     footer: {
       madeAs: "Gebaut als Sadaqah Jariyah.",
       source: "Quellcode",
@@ -178,8 +228,28 @@ export const dictionaries: Record<Locale, Dict> = {
         "مفتوحة المصدر بالكامل ويمكن لأي أحد مراجعتها.",
       ],
     },
+    compute: {
+      label: "كيف يُستخرج وقت الصلاة",
+      heading: "لا تُخزَّن. بل تُحسب.",
+      note: "مثال · عمّان · ١٣ أيلول",
+      rows: [
+        { name: "الفجر", time: "٠٤:٤٧", basis: "الشمس ١٨° تحت الأفق" },
+        { name: "الظهر", time: "١٢:٣١", basis: "زوال الشمس" },
+        { name: "العصر", time: "١٥:٥٨", basis: "ظل المثل" },
+        { name: "المغرب", time: "١٩:٤٤", basis: "غروب الشمس" },
+        { name: "العشاء", time: "٢١:٢٢", basis: "الشمس ١٧° تحت الأفق" },
+      ],
+    },
+    geometry: {
+      label: "النقش والقاعدة",
+      heading: "الصنعة ذاتها",
+      body:
+        "النقش الگيريهي لا يُرسم، بل يُستنبط. قواعد قليلة تُكرَّر بأمانة فتُنتج ما لا ينغلق مرتين على الصورة نفسها. والبرمجة الجيدة كذلك: قواعد صغيرة صادقة تصمد أمام التكرار. مواقيتك ليست جدولاً محفوظاً، بل هندسة تُحسب من جديد على جهازك أنت.",
+    },
     campaign: {
+      label: "الأثر الذي تتركه",
       heading: "اترك أثرك",
+      meta: ["commit  8f3a19c", "المساهم  أنت", "التاريخ  متى شئت"],
       body:
         "كل مساهمة تبقى. سطر برمجي، ترجمة، أو تقرير خلل — ما دام أحدهم يصلّي بهذه المنصة، يستمر الأجر. هذه صدقة جارية مكتوبة بالبرمجة.",
       cta: "ساهم على GitHub",
@@ -193,6 +263,7 @@ export const dictionaries: Record<Locale, Dict> = {
         { title: "تطبيقات الجوال", body: "أندرويد وiOS — تعمل دون اتصال، تنبيهات أذان موثوقة، ودجات وأنشطة مباشرة.", state: "مخطط" },
       ],
     },
+    theme: { light: "الوضع الفاتح", dark: "الوضع الداكن" },
     footer: {
       madeAs: "بُنيت كصدقة جارية.",
       source: "الشيفرة المصدرية",

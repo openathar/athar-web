@@ -91,3 +91,32 @@ export function Ornament({ className }: { className?: string }) {
     </svg>
   );
 }
+
+/**
+ * Grosse Rosette — dieselbe Regel, vier Mal angewandt. Dekoratives
+ * Gegenstueck zum Text ueber Muster und Regel.
+ */
+export function Rosette({ className }: { className?: string }) {
+  const rings = [
+    { scale: 1, rotate: 0, opacity: 0.9 },
+    { scale: 0.78, rotate: 22.5, opacity: 0.6 },
+    { scale: 0.56, rotate: 45, opacity: 0.42 },
+    { scale: 0.34, rotate: 67.5, opacity: 0.28 },
+    { scale: 0.16, rotate: 90, opacity: 0.18 },
+  ];
+  return (
+    <svg
+      className={className}
+      aria-hidden
+      viewBox="-50 -50 100 100"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1}
+      strokeLinejoin="round"
+    >
+      {rings.map((r) => (
+        <Khatam key={r.scale} scale={r.scale} rotate={r.rotate} opacity={r.opacity} />
+      ))}
+    </svg>
+  );
+}

@@ -1,20 +1,42 @@
 @import "tailwindcss";
 
 @theme {
-  /* Papier/Tinte — gedämpft, warm, editorial */
-  --color-paper: #f5f2ea;
-  --color-paper-deep: #ece7da;
-  --color-ink: #272c22;
-  --color-muted: #61665a;
-  --color-rule: #d6d1c2;
-  --color-accent: #1c6349;
+  --color-paper: var(--c-paper);
+  --color-surface: var(--c-surface);
+  --color-ink: var(--c-ink);
+  --color-muted: var(--c-muted);
+  --color-rule: var(--c-rule);
+  --color-accent: var(--c-accent);
+  --color-gold: var(--c-gold);
 
   --font-display: var(--font-serif), Georgia, serif;
   --font-body: var(--font-sans), system-ui, sans-serif;
+  --font-mono: var(--font-code), ui-monospace, monospace;
+  --font-quran: var(--font-arabic), serif;
 }
 
-html {
-  scroll-behavior: smooth;
+/* Mushaf — Manuskript, Tageslicht */
+:root {
+  --c-paper: #faf7f0;
+  --c-surface: #f1ece0;
+  --c-ink: #1b1e19;
+  --c-muted: #5f6459;
+  --c-rule: #ded8c8;
+  --c-accent: #1c6349;
+  --c-gold: #8d6a25;
+  color-scheme: light;
+}
+
+/* Layl — Nacht, Sternhimmel: die Astronomie hinter den Gebetszeiten */
+[data-theme="dark"] {
+  --c-paper: #0b0f17;
+  --c-surface: #121a26;
+  --c-ink: #e9e3d4;
+  --c-muted: #939bab;
+  --c-rule: #222b3a;
+  --c-accent: #4aa583;
+  --c-gold: #d4a95f;
+  color-scheme: dark;
 }
 
 body {
@@ -25,32 +47,42 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Arabisch: eigene Schrift + mehr Durchschuss, sonst kollidieren Diakritika */
 html[lang="ar"] body {
-  font-family: var(--font-arabic), serif;
-  line-height: 2;
+  font-family: var(--font-quran);
+  line-height: 2.05;
 }
 
-html[lang="ar"] .display {
-  font-family: var(--font-arabic), serif;
+html[lang="ar"] .display,
+html[lang="ar"] .mono {
+  font-family: var(--font-quran);
   letter-spacing: 0;
 }
 
 .display {
   font-family: var(--font-display);
-  font-weight: 500;
-  letter-spacing: -0.03em;
-  line-height: 1.02;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+}
+
+.quran {
+  font-family: var(--font-quran);
 }
 
 ::selection {
-  background: var(--color-ink);
+  background: var(--color-accent);
   color: var(--color-paper);
 }
 
 :is(a, button, summary):focus-visible {
-  outline: 2px solid var(--color-ink);
-  outline-offset: 6px;
+  outline: 2px solid var(--color-accent);
+  outline-offset: 5px;
   border-radius: 1px;
 }
 
@@ -60,19 +92,15 @@ html[lang="ar"] .display {
   inset-inline-start: 12px;
   z-index: 100;
   padding: 10px 20px;
-  background: var(--color-paper);
+  background: var(--color-surface);
   border: 1px solid var(--color-rule);
   transform: translateY(-200%);
 }
-
 .skip-link:focus {
   transform: translateY(0);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
   *,
   *::before,
   *::after {
