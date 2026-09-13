@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { locales, localeNames, isRtl, type Locale } from "~/lib/i18n";
 import { dictionaries } from "~/lib/dictionaries";
 import { Mark, Ornament, Rosette } from "~/components/mark";
-import { getPrayerTimes, prayerKeys, toArabicDigits } from "~/lib/prayer-times";
+import { getPrayerTimes } from "~/lib/prayer-times";
+import { PrayerCard } from "~/components/prayer-card";
 import { getVerse } from "~/lib/quran";
 import reflections from "~/data/reflections.json";
 import { ThemeToggle } from "~/components/theme";
@@ -31,21 +32,6 @@ export default async function Home({
     rendered: l === "ar" ? sign.fallback.arabic : (sign.fallback[l] ?? ""),
   });
 
-  // Im arabischen Satz wirken lateinische Ziffern wie ein Fremdkoerper.
-  const num = (v: string | number) => (rtl ? toArabicDigits(v) : String(v));
-
-  const basisFor = (key: (typeof prayerKeys)[number]) => {
-    const template = t.compute.basis[key];
-    if (key === "asr") return template.replace("{factor}", num(prayer.asrFactor));
-    if (key === "maghrib") {
-      return prayer.maghribOffset
-        ? template +
-            t.compute.maghribOffset.replace("{offset}", num(prayer.maghribOffset))
-        : template;
-    }
-    const angle = key === "fajr" ? prayer.fajrAngle : prayer.ishaAngle;
-    return template.replace("{angle}", num(angle));
-  };
 
   return (
     <>
@@ -150,49 +136,7 @@ export default async function Home({
               </div>
 
               {/* Ausgabe-Block: Maschinen-Stimme */}
-              <div className="border border-rule bg-surface">
-                <div className="mono flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-rule px-5 py-3">
-                  <span className="text-ink">
-                    {prayer.city} · {prayer.gregorian}
-                  </span>
-                  <span className="flex items-center gap-2 text-muted">
-                    {prayer.hijri && <span className="quran">{prayer.hijri}</span>}
-                    <span
-                      aria-hidden
-                      className={prayer.live ? "text-accent" : "text-muted"}
-                    >
-                      ●
-                    </span>
-                    <span>{prayer.live ? t.compute.live : t.compute.offline}</span>
-                  </span>
-                </div>
-
-                <dl className="mono divide-y divide-rule">
-                  {prayerKeys.map((key) => (
-                    <div
-                      key={key}
-                      className="grid grid-cols-[1fr_auto] items-baseline gap-x-6 px-5 py-3"
-                    >
-                      <dt className="text-ink">{t.compute.names[key]}</dt>
-                      <dd className="text-gold tabular-nums">
-                        {num(prayer.timings[key])}
-                      </dd>
-                      <dd className="col-span-2 text-muted">{basisFor(key)}</dd>
-                    </div>
-                  ))}
-                </dl>
-
-                <p className="mono border-t border-rule px-5 py-3 text-muted">
-                  {t.compute.source}:{" "}
-                  <a
-                    href="https://aladhan.com/prayer-times-api"
-                    className="underline underline-offset-4 transition hover:text-ink"
-                  >
-                    Aladhan API
-                  </a>{" "}
-                  · {prayer.method}
-                </p>
-              </div>
+              <PrayerCard initial={prayer} labels={t.compute} locale={l} />
             </div>
           </section>
 

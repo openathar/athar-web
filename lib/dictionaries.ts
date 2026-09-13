@@ -18,6 +18,7 @@ type Dict = {
     live: string;
     offline: string;
     source: string;
+    localised: string;
   };
   legacy: { label: string; heading: string; body: string[] };
   signs: {
@@ -100,6 +101,7 @@ export const dictionaries: Record<Locale, Dict> = {
       live: "live",
       offline: "last known values",
       source: "source",
+      localised: "from your time zone",
     },
     signs: {
       label: "verse & observation",
@@ -208,6 +210,7 @@ export const dictionaries: Record<Locale, Dict> = {
       live: "live",
       offline: "zuletzt bekannte Werte",
       source: "Quelle",
+      localised: "aus deiner Zeitzone",
     },
     signs: {
       label: "Vers & Beobachtung",
@@ -316,6 +319,7 @@ export const dictionaries: Record<Locale, Dict> = {
       live: "مباشر",
       offline: "آخر قيم معروفة",
       source: "المصدر",
+      localised: "حسب منطقتك الزمنية",
     },
     signs: {
       label: "آية ومشاهدة",

@@ -12,19 +12,21 @@ export const themeScript = `
 (function () {
   try {
     var stored = localStorage.getItem("athar-theme");
-    var theme = stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    // Dark ist die Vorgabe. Hell nur, wenn gespeichert oder das System es
+    // ausdruecklich meldet.
+    var theme = stored || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
     document.documentElement.setAttribute("data-theme", theme);
   } catch (e) {}
 })();
 `;
 
 export function ThemeToggle({ labels }: { labels: { light: string; dark: string } }) {
-  const [theme, setTheme] = useState<Theme>("light");
+  const [theme, setTheme] = useState<Theme>("dark");
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const current =
-      (document.documentElement.getAttribute("data-theme") as Theme) ?? "light";
+      (document.documentElement.getAttribute("data-theme") as Theme) ?? "dark";
     setTheme(current);
     setReady(true);
   }, []);

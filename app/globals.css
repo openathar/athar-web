@@ -12,23 +12,17 @@
   --font-display: var(--font-serif), Georgia, serif;
   --font-body: var(--font-sans), system-ui, sans-serif;
   --font-mono: var(--font-code), ui-monospace, monospace;
-  --font-quran: var(--font-arabic), serif;
+  --font-quran: var(--font-quran-face), serif;
+  --font-ar-display: var(--font-arabic-display), sans-serif;
+  --font-ar-body: var(--font-arabic-sans), sans-serif;
 }
 
-/* Mushaf — Manuskript, Tageslicht */
+/*
+ * Layl — Nacht, Sternhimmel: die Astronomie hinter den Gebetszeiten.
+ * Bewusst die Basis: Ohne JavaScript und vor dem ersten Skript gilt Dark,
+ * Hell wird nur gesetzt, wenn System oder Nutzer es ausdruecklich wollen.
+ */
 :root {
-  --c-paper: #faf7f0;
-  --c-surface: #f1ece0;
-  --c-ink: #1b1e19;
-  --c-muted: #5f6459;
-  --c-rule: #ded8c8;
-  --c-accent: #1c6349;
-  --c-gold: #8d6a25;
-  color-scheme: light;
-}
-
-/* Layl — Nacht, Sternhimmel: die Astronomie hinter den Gebetszeiten */
-[data-theme="dark"] {
   --c-paper: #0b0f17;
   --c-surface: #121a26;
   --c-ink: #e9e3d4;
@@ -37,6 +31,18 @@
   --c-accent: #4aa583;
   --c-gold: #d4a95f;
   color-scheme: dark;
+}
+
+/* Mushaf — Manuskript, Tageslicht */
+[data-theme="light"] {
+  --c-paper: #faf7f0;
+  --c-surface: #f1ece0;
+  --c-ink: #1b1e19;
+  --c-muted: #5f6459;
+  --c-rule: #ded8c8;
+  --c-accent: #1c6349;
+  --c-gold: #8d6a25;
+  color-scheme: light;
 }
 
 body {
@@ -48,13 +54,22 @@ body {
 }
 
 html[lang="ar"] body {
-  font-family: var(--font-quran);
-  line-height: 2.05;
+  font-family: var(--font-ar-body);
+  line-height: 1.95;
 }
 
-html[lang="ar"] .display,
+/* Kufi fuer Ueberschriften — nimmt die Geometrie des Signets auf. */
+html[lang="ar"] .display {
+  font-family: var(--font-ar-display);
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.45;
+}
+
+/* JetBrains Mono hat keine arabischen Glyphen; ohne Zuweisung wuerde der
+   Browser eine beliebige Systemschrift einsetzen. */
 html[lang="ar"] .mono {
-  font-family: var(--font-quran);
+  font-family: var(--font-ar-body);
   letter-spacing: 0;
 }
 
@@ -73,6 +88,9 @@ html[lang="ar"] .mono {
 
 .quran {
   font-family: var(--font-quran);
+  /* Vollvokalisierter Satz braucht mehr Durchschuss, sonst kollidieren
+     Diakritika mit der Zeile darueber. */
+  line-height: 2.2;
 }
 
 ::selection {

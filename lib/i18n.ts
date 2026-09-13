@@ -1,4 +1,5 @@
-export const locales = ["de", "en", "ar"] as const;
+// Reihenfolge bestimmt die Anzeige in der Sprachwahl — Englisch zuerst.
+export const locales = ["en", "de", "ar"] as const;
 export type Locale = (typeof locales)[number];
 export const defaultLocale: Locale = "en";
 

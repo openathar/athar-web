@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
 import { locales, isRtl, type Locale } from "~/lib/i18n";
 import { dictionaries } from "~/lib/dictionaries";
-import { serif, sans, arabic, code } from "~/lib/fonts";
+import { serif, sans, code, quran, arabicDisplay, arabicSans } from "~/lib/fonts";
 import { themeScript } from "~/components/theme";
 
 export function generateStaticParams() {
@@ -51,7 +51,7 @@ export default async function LocaleLayout({
     <html
       lang={l}
       dir={isRtl(l) ? "rtl" : "ltr"}
-      className={`${serif.variable} ${sans.variable} ${arabic.variable} ${code.variable}`}
+      className={`${serif.variable} ${sans.variable} ${code.variable} ${quran.variable} ${arabicDisplay.variable} ${arabicSans.variable}`}
       suppressHydrationWarning
     >
       <head>
