@@ -26,10 +26,12 @@ Next.js frontend of the Athar platform (openathar).
 
 ## Current honest state
 
-Prayer times are fetched from the external Aladhan API (placeholder, not
-final). Hijri conversion is already computed locally in JS
-(`lib/hijri.ts`). Both migrate to `athan-core-java` once that repo has code
-— see the superproject's `docs/architecture.md` for the concrete sequence.
+Prayer times are computed locally in `lib/athan-core.ts` — a TypeScript
+port of `athan-core-java` (the single source of truth), kept in sync by
+reference tests against the Java values (`npm test`, Node's built-in test
+runner, no extra dependency). Hijri conversion is computed locally in JS
+(`lib/hijri.ts`). Both mirror the Java core; no external prayer-time API is
+called anywhere.
 
 ## Languages
 

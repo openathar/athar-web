@@ -147,3 +147,13 @@ export function nearestPlace(lat: number, lon: number, maxKm = 400): Place | nul
   }
   return best && bestDist <= maxKm ? best : null;
 }
+
+const placeZones: Record<string, string> = {};
+for (const [zone, p] of Object.entries(timezonePlaces)) placeZones[`${p.lat},${p.lon}`] = zone;
+
+/** IANA-Zeitzone zur nächstgelegenen bekannten Stadt — für die lokale
+ *  Gebetszeiten-Berechnung nach einem Klick auf die Erde. */
+export function timezoneForCoords(lat: number, lon: number): string | undefined {
+  const near = nearestPlace(lat, lon);
+  return near ? placeZones[`${near.lat},${near.lon}`] : undefined;
+}

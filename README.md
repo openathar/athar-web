@@ -28,7 +28,8 @@ prayer times at that spot.
 
 **World map & prayer times**
 Pick a city or use your own location. The dotted map shows day/night live;
-prayer times come from the Aladhan API with the next prayer highlighted.
+prayer times are computed locally (TypeScript port of `athan-core`) with
+the next prayer highlighted.
 
 </td>
 <td width="50%"><img src="docs/screenshots/world-map.png" width="100%" /></td>
@@ -67,11 +68,10 @@ mirrors correctly with no special-casing.
 
 ## Honest state of the calculation logic
 
-Prayer times currently come from the external **Aladhan API** — a
-deliberate placeholder, not the end state. Hijri calendar conversion
-(`lib/hijri.ts`) is already computed locally in JavaScript. Both are meant
-to move into `athan-core-java` (a separate, not-yet-built repo) once it
-exists, so web, the public API, and the mobile app all share one
-calculation engine instead of three separate implementations. See
+Prayer times are computed locally in `lib/athan-core.ts` — a TypeScript
+port of `athan-core-java` (the single source of truth), kept in sync by
+reference tests against the Java values (`npm test`). Hijri calendar
+conversion (`lib/hijri.ts`) is also computed locally in JavaScript. Web,
+the public API, and the mobile app all share one calculation engine. See
 [`docs/architecture.md`](https://github.com/openathar/athar/blob/main/docs/architecture.md)
 in the superproject for the full picture.

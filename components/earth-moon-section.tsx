@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { moonPhaseAt } from "~/lib/moon-phase";
-import { placeFromTimezone, nearestPlace } from "~/lib/timezones";
-import { toArabicDigits } from "~/lib/prayer-times";
+import { placeFromTimezone, nearestPlace, timezoneForCoords } from "~/lib/timezones";
+import { getPrayerTimesForCoords, toArabicDigits } from "~/lib/prayer-times";
 import type { Locale } from "~/lib/i18n";
 
 const Scene = dynamic(
@@ -30,24 +30,6 @@ type Labels = {
 
 type Times = Record<"fajr" | "dhuhr" | "asr" | "maghrib" | "isha", string>;
 
-async function fetchTimes(lat: number, lon: number): Promise<{ times: Times; method: string } | null> {
-  try {
-    const now = new Date();
-    const date = `${String(now.getDate()).padStart(2, "0")}-${String(now.getMonth() + 1).padStart(2, "0")}-${now.getFullYear()}`;
-    const res = await fetch(`https://api.aladhan.com/v1/timings/${date}?latitude=${lat}&longitude=${lon}`);
-    if (!res.ok) return null;
-    const d = await res.json();
-    const t = d.data.timings;
-    const clean = (v: string) => v.split(" ")[0];
-    return {
-      times: { fajr: clean(t.Fajr), dhuhr: clean(t.Dhuhr), asr: clean(t.Asr), maghrib: clean(t.Maghrib), isha: clean(t.Isha) },
-      method: d.data.meta.method?.name ?? "",
-    };
-  } catch {
-    return null;
-  }
-}
-
 /**
  * Startseiten-Abschnitt: Erde + Mond, immer beide vollstaendig sichtbar,
  * nur sehr sanfte Eigenbewegung (siehe earth-moon-scene.tsx).
@@ -72,25 +54,28 @@ export function EarthMoonSection({ locale, labels }: { locale: Locale; labels: L
   // derselbe Mechanismus wie bei der Gebetszeiten-Karte weiter unten.
   useEffect(() => {
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const p = placeFromTimezone(tz) ?? { city: "Amman", lat: 31.9539, lon: 35.9106 };
+    const known = placeFromTimezone(tz);
+    const p = known ?? { city: "Amman", lat: 31.9539, lon: 35.9106 };
+    const zone = known ? tz : "Asia/Amman";
     setPlace({ label: p.city, lat: p.lat, lon: p.lon });
-    fetchTimes(p.lat, p.lon).then((r) => {
-      if (r) { setTimes(r.times); setMethod(r.method); }
-      setLoading(false);
-    });
+    const data = getPrayerTimesForCoords(p.lat, p.lon, p.city, zone);
+    setTimes(data.timings);
+    setMethod(data.method);
+    setLoading(false);
   }, []);
 
-  async function onPick(p: { lat: number; lon: number } | null) {
+  function onPick(p: { lat: number; lon: number } | null) {
     if (!p) return;
     setIsCurrent(false);
     // Naechste bekannte Stadt anzeigen statt nackter Koordinaten — erst wenn
     // nichts in der Naehe liegt (Ozean), bleiben die Zahlen stehen.
     const near = nearestPlace(p.lat, p.lon);
     const label = near ? near.city : `${num(p.lat)}°, ${num(p.lon)}°`;
+    const zone = near ? timezoneForCoords(p.lat, p.lon) : undefined;
     setPlace({ label, lat: p.lat, lon: p.lon });
-    setLoading(true);
-    const r = await fetchTimes(p.lat, p.lon);
-    if (r) { setTimes(r.times); setMethod(r.method); }
+    const data = getPrayerTimesForCoords(p.lat, p.lon, label, zone);
+    setTimes(data.timings);
+    setMethod(data.method);
     setLoading(false);
   }
 
@@ -126,7 +111,7 @@ export function EarthMoonSection({ locale, labels }: { locale: Locale; labels: L
                 ))}
               </dl>
               <p className="mono mt-5 text-xs text-muted">
-                {labels.source}: Aladhan API{method ? ` · ${method}` : ""}
+                {labels.source}: athan-core{method ? ` · ${method}` : ""}
               </p>
             </>
           )}

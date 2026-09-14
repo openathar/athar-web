@@ -1,13 +1,14 @@
-import type { Locale } from "./i18n";
+import { Methods, PrayerTimes, formatLocalTime } from "./athan-core";
 
 /**
  * Gebetszeiten für die interaktiven Abschnitte der Startseite (Weltkarte,
  * Erde & Mond).
  *
- * Quelle ist vorerst die offene Aladhan-API. Das ist bewusst so: lieber echte
- * Werte aus einer fremden, offenen API zeigen als erfundene Zahlen. Sobald
- * `athan-core-java` steht, wird genau dieser Aufruf gegen die eigene Engine
- * getauscht.
+ * Berechnet lokal mit dem TypeScript-Port von `athan-core-java`
+ * (`lib/athan-core.ts`) — kein externer API-Aufruf mehr. Die Zeiten werden
+ * in der Zeitzone des Ortes angezeigt; dafür wird der UTC-Offset der
+ * IANA-Zeitzone (Browser-Zeitzone oder Stadtzuordnung) zum aktuellen
+ * Zeitpunkt bestimmt.
  */
 
 export const prayerKeys = ["fajr", "dhuhr", "asr", "maghrib", "isha"] as const;
@@ -17,7 +18,7 @@ export type PrayerData = {
   city: string;
   timings: Record<PrayerKey, string>;
   method: string;
-  /** false = API nicht erreichbar, es werden Platzhalter gezeigt */
+  /** true = lokal berechnet (kein Netzwerk nötig) */
   live: boolean;
 };
 
@@ -28,54 +29,59 @@ export function toArabicDigits(value: string | number) {
   return String(value).replace(/\d/g, (d) => ARABIC_DIGITS[Number(d)]);
 }
 
-function pad(n: number) {
-  return String(n).padStart(2, "0");
+/** UTC-Offset einer IANA-Zeitzone in Stunden zum gegebenen Zeitpunkt. */
+export function utcOffsetHoursForZone(timeZone: string, date: Date): number {
+  // formatToParts liefert nur ganze Sekunden — ohne das Nullen der
+  // Millisekunden wäre der Offset um den ms-Anteil verfälscht und die
+  // Minuten-Rundung der Gebetszeiten könnte um 1 Minute abweichen.
+  const whole = new Date(Math.floor(date.getTime() / 1000) * 1000);
+  const dtf = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hourCycle: "h23",
+  });
+  const parts = dtf.formatToParts(whole);
+  const get = (type: string) => parts.find((p) => p.type === type)?.value ?? "";
+  const asUtc = Date.UTC(
+    +get("year"), +get("month") - 1, +get("day"),
+    +get("hour"), +get("minute"), +get("second"),
+  );
+  return (asUtc - whole.getTime()) / 3_600_000;
 }
 
-/** Aladhan hängt an Zeiten teils eine Zonenangabe an ("04:56 (EEST)"). */
-function cleanTime(v: string) {
-  return v.split(" ")[0]?.trim() ?? v;
-}
-
-/** Gebetszeiten für frei gewählte Koordinaten — genutzt von der Weltkarte. */
-export async function getPrayerTimesForCoords(
+/**
+ * Gebetszeiten für frei gewählte Koordinaten — genutzt von der Weltkarte
+ * und dem Erde-&-Mond-Abschnitt. `timeZone` ist eine IANA-Zeitzone (z. B.
+ * die Browser-Zeitzone oder die Zone der gewählten Stadt); ohne Angabe
+ * gilt die Browser-Zeitzone.
+ */
+export function getPrayerTimesForCoords(
   lat: number,
   lon: number,
   cityName: string,
-  locale: Locale,
-): Promise<PrayerData> {
+  timeZone?: string,
+): PrayerData {
   const now = new Date();
-  const dateParam = `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()}`;
-  const url = `https://api.aladhan.com/v1/timings/${dateParam}?latitude=${lat}&longitude=${lon}`;
-
-  try {
-    // Einmal pro Stunde neu holen — die Zeiten ändern sich täglich, nicht laufend.
-    const res = await fetch(url, { next: { revalidate: 3600 } });
-    if (!res.ok) throw new Error(`aladhan responded ${res.status}`);
-    const json = await res.json();
-    const d = json?.data;
-    if (!d?.timings) throw new Error("unexpected payload");
-
-    return {
-      city: cityName,
-      timings: {
-        fajr: cleanTime(d.timings.Fajr),
-        dhuhr: cleanTime(d.timings.Dhuhr),
-        asr: cleanTime(d.timings.Asr),
-        maghrib: cleanTime(d.timings.Maghrib),
-        isha: cleanTime(d.timings.Isha),
-      },
-      method: d.meta?.method?.name ?? "",
-      live: true,
-    };
-  } catch {
-    // Kein Grund, die Seite scheitern zu lassen — Build und Laufzeit müssen
-    // auch ohne erreichbare Fremd-API durchgehen.
-    return {
-      city: cityName,
-      timings: { fajr: "—:—", dhuhr: "—:—", asr: "—:—", maghrib: "—:—", isha: "—:—" },
-      method: "",
-      live: false,
-    };
-  }
+  const zone = timeZone ?? Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const offset = utcOffsetHoursForZone(zone, now);
+  const result = new PrayerTimes(Methods.MWL).getTimes(
+    now.getFullYear(), now.getMonth() + 1, now.getDate(), lat, lon,
+  );
+  return {
+    city: cityName,
+    timings: {
+      fajr: formatLocalTime(result.fajr, offset),
+      dhuhr: formatLocalTime(result.dhuhr, offset),
+      asr: formatLocalTime(result.asr, offset),
+      maghrib: formatLocalTime(result.maghrib, offset),
+      isha: formatLocalTime(result.isha, offset),
+    },
+    method: "MWL",
+    live: true,
+  };
 }

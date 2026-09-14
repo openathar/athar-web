@@ -10,17 +10,17 @@ type CityKey =
   | "mecca" | "medina" | "amman" | "cairo" | "istanbul"
   | "berlin" | "jakarta" | "karachi" | "lagos" | "newyork";
 
-const CITIES: Record<CityKey, { lat: number; lon: number; name: Record<"de" | "en" | "ar", string> }> = {
-  mecca: { lat: 21.4225, lon: 39.8262, name: { de: "Mekka", en: "Mecca", ar: "مكة" } },
-  medina: { lat: 24.5247, lon: 39.5692, name: { de: "Medina", en: "Medina", ar: "المدينة" } },
-  amman: { lat: 31.9539, lon: 35.9106, name: { de: "Amman", en: "Amman", ar: "عمّان" } },
-  cairo: { lat: 30.0444, lon: 31.2357, name: { de: "Kairo", en: "Cairo", ar: "القاهرة" } },
-  istanbul: { lat: 41.0082, lon: 28.9784, name: { de: "Istanbul", en: "Istanbul", ar: "إسطنبول" } },
-  berlin: { lat: 52.52, lon: 13.405, name: { de: "Berlin", en: "Berlin", ar: "برلين" } },
-  jakarta: { lat: -6.2088, lon: 106.8456, name: { de: "Jakarta", en: "Jakarta", ar: "جاكرتا" } },
-  karachi: { lat: 24.8607, lon: 67.0011, name: { de: "Karachi", en: "Karachi", ar: "كراتشي" } },
-  lagos: { lat: 6.5244, lon: 3.3792, name: { de: "Lagos", en: "Lagos", ar: "لاغوس" } },
-  newyork: { lat: 40.7128, lon: -74.006, name: { de: "New York", en: "New York", ar: "نيويورك" } },
+const CITIES: Record<CityKey, { lat: number; lon: number; zone: string; name: Record<"de" | "en" | "ar", string> }> = {
+  mecca: { lat: 21.4225, lon: 39.8262, zone: "Asia/Riyadh", name: { de: "Mekka", en: "Mecca", ar: "مكة" } },
+  medina: { lat: 24.5247, lon: 39.5692, zone: "Asia/Riyadh", name: { de: "Medina", en: "Medina", ar: "المدينة" } },
+  amman: { lat: 31.9539, lon: 35.9106, zone: "Asia/Amman", name: { de: "Amman", en: "Amman", ar: "عمّان" } },
+  cairo: { lat: 30.0444, lon: 31.2357, zone: "Africa/Cairo", name: { de: "Kairo", en: "Cairo", ar: "القاهرة" } },
+  istanbul: { lat: 41.0082, lon: 28.9784, zone: "Europe/Istanbul", name: { de: "Istanbul", en: "Istanbul", ar: "إسطنبول" } },
+  berlin: { lat: 52.52, lon: 13.405, zone: "Europe/Berlin", name: { de: "Berlin", en: "Berlin", ar: "برلين" } },
+  jakarta: { lat: -6.2088, lon: 106.8456, zone: "Asia/Jakarta", name: { de: "Jakarta", en: "Jakarta", ar: "جاكرتا" } },
+  karachi: { lat: 24.8607, lon: 67.0011, zone: "Asia/Karachi", name: { de: "Karachi", en: "Karachi", ar: "كراتشي" } },
+  lagos: { lat: 6.5244, lon: 3.3792, zone: "Africa/Lagos", name: { de: "Lagos", en: "Lagos", ar: "لاغوس" } },
+  newyork: { lat: 40.7128, lon: -74.006, zone: "America/New_York", name: { de: "New York", en: "New York", ar: "نيويورك" } },
 };
 
 /** Grobe Zuordnung IANA-Zeitzone → naheliegende Stadt aus der Liste, damit
@@ -85,19 +85,14 @@ export function WorldMap({ locale, labels }: { locale: Locale; labels: MapLabels
   const activeName =
     selected === "mylocation" ? labels.myLocation : CITIES[selected].name[locale];
 
-  // Gebetszeiten für den aktiven Ort holen.
+  // Gebetszeiten für den aktiven Ort lokal berechnen.
   useEffect(() => {
     if (!activeCoords) return;
-    let cancelled = false;
-    getPrayerTimesForCoords(activeCoords.lat, activeCoords.lon, activeName, locale).then((data) => {
-      if (!cancelled) setTimes(data);
-    });
-    return () => {
-      cancelled = true;
-    };
+    const zone = selected === "mylocation" ? undefined : CITIES[selected].zone;
+    setTimes(getPrayerTimesForCoords(activeCoords.lat, activeCoords.lon, activeName, zone));
     // activeName fliesst bewusst mit ein, damit die Anzeige beim Wechsel
     // sofort den neuen Stadtnamen zeigt.
-  }, [activeCoords?.lat, activeCoords?.lon, activeName, locale]);
+  }, [activeCoords?.lat, activeCoords?.lon, activeName, selected]);
 
   const useMyLocation = useCallback(() => {
     if (!("geolocation" in navigator)) {
