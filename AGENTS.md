@@ -35,3 +35,10 @@ final). Hijri conversion is already computed locally in JS
 
 DE / EN / AR — copy lives in `lib/dictionaries.ts`, locale routing via
 `app/[locale]`.
+
+## APM (Agent Package Manager)
+
+Projekt-lokale Skills/Agents/Commands werden über `apm.yaml` verwaltet
+(Registry-Quelle: `~/Development/harness/registry/`).
+- `apm install --local` — installiert die in `apm.yaml` gelisteten Packages
+- `apm status --local` — prüft Installations-Stand gegen die Registry

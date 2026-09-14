@@ -1,0 +1,20 @@
+{
+  "packages": {
+    "nextjs-tailwind-conventions": {
+      "version": "1.0.0",
+      "sourceCommit": "9cbe1a6",
+      "installedAt": "2026-09-14T19:07:49.774Z",
+      "files": {
+        "SKILL.md": "07190b00cfdde76d73d2c1e5780d4608c3834a748ba998fa707debc050feafe3"
+      }
+    },
+    "frontend-ui-engineering": {
+      "version": "1.0.0",
+      "sourceCommit": "9cbe1a6",
+      "installedAt": "2026-09-14T19:07:49.811Z",
+      "files": {
+        "SKILL.md": "2b74ac4862be3902ec918dceac9366a6fe83b9e003601c0deaf6be09c1766aca"
+      }
+    }
+  }
+}
