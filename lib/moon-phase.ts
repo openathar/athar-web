@@ -56,3 +56,18 @@ export function moonPhaseAt(date: Date): MoonPhase {
     key: phaseKeyFromFraction(fraction),
   };
 }
+
+export type MoonEvents = {
+  /** Tage bis zum nächsten Neumond, 0 < x <= 29.5. */
+  nextNewMoon: number;
+  /** Tage bis zum nächsten Vollmond, 0 < x <= 29.5. */
+  nextFullMoon: number;
+};
+
+export function nextMoonEvents(date: Date): MoonEvents {
+  const { ageDays } = moonPhaseAt(date);
+  const half = SYNODIC_MONTH / 2;
+  const nextNewMoon = SYNODIC_MONTH - ageDays;
+  const nextFullMoon = ageDays < half ? half - ageDays : SYNODIC_MONTH - ageDays + half;
+  return { nextNewMoon, nextFullMoon };
+}

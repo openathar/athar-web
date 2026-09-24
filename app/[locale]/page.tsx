@@ -9,6 +9,8 @@ import { upcomingIslamicDates } from "~/lib/islamic-dates";
 import { gregorianToHijri } from "~/lib/hijri";
 import { DailySign } from "~/components/daily-sign";
 import { TodayHijri } from "~/components/today-hijri";
+import { TodaySky } from "~/components/today-sky";
+import { moonPhaseAt, nextMoonEvents } from "~/lib/moon-phase";
 import { EarthMoonSection } from "~/components/earth-moon-section";
 import { Hero } from "~/components/hero";
 import { WorldMap } from "~/components/world-map";
@@ -36,6 +38,11 @@ export default async function Home({
   // Hijri-Datum zur Build-Zeit — der Client korrigiert es nach dem Mount auf
   // den heutigen Tag (gleiches ISR-Muster wie DailySign).
   const initialHijri = gregorianToHijri(new Date(), l);
+  // Himmel zur Build-Zeit — der Client korrigiert nach dem Mount (TodaySky).
+  const initialSky = {
+    phase: moonPhaseAt(new Date()),
+    events: nextMoonEvents(new Date()),
+  };
   // Alle Verse einmal holen (Data-Cache, revalidate 86400) — die Auswahl pro
   // Tag übernimmt der Client, damit alle Locales denselben Vers zeigen.
   const verses = await Promise.all(
@@ -197,6 +204,17 @@ export default async function Home({
                 </li>
               ))}
             </ol>
+          </section>
+
+          {/* ---------- Himmel heute: Mondphase & nächste Ereignisse ---------- */}
+          <section className="border-t border-rule py-16">
+            <Label>{t.sky.label}</Label>
+            <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
+              <h2 className="display text-2xl sm:text-3xl">{t.sky.heading}</h2>
+              <p className="max-w-md text-sm text-muted">{t.sky.intro}</p>
+            </div>
+
+            <TodaySky labels={{ ...t.sky, phaseNames: t.earth.phaseNames }} initial={initialSky} />
           </section>
 
           {/* ---------- Warum ich das weiss: GATE24 ---------- */}

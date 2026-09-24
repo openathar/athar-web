@@ -23,6 +23,16 @@ type Dict = {
   promise: { heading: string; items: string[] };
   legacy: { label: string; heading: string; body: string[] };
   dates: { label: string; heading: string; intro: string; hijriYear: string; today: string };
+  sky: {
+    label: string;
+    heading: string;
+    intro: string;
+    moon: string;
+    illuminated: string;
+    nextFull: string;
+    nextNew: string;
+    days: string;
+  };
   earth: {
     label: string;
     heading: string;
@@ -155,6 +165,16 @@ export const dictionaries: Record<Locale, Dict> = {
       hijriYear: "AH",
       today: "Today",
     },
+    sky: {
+      label: "today in the sky",
+      heading: "The sky tonight",
+      intro: "Computed locally from today's date — the moon's real phase and the next events.",
+      moon: "Moon",
+      illuminated: "illuminated",
+      nextFull: "Next full moon",
+      nextNew: "Next new moon",
+      days: "days",
+    },
     legacy: {
       label: "the question behind it",
       heading: "Code outlives its authors",
@@ -285,6 +305,16 @@ export const dictionaries: Record<Locale, Dict> = {
       hijriYear: "n.H.",
       today: "Heute",
     },
+    sky: {
+      label: "der Himmel heute",
+      heading: "Der Himmel heute Nacht",
+      intro: "Lokal aus dem heutigen Datum berechnet — die echte Mondphase und die nächsten Ereignisse.",
+      moon: "Mond",
+      illuminated: "beleuchtet",
+      nextFull: "Nächster Vollmond",
+      nextNew: "Nächster Neumond",
+      days: "Tage",
+    },
     legacy: {
       label: "die Frage dahinter",
       heading: "Code überlebt seine Autoren",
@@ -414,6 +444,16 @@ export const dictionaries: Record<Locale, Dict> = {
       intro: "يُحسب محلياً من تاريخ اليوم — ليست قائمة ثابتة، بل الموعد الفعلي القادم دائماً.",
       hijriYear: "هـ",
       today: "اليوم",
+    },
+    sky: {
+      label: "السماء اليوم",
+      heading: "السماء الليلة",
+      intro: "يُحسب محلياً من تاريخ اليوم — طور القمر الحقيقي والأحداث القادمة.",
+      moon: "القمر",
+      illuminated: "مضاء",
+      nextFull: "البدر القادم",
+      nextNew: "المحاق القادم",
+      days: "أيام",
     },
     legacy: {
       label: "السؤال خلف ذلك",
