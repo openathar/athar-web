@@ -1,16 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Mark } from "~/components/mark";
 import { palette, useTheme } from "~/lib/use-theme";
 import type { Locale } from "~/lib/i18n";
-
-// `fontVariationSettings` fehlt im TS-DOM-Typ, existiert aber in allen
-// unterstützten Browsern (Chrome 99+, Safari 16.4+, Firefox 105+).
-type CanvasWithVariation = CanvasRenderingContext2D & { fontVariationSettings: string };
-const setVariation = (ctx: CanvasRenderingContext2D, value: string) => {
-  (ctx as CanvasWithVariation).fontVariationSettings = value;
-};
 
 type HeroLabels = {
   name: string;
@@ -18,142 +10,6 @@ type HeroLabels = {
   cta: string;
   ctaSecondary: string;
 };
-
-/**
- * Hero-Wortzeichen: das arabische أثر als Canvas-Malerei statt CSS-Text.
- *
- * Hintergrund: `background-clip: text` verhält sich browser- und font-abhängig
- * unterschiedlich (Ligaturen, Diakritika, das ر wurde beim reinen CSS-Ansatz
- * mehrfach abgeschnitten). Auf dem Canvas malen wir den Text einmal mit echten
- * Pixeln — Gradient und Leuchten sind dort exakt steuerbar.
- *
- * Gold trifft Grün: der Schein mischt beide Akzentfarben, der Verlauf läuft
- * von hellem Gold über Gold zu Oliv.
- */
-function WordmarkCanvas() {
-  const ref = useRef<HTMLCanvasElement>(null);
-  const theme = useTheme();
-
-  useEffect(() => {
-    const canvas = ref.current;
-    const ctx = canvas?.getContext("2d");
-    if (!canvas || !ctx) return;
-
-    let cancelled = false;
-    const c = palette[theme];
-
-    async function paint() {
-      // Auf die tatsächlich geladene Amiri-Quran-Schrift warten, sonst malt
-      // der erste Frame mit der Systemschrift und wirkt schmal/falsch.
-      try {
-        await document.fonts.ready;
-      } catch {
-        // ignorieren — im schlimmsten Fall malt der Fallback-Font
-      }
-      if (cancelled) return;
-
-      const host = canvas!.parentElement!;
-      const cssWidth = host.clientWidth;
-      const cssHeight = host.clientHeight;
-      const dpr = Math.min(2, window.devicePixelRatio || 1);
-      canvas!.width = cssWidth * dpr;
-      canvas!.height = cssHeight * dpr;
-      canvas!.style.width = `${cssWidth}px`;
-      canvas!.style.height = `${cssHeight}px`;
-      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx!.clearRect(0, 0, cssWidth, cssHeight);
-
-      const quranFace =
-        getComputedStyle(document.documentElement).getPropertyValue("--font-quran-face") ||
-        "serif";
-      const serifFace =
-        getComputedStyle(document.documentElement).getPropertyValue("--font-serif") || "serif";
-      let fontSize = Math.min(cssWidth * 0.62, cssHeight * 0.72);
-      let enFontSize = fontSize * 0.16;
-      let enAscent = 0;
-      let enDescent = 0;
-
-      // أثر (groß) und Athar (klein darunter) müssen zusammen in die Bühne
-      // passen. Amiri-Glyphen sind deutlich höher als die Fontgröße, deshalb
-      // die Größen iterativ bestimmen, bis der ganze Block Platz hat.
-      for (let i = 0; i < 4; i++) {
-        ctx!.font = `400 ${enFontSize}px ${serifFace}`;
-        setVariation(ctx!, '"opsz" 40');
-        ctx!.direction = "ltr";
-        const enM = ctx!.measureText("Athar");
-        enAscent = enM.actualBoundingBoxAscent;
-        enDescent = enM.actualBoundingBoxDescent;
-        const gap = fontSize * 0.08;
-        const maxArH = cssHeight - (enAscent + enDescent) - gap;
-
-        ctx!.font = `400 ${fontSize}px ${quranFace}`;
-        setVariation(ctx!, "normal");
-        ctx!.direction = "rtl";
-        const m = ctx!.measureText("أثر");
-        const arH = m.actualBoundingBoxAscent + m.actualBoundingBoxDescent;
-        if (arH <= maxArH) break;
-        fontSize = (fontSize * maxArH) / arH;
-        enFontSize = fontSize * 0.16;
-      }
-
-      // Arabische Glyphen ragen weit über die Baseline hinaus (Diakritika,
-      // Alef). `textBaseline: middle` zentriert nur die Em-Box und schneidet
-      // oben ab. Stattdessen die gemessene Glyphen-Höhe nehmen und daraus die
-      // Baseline so legen, dass der echte Textblock exakt mittig sitzt.
-      ctx!.textAlign = "center";
-      ctx!.textBaseline = "alphabetic";
-      const m = ctx!.measureText("أثر");
-      const ascent = m.actualBoundingBoxAscent;
-      const descent = m.actualBoundingBoxDescent;
-      const arH = ascent + descent;
-      const gap = fontSize * 0.08;
-      const blockH = arH + gap + enAscent + enDescent;
-      const blockTop = (cssHeight - blockH) / 2;
-      const arBaseline = blockTop + ascent;
-      const enBaseline = blockTop + arH + gap + enAscent;
-      const cx = cssWidth / 2;
-
-      // Gold-Grüner Schein — zwei weiche Schatten-Durchgänge hinter dem Text.
-      ctx!.save();
-      ctx!.shadowColor = c.greenGlow;
-      ctx!.shadowBlur = 60;
-      ctx!.fillStyle = "rgba(212, 169, 95, 0.01)";
-      ctx!.fillText("أثر", cx, arBaseline);
-      ctx!.shadowColor = c.goldGlow;
-      ctx!.shadowBlur = 40;
-      ctx!.fillText("أثر", cx, arBaseline);
-      ctx!.restore();
-
-      // Gold-Verlauf, von hell oben nach dunkel unten.
-      const grad = ctx!.createLinearGradient(0, blockTop, 0, blockTop + arH);
-      grad.addColorStop(0, c.goldLight);
-      grad.addColorStop(0.5, c.gold);
-      grad.addColorStop(1, c.goldDark);
-      ctx!.fillStyle = grad;
-      ctx!.fillText("أثر", cx, arBaseline);
-
-      // Athar klein darunter, in der Display-Schrift des Banners von vorher
-      // (Newsreader mit optischer Größenachse).
-      ctx!.font = `400 ${enFontSize}px ${serifFace}`;
-      setVariation(ctx!, '"opsz" 40');
-      ctx!.direction = "ltr";
-      ctx!.fillStyle = c.gold;
-      ctx!.globalAlpha = 0.9;
-      ctx!.fillText("Athar", cx, enBaseline);
-      ctx!.globalAlpha = 1;
-    }
-
-    paint();
-    const onResize = () => paint();
-    window.addEventListener("resize", onResize);
-    return () => {
-      cancelled = true;
-      window.removeEventListener("resize", onResize);
-    };
-  }, [theme]);
-
-  return <canvas ref={ref} aria-hidden="true" />;
-}
 
 /** Dezente Galaxie: wenige, langsam flimmernde Sterne in Gold, Grün und Ink. */
 function HeroStars() {
@@ -219,6 +75,116 @@ function HeroStars() {
   return <canvas ref={ref} className="absolute inset-0 pointer-events-none" aria-hidden="true" />;
 }
 
+type Bead = {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  life: number;
+  max: number;
+  r: number;
+  color: string;
+};
+
+/**
+ * Sandspur: Perlen in Sandtönen, die der Cursor beim Überfahren der Bühne
+ * verstreicht — sie laufen der Bewegung hinterher, sinken langsam wie Sand
+ * und zerfallen. Canvas-Koordinaten sind physisch, wirkt also in LTR und
+ * RTL identisch. Bei prefers-reduced-motion bleibt alles ruhig.
+ */
+function HeroSand() {
+  const ref = useRef<HTMLCanvasElement>(null);
+  const theme = useTheme();
+
+  useEffect(() => {
+    const canvas = ref.current;
+    const ctx = canvas?.getContext("2d");
+    if (!canvas || !ctx) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const host = canvas.parentElement!;
+    const c = palette[theme];
+    const sandColors = [c.gold, c.goldLight, c.goldDark];
+    const beads: Bead[] = [];
+    let raf = 0;
+    let last: { x: number; y: number } | null = null;
+
+    function resize() {
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      canvas!.width = host.clientWidth * dpr;
+      canvas!.height = host.clientHeight * dpr;
+      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    const onMove = (e: MouseEvent) => {
+      const r = host.getBoundingClientRect();
+      const x = e.clientX - r.left;
+      const y = e.clientY - r.top;
+      if (x < 0 || y < 0 || x > r.width || y > r.height) return;
+
+      // Der Bewegungsvektor bestimmt, wohin die Spur "zurück" perlt.
+      const mx = last ? x - last.x : 0;
+      const my = last ? y - last.y : 0;
+      last = { x, y };
+
+      const speed = Math.hypot(mx, my);
+      const n = Math.min(4, 1 + Math.floor(speed / 10));
+      for (let i = 0; i < n; i++) {
+        beads.push({
+          x: x + (Math.random() - 0.5) * 12,
+          y: y + (Math.random() - 0.5) * 12,
+          vx: -mx * 0.05 + (Math.random() - 0.5) * 0.7,
+          vy: -my * 0.05 + (Math.random() - 0.5) * 0.7,
+          life: 0,
+          max: 500 + Math.random() * 400,
+          r: 1 + Math.random() * 1.8,
+          color: sandColors[Math.floor(Math.random() * sandColors.length)],
+        });
+      }
+      if (beads.length > 140) beads.splice(0, beads.length - 140);
+    };
+    window.addEventListener("mousemove", onMove);
+
+    let t0 = performance.now();
+    function frame(t: number) {
+      const dt = Math.min(50, t - t0);
+      t0 = t;
+      ctx!.clearRect(0, 0, host.clientWidth, host.clientHeight);
+      for (let i = beads.length - 1; i >= 0; i--) {
+        const b = beads[i];
+        b.life += dt;
+        if (b.life > b.max) {
+          beads.splice(i, 1);
+          continue;
+        }
+        b.x += b.vx;
+        b.y += b.vy;
+        b.vy += 0.02; // sanftes Fallen — Sand, nicht Rauch
+        b.vx *= 0.985;
+        const k = 1 - b.life / b.max;
+        ctx!.globalAlpha = 0.75 * k;
+        ctx!.fillStyle = b.color;
+        ctx!.beginPath();
+        ctx!.arc(b.x, b.y, b.r * (0.6 + 0.4 * k), 0, Math.PI * 2);
+        ctx!.fill();
+      }
+      ctx!.globalAlpha = 1;
+      raf = requestAnimationFrame(frame);
+    }
+    raf = requestAnimationFrame(frame);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("resize", resize);
+    };
+  }, [theme]);
+
+  return <canvas ref={ref} className="absolute inset-0 pointer-events-none" aria-hidden="true" />;
+}
+
 export function Hero({
   locale,
   labels,
@@ -230,19 +196,62 @@ export function Hero({
   ctaHref: string;
   ctaSecondaryHref: string;
 }) {
+  const stageRef = useRef<HTMLDivElement>(null);
+
+  // Zweifache Maus-Reaktion: Das Logo neigt sich in 3D Richtung Cursor
+  // (--rx/--ry), und ein weicher Goldschein folgt der Maus über der Bühne
+  // (--gx/--gy in Prozent, physisch gemeint — der RTL-Spiegel passiert in
+  // globals.css). Bei prefers-reduced-motion bleibt alles ruhig.
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let raf = 0;
+    const clamp = (v: number) => Math.max(-1, Math.min(1, v));
+    const onMove = (e: MouseEvent) => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const r = stage.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width;
+        const py = (e.clientY - r.top) / r.height;
+        const nx = clamp(px * 2 - 1);
+        const ny = clamp(py * 2 - 1);
+        stage.style.setProperty("--ry", `${(nx * 6).toFixed(2)}deg`);
+        stage.style.setProperty("--rx", `${(-ny * 6).toFixed(2)}deg`);
+        stage.style.setProperty("--gx", `${(px * 100).toFixed(1)}%`);
+        stage.style.setProperty("--gy", `${(py * 100).toFixed(1)}%`);
+      });
+    };
+    const onLeave = () => {
+      stage.style.setProperty("--rx", "0deg");
+      stage.style.setProperty("--ry", "0deg");
+      stage.style.setProperty("--gx", "50%");
+      stage.style.setProperty("--gy", "50%");
+    };
+    window.addEventListener("mousemove", onMove);
+    document.documentElement.addEventListener("mouseleave", onLeave);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("mousemove", onMove);
+      document.documentElement.removeEventListener("mouseleave", onLeave);
+    };
+  }, []);
+
   return (
     <div>
-      <div className="hero-stage relative">
+      <div ref={stageRef} className="hero-stage relative">
         <HeroStars />
+        <div aria-hidden className="hero-glow" />
         <div aria-hidden className="hero-mark">
-          <Mark size={320} />
+          <div className="hero-tilt">
+            <span className="brand-logo" />
+          </div>
         </div>
-        <div className="hero-word relative">
-          <WordmarkCanvas />
-        </div>
+        <HeroSand />
       </div>
       <h1 className="sr-only">{labels.name}</h1>
-      <p className="mono rise mt-5 text-muted" style={{ animationDelay: "0.1s" }}>
+      <p className="rise mt-5 text-sm text-muted" style={{ animationDelay: "0.1s" }}>
         {labels.meaning}
       </p>
       <div className="rise mt-10 flex flex-wrap gap-3" style={{ animationDelay: "0.2s" }}>

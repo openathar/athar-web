@@ -36,13 +36,13 @@ export function TodayHijri({
 
   return (
     <div className="mt-8 border border-rule bg-surface p-6">
-      <p className="mono text-xs text-gold">{labels.today}</p>
-      <p className="display mt-2 text-2xl">
+      <p className="display italic text-sm text-gold">{labels.today}</p>
+      <p className="mt-2 text-2xl">
         {hijri.day} {hijri.monthName} {hijri.year} {labels.hijriYear}
       </p>
       {event && (
         <div className="mt-3 border-t border-rule pt-3">
-          <p className="display text-sm text-accent">{event.name[locale]}</p>
+          <p className="text-sm font-medium text-accent">{event.name[locale]}</p>
           <p className="mt-1 text-sm leading-relaxed text-muted">{event.note[locale]}</p>
         </div>
       )}

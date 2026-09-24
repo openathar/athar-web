@@ -40,21 +40,21 @@ export function TodaySky({ labels, initial }: { labels: SkyLabels; initial: SkyS
   return (
     <div className="mt-8 grid gap-px border border-rule bg-rule sm:grid-cols-3">
       <div className="bg-surface p-6">
-        <p className="mono text-xs text-gold">{labels.moon}</p>
+        <p className="display italic text-sm text-gold">{labels.moon}</p>
         <p className="display mt-2 text-xl">{labels.phaseNames[phase.key]}</p>
-        <p className="mono mt-1 text-sm text-muted">
+        <p className="mt-1 text-sm text-muted">
           {pct} % {labels.illuminated}
         </p>
       </div>
       <div className="bg-surface p-6">
-        <p className="mono text-xs text-gold">{labels.nextFull}</p>
+        <p className="display italic text-sm text-gold">{labels.nextFull}</p>
         <p className="display mt-2 text-xl">
           {fmt(events.nextFullMoon)}
           <span className="ms-2 text-sm text-muted">{labels.days}</span>
         </p>
       </div>
       <div className="bg-surface p-6">
-        <p className="mono text-xs text-gold">{labels.nextNew}</p>
+        <p className="display italic text-sm text-gold">{labels.nextNew}</p>
         <p className="display mt-2 text-xl">
           {fmt(events.nextNewMoon)}
           <span className="ms-2 text-sm text-muted">{labels.days}</span>

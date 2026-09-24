@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { moonPhaseAt } from "~/lib/moon-phase";
 import { placeFromTimezone, nearestPlace, timezoneForCoords } from "~/lib/timezones";
 import { getPrayerTimesForCoords, toArabicDigits } from "~/lib/prayer-times";
+import { useTheme } from "~/lib/use-theme";
 import type { Locale } from "~/lib/i18n";
 
 const Scene = dynamic(
@@ -41,6 +42,7 @@ type Times = Record<"fajr" | "dhuhr" | "asr" | "maghrib" | "isha", string>;
  */
 export function EarthMoonSection({ locale, labels }: { locale: Locale; labels: Labels }) {
   const phase = moonPhaseAt(new Date());
+  const theme = useTheme();
   const rtl = locale === "ar";
   const num = (v: number | string) => (rtl ? toArabicDigits(v) : String(v));
 
@@ -87,6 +89,7 @@ export function EarthMoonSection({ locale, labels }: { locale: Locale; labels: L
             onPick={onPick}
             moonPhaseAngle={phase.phaseAngle}
             pickedMarker={place ? { lat: place.lat, lon: place.lon } : null}
+            theme={theme}
           />
           <p className="mono border-t border-rule px-5 py-3 text-xs text-muted">
             {labels.dayNight} · {labels.moonPhase}: {labels.phaseNames[phase.key]}
@@ -94,7 +97,7 @@ export function EarthMoonSection({ locale, labels }: { locale: Locale; labels: L
         </div>
 
         <div className="flex flex-col justify-center p-8">
-          <p className="mono text-sm text-muted">
+          <p className="display text-base text-muted">
             {isCurrent ? labels.currentLocation : labels.timesFor} {place?.label ?? "…"}
           </p>
 
@@ -102,7 +105,7 @@ export function EarthMoonSection({ locale, labels }: { locale: Locale; labels: L
 
           {!loading && times && (
             <>
-              <dl className="mono mt-4 space-y-2 text-sm">
+              <dl className="display mt-4 space-y-2 text-base">
                 {(["fajr", "dhuhr", "asr", "maghrib", "isha"] as const).map((k) => (
                   <div key={k} className="flex justify-between gap-6">
                     <dt className="text-ink">{labels.names[k]}</dt>
@@ -116,7 +119,7 @@ export function EarthMoonSection({ locale, labels }: { locale: Locale; labels: L
             </>
           )}
 
-          <p className="mono mt-6 text-xs text-muted">{labels.pickHint}</p>
+          <p className="mt-6 text-xs text-muted">{labels.pickHint}</p>
         </div>
       </div>
     </div>

@@ -11,9 +11,8 @@ import { DailySign } from "~/components/daily-sign";
 import { TodayHijri } from "~/components/today-hijri";
 import { TodaySky } from "~/components/today-sky";
 import { moonPhaseAt, nextMoonEvents } from "~/lib/moon-phase";
-import { EarthMoonSection } from "~/components/earth-moon-section";
+import { CosmosTabs } from "~/components/cosmos-tabs";
 import { Hero } from "~/components/hero";
-import { WorldMap } from "~/components/world-map";
 import { ThemeToggle } from "~/components/theme";
 
 const GITHUB_ORG = "https://github.com/openathar";
@@ -63,19 +62,9 @@ export default async function Home({
 
       <div className="mx-auto max-w-[72rem] px-6 sm:px-10">
         <header className="flex flex-wrap items-center justify-between gap-x-10 gap-y-4 border-b border-rule py-4">
-          {/* Logo — Athar mit أثر als verblassender Spur daneben */}
+          {/* Logo — das Athar-Zeichen als Farb-Maske (Gold/Green aus der Palette) */}
           <span className="flex items-center gap-3">
-            <Mark size={30} className="text-accent" />
-            <span className="flex items-baseline gap-1.5">
-              <span className="display text-xl font-bold leading-none text-gold">Athar</span>
-              <span
-                dir="rtl"
-                lang="ar"
-                className="quran flex h-8 items-center text-xl font-bold leading-none text-gold/30"
-              >
-                أثر
-              </span>
-            </span>
+            <span role="img" aria-label="Athar" className="brand-logo h-12 aspect-[1607/742]" />
           </span>
           <nav className="flex items-center gap-6">
             {/* Sprachwahl — Segment-Control mit Sprachcodes */}
@@ -127,31 +116,19 @@ export default async function Home({
                 وَنَكْتُبُ مَا قَدَّمُوا وَآثَارَهُمْ
               </blockquote>
               {!rtl && <p className="mt-5 text-muted">{t.ayah.text}</p>}
-              <figcaption className="mono mt-4 text-gold">{t.ayah.ref}</figcaption>
+              <figcaption className="display italic mt-4 text-gold">{t.ayah.ref}</figcaption>
             </figure>
           </section>
 
-          {/* ---------- Erde & Mond ---------- */}
-          <section className="border-t border-rule py-20">
-            <Label>{t.earth.label}</Label>
+          {/* ---------- Zwei Lichter, eine Uhr: Erde / Mond / Karte ---------- */}
+          <section className="py-20">
+            <Label>{t.cosmos.label}</Label>
             <h2 className="display text-[clamp(32px,5vw,60px)] font-light">
-              {t.earth.heading}
+              {t.cosmos.heading}
             </h2>
-            <p className="mt-6 max-w-prose text-muted">{t.earth.intro}</p>
+            <p className="mt-6 max-w-prose text-muted">{t.cosmos.intro}</p>
             <div className="mt-10">
-              <EarthMoonSection locale={l} labels={t.earth} />
-            </div>
-          </section>
-
-          {/* ---------- Weltkarte & Gebetszeiten ---------- */}
-          <section className="border-t border-rule py-20">
-            <Label>{t.map.label}</Label>
-            <h2 className="display text-[clamp(32px,5vw,60px)] font-light">
-              {t.map.heading}
-            </h2>
-            <p className="mt-6 max-w-prose text-muted">{t.map.intro}</p>
-            <div className="mt-10">
-              <WorldMap locale={l} labels={t.map} />
+              <CosmosTabs locale={l} cosmos={t.cosmos} earth={t.earth} map={t.map} />
             </div>
           </section>
 
@@ -187,11 +164,11 @@ export default async function Home({
               {upcoming.map((ev) => (
                 <li key={ev.key} className="py-2">
                   <div className="flex flex-wrap items-baseline gap-x-3">
-                    <span className="mono whitespace-nowrap text-xs text-gold tabular-nums">
+                    <span className="whitespace-nowrap text-[15px] text-gold tabular-nums">
                       {ev.hijri.day} · {ev.hijri.month} · {ev.hijri.year} {t.dates.hijriYear}
                     </span>
-                    <h3 className="display text-sm">{ev.name}</h3>
-                    <span className="mono ms-auto whitespace-nowrap text-xs text-muted">
+                    <h3 className="text-sm font-medium">{ev.name}</h3>
+                    <span className="ms-auto whitespace-nowrap text-[15px] text-muted">
                       {ev.gregorian
                         ? new Intl.DateTimeFormat(
                             l === "de" ? "de-DE" : l === "ar" ? "ar-JO" : "en-GB",
@@ -256,7 +233,7 @@ export default async function Home({
           {/* ---------- Versprechen ---------- */}
           <section className="border-t border-rule py-20">
             <Label>{t.promise.heading}</Label>
-            <ul className="mono space-y-3 text-[0.95rem]">
+            <ul className="space-y-3 text-[0.95rem]">
               {t.promise.items.map((item) => (
                 <li key={item} className="flex gap-4">
                   <span aria-hidden className="text-accent">
@@ -302,8 +279,8 @@ export default async function Home({
           </section>
 
           {/* ---------- Status ---------- */}
-          <p className="mono mt-20 border-s-2 border-gold py-1 ps-5 text-muted">
-            <span className="me-3 text-ink">{t.status.badge}</span>
+          <p className="mt-20 border-s-2 border-gold py-1 ps-5 text-muted">
+            <span className="mono me-3 text-ink">{t.status.badge}</span>
             {t.status.text}
           </p>
 

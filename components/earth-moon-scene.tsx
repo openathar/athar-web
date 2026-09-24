@@ -4,6 +4,8 @@ import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { CITIES } from "~/lib/cities";
+import { useReducedMotion } from "~/lib/use-reduced-motion";
 
 /**
  * Erde + Mond, immer vollstaendig im Bild, sehr zurueckhaltende Eigenbewegung.
@@ -14,25 +16,25 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
  * Sonnenstand kommt aus `lib/astro-earth.ts`, und die Erde ist beim Laden so
  * gedreht, dass der Sub-Sonnenpunkt wirklich in Richtung Sonne zeigt. Auf der
  * Nachtseite leuchten die Staedte aus der echten Nachtkarte.
+ *
+ * Der Mond ist physisch ehrlich: Er wird von derselben Sonne beleuchtet wie
+ * die Erde und startet auf seiner Umlaufbahn beim realen Elongationswinkel
+ * der aktuellen Phase. Die sichtbare Lichtgestalt ergibt sich dadurch aus
+ * der Geometrie — nicht aus einem gemalten Schein.
  */
 
 const EARTH_R = 1.3;
 const MOON_R = EARTH_R / 3.67; // echtes Groessenverhaeltnis
 const MOON_DIST = EARTH_R * 2.4; // kuenstlerisch verkuerzt (echt ~30 Erddurchmesser)
-/*
- * EARTH_X so gewaehlt, dass die Bounding-Box beider Koerper (linkester bis
- * rechtester Punkt) exakt um den Ursprung zentriert ist. Ohne das schaut
- * die Kamera (fix auf (0,0,0) gerichtet) an der wahren Bildmitte vorbei,
- * und der Mond faellt aus dem Rahmen.
- *
- * leftmost = EARTH_X - EARTH_R
- * rightmost = EARTH_X + MOON_DIST + MOON_R
- * gefordert: leftmost = -rightmost  →  EARTH_X = (EARTH_R - MOON_DIST - MOON_R) / 2
- */
-const EARTH_X = (EARTH_R - MOON_DIST - MOON_R) / 2;
-const MOON_X = EARTH_X + MOON_DIST;
-const SCENE_HALF_WIDTH = MOON_X + MOON_R; // == -(EARTH_X - EARTH_R), per Konstruktion
-const SCENE_HALF_HEIGHT = EARTH_R;
+// Orbit-Ebene um ~30° gegen die Kamera gekippt: Der Mond rutscht am hinteren
+// Bahnpunkt sichtbar ueber den Erdrand, statt sich zu verdecken — wie eine
+// schraege Sicht auf die Ekliptik.
+const ORBIT_TILT = (30 * Math.PI) / 180;
+// Ein Umlauf in ~4 Minuten — stark beschleunigt, aber die echte Richtung.
+const ORBIT_RATE = (Math.PI * 2) / 240;
+
+const SCENE_HALF_WIDTH = MOON_DIST + MOON_R;
+const SCENE_HALF_HEIGHT = Math.max(EARTH_R, MOON_DIST * Math.sin(ORBIT_TILT) + MOON_R);
 
 const TEX = {
   earthDay: "/textures/2k_earth_daymap.jpg",
@@ -61,6 +63,7 @@ const EARTH_FRAG = /* glsl */ `
   uniform sampler2D uNight;
   uniform sampler2D uSpecular;
   uniform vec3 uSunDir;
+  uniform float uNightBoost;
   varying vec2 vUv;
   varying vec3 vWorldNormal;
   varying vec3 vWorldPosition;
@@ -76,10 +79,9 @@ const EARTH_FRAG = /* glsl */ `
     // Weiche Daemmerung ueber den Terminator (Sonnenhoehe ~ -12° bis +20°).
     float dayFactor = smoothstep(-0.15, 0.25, d);
 
-    // Nachtseite: Staedtelichter aus der echten Nachtkarte, deutlich aufgehellt,
-    // plus ein schwacher Anteil der Tagkarte — so bleiben Kontinente und
-    // Ozeane in der Nacht erkennbar statt in Schwarz zu verschwinden.
-    vec3 color = mix(night * 3.0 + day * 0.22, day, dayFactor);
+    // Nachtseite: Staedtelichter aus der echten Nachtkarte, aufgehellt — der
+    // Boost folgt der Helligkeit der Webseite (hellles Theme = lesbare Nacht).
+    vec3 color = mix(night * uNightBoost + day * 0.22, day, dayFactor);
 
     // Ozean-Glanz nur auf der Tagseite (specular map = Meere).
     vec3 viewDir = normalize(cameraPosition - vWorldPosition);
@@ -94,10 +96,12 @@ const EARTH_FRAG = /* glsl */ `
 
 function Earth({
   sunDir,
+  nightBoost,
   onPick,
   pickedMarker,
 }: {
   sunDir: [number, number, number];
+  nightBoost: number;
   onPick: (p: Pick) => void;
   pickedMarker: Pick;
 }) {
@@ -124,12 +128,17 @@ function Earth({
           uNight: { value: night },
           uSpecular: { value: specular },
           uSunDir: { value: new THREE.Vector3(...sunDir) },
+          uNightBoost: { value: nightBoost },
         },
         vertexShader: EARTH_VERT,
         fragmentShader: EARTH_FRAG,
       }),
     [day, night, specular],
   );
+
+  useEffect(() => {
+    material.uniforms.uNightBoost.value = nightBoost;
+  }, [material, nightBoost]);
 
   // Gemeinsames Material fuer den Markierungs-Punkt und seinen Ring — so
   // pulsiert beides im selben Takt (eine Opacity fuer beide Meshes).
@@ -209,7 +218,7 @@ function Earth({
   });
 
   return (
-    <group ref={earthGroup} position={[EARTH_X, 0, 0]}>
+    <group ref={earthGroup} position={[0, 0, 0]}>
       <mesh material={material} onClick={onEarthClick}>
         <sphereGeometry args={[EARTH_R, 96, 96]} />
       </mesh>
@@ -236,6 +245,10 @@ function Earth({
         />
       </mesh>
 
+      {/* Schwebende Stadt-Marker — kleine goldene Punkte, die sanft ueber
+          der Oberflaeche schweben und mit der Erde mitrotieren. */}
+      <FloatingCities />
+
       {/* Markierung fuer den gewaehlten Ort — minimaler pulsierender Punkt */}
       <group ref={markerRef} visible={false}>
         <mesh material={markerMat}>
@@ -249,7 +262,63 @@ function Earth({
   );
 }
 
-function Moon({ moonPhaseAngle }: { moonPhaseAngle: number }) {
+/** Die zehn Städte als schwebende goldene Punkte — jede mit eigenem Takt,
+ *  alle in Erdkoordinaten (rotieren mit der Erde mit). */
+function FloatingCities() {
+  const group = useRef<THREE.Group>(null);
+  const cityMeshes = useMemo(
+    () =>
+      Object.values(CITIES).map(({ lat, lon }) => {
+        const la = (lat * Math.PI) / 180;
+        const lo = (lon * Math.PI) / 180;
+        const r = EARTH_R * 1.012;
+        return new THREE.Vector3(
+          r * Math.cos(la) * Math.cos(lo),
+          r * Math.sin(la),
+          -r * Math.cos(la) * Math.sin(lo),
+        );
+      }),
+    [],
+  );
+
+  useFrame(() => {
+    if (!group.current) return;
+    const t = performance.now() * 0.0012;
+    group.current.children.forEach((child, i) => {
+      // Radiales Atmen um die Basisposition — jede Stadt in eigenem Takt.
+      const bob = 1 + 0.012 * (0.5 + 0.5 * Math.sin(t * 1.6 + i * 1.7));
+      child.position.copy(cityMeshes[i]).multiplyScalar(bob);
+    });
+  });
+
+  return (
+    <group ref={group}>
+      {cityMeshes.map((p, i) => (
+        <mesh key={i} position={p}>
+          <sphereGeometry args={[0.014, 8, 8]} />
+          <meshBasicMaterial color="#d4a95f" />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+/**
+ * Mond auf schraeger Umlaufbahn. Startwinkel = reale Elongation der aktuellen
+ * Phase (0° = Neumond in Sonnenrichtung, 180° = Vollmond opposite der Sonne).
+ * Beleuchtung kommt von derselben Sonnenlichtquelle wie die Erde — die
+ * sichtbare Phase ist Geometrie, kein Effekt.
+ */
+function Moon({
+  sunDir,
+  moonPhaseAngle,
+  reduced,
+}: {
+  sunDir: [number, number, number];
+  moonPhaseAngle: number;
+  reduced: boolean;
+}) {
+  const spinRef = useRef<THREE.Group>(null);
   const moonRef = useRef<THREE.Mesh>(null);
   const moonTex = useLoader(THREE.TextureLoader, TEX.moon);
 
@@ -257,51 +326,82 @@ function Moon({ moonPhaseAngle }: { moonPhaseAngle: number }) {
     moonTex.colorSpace = THREE.SRGBColorSpace;
   }, [moonTex]);
 
+  // Startwinkel: Winkel der Sonnenrichtung in der Orbit-Ebene + Elongation.
+  const startAngle = useMemo(() => {
+    const sunAngle = Math.atan2(-sunDir[2], sunDir[0]);
+    return sunAngle + (moonPhaseAngle * Math.PI) / 180;
+    // Nur der Startwert soll festgehalten werden.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const angleRef = useRef(startAngle);
+
   useFrame((_, delta) => {
-    if (moonRef.current) moonRef.current.rotation.y += delta * 0.045;
+    if (!reduced) angleRef.current += delta * ORBIT_RATE;
+    if (spinRef.current) spinRef.current.rotation.y = angleRef.current;
+    if (moonRef.current && !reduced) moonRef.current.rotation.y += delta * 0.045;
   });
 
-  const moonLightRad = (moonPhaseAngle * Math.PI) / 180;
-  const moonLightPos: [number, number, number] = [
-    Math.sin(moonLightRad) * 6,
-    0.4,
-    -Math.cos(moonLightRad) * 6,
-  ];
-
   return (
-    <>
-      <mesh ref={moonRef} position={[MOON_X, 0, 0]}>
-        <sphereGeometry args={[MOON_R, 64, 64]} />
-        <meshStandardMaterial
-          map={moonTex}
-          bumpMap={moonTex}
-          bumpScale={0.08}
-          roughness={1}
-          metalness={0}
-        />
-      </mesh>
-      <directionalLight position={moonLightPos} intensity={1.6} target-position={[MOON_X, 0, 0]} />
-    </>
+    <group rotation-x={-ORBIT_TILT}>
+      {/* Bahmlinie — duenner goldener Kreis, macht die Ebene lesbar */}
+      <lineLoop>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            args={[
+              new Float32Array(
+                Array.from({ length: 128 }, (_, i) => {
+                  const a = (i / 128) * Math.PI * 2;
+                  return [Math.cos(a) * MOON_DIST, 0, -Math.sin(a) * MOON_DIST];
+                }).flat(),
+              ),
+              3,
+            ]}
+          />
+        </bufferGeometry>
+        <lineBasicMaterial color="#d4a95f" transparent opacity={0.16} />
+      </lineLoop>
+      <group ref={spinRef}>
+        <mesh ref={moonRef} position={[MOON_DIST, 0, 0]}>
+          <sphereGeometry args={[MOON_R, 64, 64]} />
+          <meshStandardMaterial
+            map={moonTex}
+            bumpMap={moonTex}
+            bumpScale={0.08}
+            roughness={1}
+            metalness={0}
+          />
+        </mesh>
+      </group>
+    </group>
   );
 }
 
 function Scene({
   sunDir,
   moonPhaseAngle,
+  nightBoost,
+  ambient,
+  reduced,
   onPick,
   pickedMarker,
 }: {
   sunDir: [number, number, number];
   moonPhaseAngle: number;
+  nightBoost: number;
+  ambient: number;
+  reduced: boolean;
   onPick: (p: Pick) => void;
   pickedMarker: Pick;
 }) {
   return (
     <>
+      {/* Eine Sonne fuer beide Koerper — deshalb stimmt die Mondphase. */}
       <directionalLight position={[sunDir[0] * 12, sunDir[1] * 12, sunDir[2] * 12]} intensity={2.4} color="#fff6e8" />
-      <ambientLight intensity={0.045} />
-      <Earth sunDir={sunDir} onPick={onPick} pickedMarker={pickedMarker} />
-      <Moon moonPhaseAngle={moonPhaseAngle} />
+      <ambientLight intensity={ambient} />
+      <Earth sunDir={sunDir} nightBoost={nightBoost} onPick={onPick} pickedMarker={pickedMarker} />
+      <Moon sunDir={sunDir} moonPhaseAngle={moonPhaseAngle} reduced={reduced} />
     </>
   );
 }
@@ -336,7 +436,12 @@ function Controls() {
   const { camera, gl } = useThree();
   useEffect(() => {
     const controls = new OrbitControls(camera, gl.domElement);
-    controls.enableZoom = false;
+    // Zoom erlaubt (Scroll/Pinch) — enger ran an den Globus oder weiter weg,
+    // mit kuenstlichem Deckel, damit nichts im Nichts oder im Erdinneren landet.
+    controls.enableZoom = true;
+    controls.zoomSpeed = 0.6;
+    controls.minDistance = 3.6;
+    controls.maxDistance = 26;
     controls.enablePan = false;
     controls.rotateSpeed = 0.35;
     controls.minPolarAngle = Math.PI / 2 - 0.35;
@@ -356,14 +461,17 @@ export function EarthMoonScene({
   onPick,
   moonPhaseAngle,
   pickedMarker,
+  theme,
 }: {
   onPick: (p: Pick) => void;
   moonPhaseAngle: number;
   pickedMarker: Pick;
+  theme: "light" | "dark";
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   const [sunDir, setSunDir] = useState<[number, number, number]>([1, 0.15, 0.3]);
+  const reduced = useReducedMotion();
 
   useEffect(() => {
     if (!hostRef.current) return;
@@ -384,15 +492,28 @@ export function EarthMoonScene({
     return () => { cancelled = true; };
   }, [visible]);
 
+  // Beleuchtung in Proportion zur Webseite: helles Theme = hellere Nachtseite
+  // und mehr Umgebungslicht, dunkles Theme = dramatische Kontraste.
+  const nightBoost = theme === "light" ? 4.6 : 3.0;
+  const ambient = theme === "light" ? 0.12 : 0.05;
+
   return (
     <div ref={hostRef} className="h-80 w-full cursor-grab active:cursor-grabbing sm:h-96">
       {visible && (
         // fov klein + Distanz gross: beide Koerper bleiben bei jeder Fensterbreite
-        // vollstaendig im Bild, kein Zoom/Pan moeglich, das das aendern koennte.
-        <Canvas camera={{ position: [0, 1, 10], fov: 32 }} dpr={[1, 1.5]}>
+        // vollstaendig im Bild; Zoom ist erlaubt, bleibt aber gekappt.
+        <Canvas camera={{ position: [0, 1, 12], fov: 32 }} dpr={[1, 1.5]}>
           <FitCamera />
           <Suspense fallback={null}>
-            <Scene sunDir={sunDir} moonPhaseAngle={moonPhaseAngle} onPick={onPick} pickedMarker={pickedMarker} />
+            <Scene
+              sunDir={sunDir}
+              moonPhaseAngle={moonPhaseAngle}
+              nightBoost={nightBoost}
+              ambient={ambient}
+              reduced={reduced}
+              onPick={onPick}
+              pickedMarker={pickedMarker}
+            />
           </Suspense>
           <Controls />
         </Canvas>

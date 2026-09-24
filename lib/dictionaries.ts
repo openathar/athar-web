@@ -1,13 +1,10 @@
 import type { Locale } from "./i18n";
 
-type Dict = {
+export type Dict = {
   meta: { title: string; description: string };
   ayah: { text: string; ref: string };
   hero: { name: string; meaning: string; cta: string; ctaSecondary: string };
   map: {
-    label: string;
-    heading: string;
-    intro: string;
     useLocation: string;
     locating: string;
     denied: string;
@@ -17,6 +14,21 @@ type Dict = {
     live: string;
     offline: string;
     names: Record<"fajr" | "dhuhr" | "asr" | "maghrib" | "isha", string>;
+  };
+  cosmos: {
+    label: string;
+    heading: string;
+    intro: string;
+    tabs: { earth: string; moon: string; map: string };
+    moonView: {
+      phase: string;
+      illumination: string;
+      age: string;
+      nextNew: string;
+      nextFull: string;
+      hint: string;
+      days: string;
+    };
   };
   status: { badge: string; text: string };
   what: { heading: string; items: { title: string; body: string }[] };
@@ -34,9 +46,6 @@ type Dict = {
     days: string;
   };
   earth: {
-    label: string;
-    heading: string;
-    intro: string;
     pickHint: string;
     currentLocation: string;
     timesFor: string;
@@ -56,6 +65,8 @@ type Dict = {
     revealed: string;
     observed: string;
     draft: string;
+    next: string;
+    loading: string;
     source: string;
   };
   campaign: {
@@ -90,9 +101,6 @@ export const dictionaries: Record<Locale, Dict> = {
       ctaSecondary: "Read the architecture",
     },
     map: {
-      label: "world map & prayer times",
-      heading: "A city, a map, the times",
-      intro: "Pick a city or use your location — the map shows day and night in real time, computed from today's solar position.",
       useLocation: "Use my location",
       locating: "Locating…",
       denied: "Location unavailable — please pick a city.",
@@ -102,6 +110,22 @@ export const dictionaries: Record<Locale, Dict> = {
       live: "live",
       offline: "last known values",
       names: { fajr: "Fajr", dhuhr: "Dhuhr", asr: "Asr", maghrib: "Maghrib", isha: "Isha" },
+    },
+    cosmos: {
+      label: "sun & moon",
+      heading: "Two lights, one clock",
+      intro:
+        "Prayer times are written by the sun's position, the months by the moon's phases — two lights that kept time long before us. Turn the globe, zoom in, and watch the moon trace its orbit.",
+      tabs: { earth: "Earth", moon: "Moon", map: "Map" },
+      moonView: {
+        phase: "Phase",
+        illumination: "Illuminated",
+        age: "Moon age",
+        nextNew: "until new moon",
+        nextFull: "until full moon",
+        hint: "The lit shape matches tonight's real phase — drag to turn, scroll to zoom.",
+        days: "days",
+      },
     },
     status: {
       badge: "Pre-Alpha",
@@ -127,9 +151,6 @@ export const dictionaries: Record<Locale, Dict> = {
       ],
     },
     earth: {
-      label: "earth & moon",
-      heading: "Your place, lit by where the sun actually is",
-      intro: "The terminator you see is computed from today's solar position, not painted. The moon shows today's real phase. Click a spot on the earth.",
       pickHint: "Click anywhere on the earth to see prayer times there.",
       currentLocation: "Current location:",
       timesFor: "Prayer times for",
@@ -149,13 +170,15 @@ export const dictionaries: Record<Locale, Dict> = {
       source: "source",
     },
     signs: {
-      label: "verse & observation",
-      heading: "One book, two explanations",
+      label: "revelation & creation",
+      heading: "The Written Book and the Witnessed Book",
       intro:
-        "One book, two ways to read it: the verse as it was revealed, and the world as it is measured. Neither claims to prove the other.",
+        "Islamic tradition calls the Qur'an 'the inscribed Book' and the universe 'the witnessed Book' — one truth, two books. In Arabic, the word ayah means both 'verse' and 'sign'; neither book is offered to prove the other.",
       revealed: "Revelation",
       observed: "Observation",
       draft: "drafted with {model}, running locally · editorially reviewed",
+      next: "Another sign",
+      loading: "loading …",
       source: "Source",
     },
     dates: {
@@ -230,11 +253,8 @@ export const dictionaries: Record<Locale, Dict> = {
       ctaSecondary: "Architektur lesen",
     },
     map: {
-      label: "weltkarte & gebetszeiten",
-      heading: "Eine Stadt, eine Karte, die Zeiten",
-      intro: "Wähle eine Stadt oder verwende deinen Standort — die Karte zeigt Tag und Nacht in Echtzeit, berechnet aus dem heutigen Sonnenstand.",
       useLocation: "Standort verwenden",
-      locating: "Orte wird bestimmt…",
+      locating: "Ort wird bestimmt…",
       denied: "Standort nicht verfügbar — bitte Stadt wählen.",
       myLocation: "Mein Standort",
       next: "Nächstes",
@@ -242,6 +262,22 @@ export const dictionaries: Record<Locale, Dict> = {
       live: "live",
       offline: "zuletzt bekannte Werte",
       names: { fajr: "Fadschr", dhuhr: "Dhuhr", asr: "Asr", maghrib: "Maghrib", isha: "Ischa" },
+    },
+    cosmos: {
+      label: "sonne & mond",
+      heading: "Zwei Lichter, eine Uhr",
+      intro:
+        "Die Gebetszeiten schreibt die Sonnenposition, die Monate der Mond — zwei Lichter, die schon lange vor uns die Zeit halten. Dreh den Globus, zoom hinein und sieh dem Mond auf seiner Bahn zu.",
+      tabs: { earth: "Erde", moon: "Mond", map: "Karte" },
+      moonView: {
+        phase: "Phase",
+        illumination: "Beleuchtet",
+        age: "Mondalter",
+        nextNew: "bis zum Neumond",
+        nextFull: "bis zum Vollmond",
+        hint: "Die Lichtgestalt entspricht der echten Phase am heutigen Himmel — ziehen zum Drehen, scrollen zum Zoomen.",
+        days: "Tage",
+      },
     },
     status: {
       badge: "Pre-Alpha",
@@ -267,9 +303,6 @@ export const dictionaries: Record<Locale, Dict> = {
       ],
     },
     earth: {
-      label: "erde & mond",
-      heading: "Dein Ort, beleuchtet von dort, wo die Sonne wirklich steht",
-      intro: "Die Tag/Nacht-Grenze, die du siehst, ist aus dem heutigen Sonnenstand berechnet, nicht gemalt. Der Mond zeigt die heutige echte Phase. Klicke einen Punkt auf der Erde an.",
       pickHint: "Klicke einen Punkt auf der Erde an, um die Gebetszeiten dort zu sehen.",
       currentLocation: "Aktueller Standort:",
       timesFor: "Gebetszeiten für",
@@ -289,13 +322,15 @@ export const dictionaries: Record<Locale, Dict> = {
       source: "Quelle",
     },
     signs: {
-      label: "Vers & Beobachtung",
-      heading: "Ein Buch, zwei Erklärungen",
+      label: "Offenbarung & Schöpfung",
+      heading: "Das geschriebene Buch und das sichtbare Buch",
       intro:
-        "Ein Buch, zwei Weisen es zu lesen: der Vers, wie er offenbart wurde, und die Welt, wie sie gemessen wird. Keine Seite behauptet, die andere zu beweisen.",
+        "Die islamische Tradition nennt den Koran „das geschriebene Buch“ und die Schöpfung „das sichtbare Buch“ — eine Wahrheit, zwei Bücher. Im Arabischen meint das Wort Aya zugleich „Vers“ und „Zeichen“; keines der beiden Bücher soll das andere beweisen.",
       revealed: "Offenbarung",
       observed: "Beobachtung",
       draft: "Entwurf mit {model}, lokal erzeugt · redaktionell geprüft",
+      next: "Ein weiteres Zeichen",
+      loading: "lädt …",
       source: "Quelle",
     },
     dates: {
@@ -370,9 +405,6 @@ export const dictionaries: Record<Locale, Dict> = {
       ctaSecondary: "اقرأ البنية التقنية",
     },
     map: {
-      label: "خريطة العالم وأوقات الصلاة",
-      heading: "مدينة، خريطة، أوقات",
-      intro: "اختر مدينة أو استخدم موقعك — تعرض الخريطة الليل والنهار لحظيًا، محسوبًا من موضع الشمس اليوم.",
       useLocation: "استخدام موقعي",
       locating: "جارٍ تحديد الموقع…",
       denied: "الموقع غير متاح — الرجاء اختيار مدينة.",
@@ -382,6 +414,22 @@ export const dictionaries: Record<Locale, Dict> = {
       live: "مباشر",
       offline: "آخر قيم معروفة",
       names: { fajr: "الفجر", dhuhr: "الظهر", asr: "العصر", maghrib: "المغرب", isha: "العشاء" },
+    },
+    cosmos: {
+      label: "الشمس والقمر",
+      heading: "نوران وساعةٌ واحدة",
+      intro:
+        "مواقيت الصلاة تكتبها مواضع الشمس، والشهور يكتبها طور القمر — نوران يحفظان الزمن من قبلنا. دوّر الكرة الأرضية، قرّب، وشاهد القمر يقطع مداره.",
+      tabs: { earth: "الأرض", moon: "القمر", map: "الخريطة" },
+      moonView: {
+        phase: "الطور",
+        illumination: "الجزء المضيء",
+        age: "عمر القمر",
+        nextNew: "حتى المحاق",
+        nextFull: "حتى اكتمال البدر",
+        hint: "الشكل المضيء يطابق طور القمر الحقيقي الليلة — اسحب للتدوير، ومرّر للتقريب.",
+        days: "يومًا",
+      },
     },
     status: {
       badge: "نسخة أولية",
@@ -407,9 +455,6 @@ export const dictionaries: Record<Locale, Dict> = {
       ],
     },
     earth: {
-      label: "الأرض والقمر",
-      heading: "مكانك، مضاءٌ من حيث تقع الشمس فعلاً",
-      intro: "حد النهار والليل الذي تراه محسوب من موضع الشمس اليوم، لا مرسوم. والقمر يُظهر طوره الحقيقي اليوم. انقر على نقطة من الأرض.",
       pickHint: "انقر على أي نقطة من الأرض لعرض مواقيت الصلاة فيها.",
       currentLocation: "الموقع الحالي:",
       timesFor: "مواقيت الصلاة في",
@@ -429,13 +474,15 @@ export const dictionaries: Record<Locale, Dict> = {
       source: "المصدر",
     },
     signs: {
-      label: "آية ومشاهدة",
-      heading: "كتاب واحد وتفسيران",
+      label: "الوحي والكون",
+      heading: "الكتاب المسطور والكتاب المنظور",
       intro:
-        "كتاب واحد وطريقتان لقراءته: الآية كما أُنزلت، والعالم كما يُقاس. لا تدّعي إحداهما أنها تُثبت الأخرى.",
+        "يسمّي التراث الإسلامي القرآنَ «الكتاب المسطور» والكونَ «الكتاب المنظور» — حقيقة واحدة في كتابين. وفي العربية، تحمل كلمة «آية» معنى النصّ والعلامة معًا؛ فلا يدّعي أحد الكتابين إثبات الآخر.",
       revealed: "الوحي",
       observed: "المشاهدة",
       draft: "مسوّدة بنموذج {model} يعمل محلياً · روجعت تحريرياً",
+      next: "إشارة أخرى",
+      loading: "جارٍ التحميل …",
       source: "المصدر",
     },
     dates: {
