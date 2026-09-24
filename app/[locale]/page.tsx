@@ -121,7 +121,7 @@ export default async function Home({
           </section>
 
           {/* ---------- Zwei Lichter, eine Uhr: Erde / Mond / Karte ---------- */}
-          <section className="py-20">
+          <section id="cosmos" className="py-20 scroll-mt-24">
             <Label>{t.cosmos.label}</Label>
             <h2 className="display text-[clamp(32px,5vw,60px)] font-light">
               {t.cosmos.heading}
