@@ -97,7 +97,7 @@ export function EarthMoonSection({ locale, labels }: { locale: Locale; labels: L
         </div>
 
         <div className="flex flex-col justify-center p-8">
-          <p className="display text-base text-muted">
+          <p className="text-base text-muted">
             {isCurrent ? labels.currentLocation : labels.timesFor} {place?.label ?? "…"}
           </p>
 
@@ -105,7 +105,7 @@ export function EarthMoonSection({ locale, labels }: { locale: Locale; labels: L
 
           {!loading && times && (
             <>
-              <dl className="display mt-4 space-y-2 text-base">
+              <dl className="mt-4 space-y-2 text-base">
                 {(["fajr", "dhuhr", "asr", "maghrib", "isha"] as const).map((k) => (
                   <div key={k} className="flex justify-between gap-6">
                     <dt className="text-ink">{labels.names[k]}</dt>

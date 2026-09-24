@@ -194,39 +194,14 @@ html[lang="ar"] .mono {
 
 /* ---------- Hero: Logo mit Sternenhimmel ---------- */
 
-/* Bühne für das Athar-Logo: Galaxie (Canvas) + Goldschein. --rx/--ry (3D-
-   Neigung des Logos) und --gx/--gy (Position des Scheins) setzt hero.tsx
-   per Maus; Defaults = ruhige Mitte. */
+/* Bühne für das Athar-Logo: Galaxie (Canvas) + sanft schwebendes Logo. */
 .hero-stage {
   position: relative;
   height: clamp(200px, 36vw, 360px);
 }
 
-/* Weicher Goldschein hinter dem Logo, folgt der Maus wie ein Spotlight.
-   --gx ist physisch (vom linken Rand gerechnet); im RTL spiegelt der
-   Selektor unten die Richtung zurück, damit der Schein unterm Cursor bleibt. */
-.hero-glow {
-  position: absolute;
-  inset-block-start: var(--gy, 50%);
-  inset-inline-start: var(--gx, 50%);
-  width: min(46%, 260px);
-  aspect-ratio: 1;
-  translate: -50% -50%;
-  background: radial-gradient(closest-side, rgba(212, 169, 95, 0.16), transparent 70%);
-  pointer-events: none;
-}
-
-/* Im RTL liegt inline-start physisch rechts — der Schein spiegelte also
-   falsch. inline-end ist dort physisch links, gemeinsam mit translate
-   -50% landet er exakt unterm Cursor. */
-[dir="rtl"] .hero-glow {
-  inset-inline-start: auto;
-  inset-inline-end: var(--gx, 50%);
-}
-
-/* Logo zentriert auf der Bühne; die 3D-Neigung übernimmt die innere Ebene.
-   Das Asset ist auf die Bounding-Box getrimmt (ca. 2.17:1), deshalb füllt
-   es die Breite und wirkt groß. */
+/* Logo zentriert auf der Bühne. Das Asset ist auf die Bounding-Box
+   getrimmt (ca. 2.17:1), deshalb füllt es die Breite und wirkt groß. */
 .hero-mark {
   position: absolute;
   inset-block-start: 50%;
@@ -237,14 +212,7 @@ html[lang="ar"] .mono {
   justify-content: center;
 }
 
-.hero-tilt {
-  width: 100%;
-  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
-  will-change: transform;
-}
-
-/* Sanftes Schweben — das Logo lebt auch ohne Maus. `translate` (Float)
-   und `transform` (Tilt auf der Elternebene) komponieren sich. */
+/* Sanftes Schweben — das Logo lebt auch ohne Maus. */
 .hero-mark .brand-logo {
   width: 100%;
   aspect-ratio: 1607 / 742;

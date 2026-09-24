@@ -198,8 +198,8 @@ export function WorldMap({ locale, labels }: { locale: Locale; labels: MapLabels
         </div>
 
         <div className="border-t border-rule p-6 lg:border-t-0 lg:border-s">
-          <p className="display text-base text-muted">{activeName}</p>
-          <dl className="display mt-4 space-y-2 text-base">
+          <p className="text-base text-muted">{activeName}</p>
+          <dl className="mt-4 space-y-2 text-base">
             {prayerKeys.map((k) => (
               <div
                 key={k}
