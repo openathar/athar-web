@@ -95,7 +95,7 @@ export const dictionaries: Record<Locale, Dict> = {
     },
     status: {
       badge: "Pre-Alpha",
-      text: "We are building in the open. Code repositories open at MVP launch.",
+      text: "We build in the open. The calculation core is published, the public API is live, the mobile app is next.",
     },
     what: {
       heading: "What we are building",
@@ -178,8 +178,8 @@ export const dictionaries: Record<Locale, Dict> = {
       heading: "Roadmap",
       phases: [
         { title: "Web tools", body: "Prayer times (live, location-aware), Qibla compass and Hijri calendar — running in your browser now.", state: "Live" },
-        { title: "Calculation core", body: "A single shared library for prayer times, Qibla and Hijri conversion, used by web, API and mobile alike. The web currently computes these itself in JavaScript — this phase replaces that with one portable engine.", state: "In progress" },
-        { title: "Public API", body: "Free and rate-limited, documented for third-party developers.", state: "Next" },
+        { title: "Calculation core", body: "A single shared library for prayer times, Qibla and Hijri conversion — published to Maven Central. The web computes locally via a TypeScript port kept in sync by reference tests; the public API consumes the library directly.", state: "Live" },
+        { title: "Public API", body: "Free and rate-limited. V1 is live at api.openathar.org — prayer times, Qibla and Hijri conversion, immutable-cached. API keys and a developer portal are next.", state: "Live" },
         { title: "Mobile apps", body: "Android and iOS — offline-first, reliable Adhan notifications, widgets and Live Activities.", state: "Planned" },
         { title: "AI Quran explanation", body: "AI that explains the Quran from science and connects it with text, video and images that never existed before.", state: "Vision" },
       ],
@@ -224,7 +224,7 @@ export const dictionaries: Record<Locale, Dict> = {
     },
     status: {
       badge: "Pre-Alpha",
-      text: "Wir bauen öffentlich. Die Code-Repos werden zum MVP-Launch geöffnet.",
+      text: "Wir bauen öffentlich. Der Berechnungs-Kern ist veröffentlicht, die öffentliche API ist live, die Mobile-App folgt.",
     },
     what: {
       heading: "Was entsteht",
@@ -307,8 +307,8 @@ export const dictionaries: Record<Locale, Dict> = {
       heading: "Roadmap",
       phases: [
         { title: "Web-Werkzeuge", body: "Gebetszeiten (live, standortbezogen), Qibla-Kompass und Hijri-Kalender — laufen jetzt in deinem Browser.", state: "Live" },
-        { title: "Berechnungs-Kern", body: "Eine gemeinsame Bibliothek für Gebetszeiten, Qibla und Hijri-Konvertierung, genutzt von Web, API und Mobile gleichermaßen. Das Web rechnet aktuell selbst in JavaScript — diese Phase ersetzt das durch eine einzige portable Engine.", state: "In Arbeit" },
-        { title: "Öffentliche API", body: "Kostenlos und rate-limitiert, dokumentiert für Fremdentwickler.", state: "Als Nächstes" },
+        { title: "Berechnungs-Kern", body: "Eine gemeinsame Bibliothek für Gebetszeiten, Qibla und Hijri-Konvertierung — veröffentlicht auf Maven Central. Das Web rechnet lokal über einen TypeScript-Port, der durch Referenztests synchron gehalten wird; die öffentliche API nutzt die Bibliothek direkt.", state: "Live" },
+        { title: "Öffentliche API", body: "Kostenlos und rate-limitiert. V1 ist live unter api.openathar.org — Gebetszeiten, Qibla und Hijri-Konvertierung, immutable-gecacht. API-Keys und ein Entwicklerportal folgen.", state: "Live" },
         { title: "Mobile Apps", body: "Android und iOS — offline-first, zuverlässige Adhan-Benachrichtigungen, Widgets und Live Activities.", state: "Geplant" },
         { title: "KI-Erklärung des Quran", body: "KI, die den Quran aus der Wissenschaft erklärt und ihn mit Text, Video und Bildern verbindet, die es nie zuvor gab.", state: "Vision" },
       ],
@@ -353,7 +353,7 @@ export const dictionaries: Record<Locale, Dict> = {
     },
     status: {
       badge: "نسخة أولية",
-      text: "نبني في العلن. ستُفتح مستودعات الشيفرة عند إطلاق النسخة الأولى.",
+      text: "نبني في العلن. نواة الحساب منشورة، والواجهة البرمجية العامة مباشرة، وتطبيق الجوال هو التالي.",
     },
     what: {
       heading: "ما الذي نبنيه",
@@ -436,8 +436,8 @@ export const dictionaries: Record<Locale, Dict> = {
       heading: "خارطة الطريق",
       phases: [
         { title: "أدوات الويب", body: "مواقيت الصلاة (مباشرة وحسب الموقع)، بوصلة القبلة، والتقويم الهجري — تعمل الآن في متصفحك.", state: "متاح" },
-        { title: "نواة الحساب", body: "مكتبة واحدة مشتركة لمواقيت الصلاة والقبلة وتحويل التقويم، يستخدمها الويب والواجهة البرمجية والتطبيقات معاً. يحسبها الويب حالياً بنفسه بلغة JavaScript — هذه المرحلة تستبدل ذلك بمحرك واحد قابل للنقل.", state: "قيد العمل" },
-        { title: "الواجهة البرمجية العامة", body: "مجانية ومحدودة المعدّل وموثّقة للمطوّرين.", state: "التالي" },
+        { title: "نواة الحساب", body: "مكتبة واحدة مشتركة لمواقيت الصلاة والقبلة وتحويل التقويم — منشورة على Maven Central. يحسبها الويب محلياً عبر نسخة TypeScript تُحفظ متزامنة باختبارات مرجعية، وتستهلكها الواجهة البرمجية مباشرة.", state: "متاح" },
+        { title: "الواجهة البرمجية العامة", body: "مجانية ومحدودة المعدّل. النسخة الأولى مباشرة على api.openathar.org — مواقيت الصلاة والقبلة وتحويل التقويم، بتخزين مؤقت لا يتغيّر. مفاتيح API وبوابة مطوّرين تليان.", state: "متاح" },
         { title: "تطبيقات الجوال", body: "أندرويد وiOS — تعمل دون اتصال، تنبيهات أذان موثوقة، ودجات وأنشطة مباشرة.", state: "مخطط" },
         { title: "شرح القرآن بالذكاء الاصطناعي", body: "ذكاء اصطناعي يشرح القرآن من العلم ويربطه بنصوص وفيديوهات وصور لم توجد من قبل.", state: "رؤية" },
       ],

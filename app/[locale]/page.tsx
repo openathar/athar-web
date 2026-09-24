@@ -6,6 +6,7 @@ import { Mark, Ornament, Rosette } from "~/components/mark";
 import { getVerse } from "~/lib/quran";
 import reflections from "~/data/reflections.json";
 import { upcomingIslamicDates } from "~/lib/islamic-dates";
+import { DailySign } from "~/components/daily-sign";
 import { EarthMoonSection } from "~/components/earth-moon-section";
 import { Hero } from "~/components/hero";
 import { WorldMap } from "~/components/world-map";
@@ -25,14 +26,21 @@ export default async function Home({
   const rtl = isRtl(l);
 
   // Ein Vers pro Tag, deterministisch — kein Zufall, damit Server und Client
-  // dasselbe zeigen und der Wechsel nachvollziehbar bleibt.
+  // dasselbe zeigen und der Wechsel nachvollziehbar bleibt. Die Auswahl selbst
+  // passiert in der Client-Komponente DailySign (Client-Datum); der Index hier
+  // dient nur dem SSR/SEO-Rendering zur Build-Zeit.
   const dayIndex = Math.floor(Date.now() / 86_400_000) % reflections.entries.length;
-  const sign = reflections.entries[dayIndex];
   const upcoming = upcomingIslamicDates(l);
-  const verse = await getVerse(sign.verse, l, {
-    arabic: sign.fallback.arabic,
-    rendered: l === "ar" ? sign.fallback.arabic : (sign.fallback[l] ?? ""),
-  });
+  // Alle Verse einmal holen (Data-Cache, revalidate 86400) — die Auswahl pro
+  // Tag übernimmt der Client, damit alle Locales denselben Vers zeigen.
+  const verses = await Promise.all(
+    reflections.entries.map((e) =>
+      getVerse(e.verse, l, {
+        arabic: e.fallback.arabic,
+        rendered: l === "ar" ? e.fallback.arabic : (e.fallback[l] ?? ""),
+      }),
+    ),
+  );
 
 
   return (
@@ -143,44 +151,14 @@ export default async function Home({
             </h2>
             <p className="mt-6 max-w-prose text-muted">{t.signs.intro}</p>
 
-            <div className="mt-12 grid gap-px border border-rule bg-rule md:grid-cols-2">
-              {/* Offenbarung — unveraendert, zitiert, verlinkt */}
-              <div className="bg-paper p-8">
-                <p className="mono mb-6 text-gold">
-                  {t.signs.revealed} · {verse.key}
-                </p>
-                <p
-                  lang="ar"
-                  dir="rtl"
-                  className="quran text-[clamp(21px,2.4vw,28px)] leading-[2.1]"
-                >
-                  {verse.arabic}
-                </p>
-                <p className="mt-6 text-muted">{verse.rendered}</p>
-                <p className="mono mt-6 text-muted">
-                  {verse.attribution} ·{" "}
-                  <a
-                    href={verse.sourceUrl}
-                    className="underline underline-offset-4 transition hover:text-ink"
-                  >
-                    quran.com
-                  </a>
-                </p>
-              </div>
-
-              {/* Beobachtung — Maschinenstimme, klar als solche markiert */}
-              <div className="bg-paper p-8">
-                <p className="mono mb-6 text-accent">
-                  {t.signs.observed} · {sign.field[l]}
-                </p>
-                <p className="mono text-[0.95rem] leading-relaxed text-ink">
-                  {sign.observation[l]}
-                </p>
-                <p className="mono mt-6 text-muted">
-                  {t.signs.draft.replace("{model}", reflections.provenance.draftModel)}
-                </p>
-              </div>
-            </div>
+            <DailySign
+              entries={reflections.entries}
+              verses={verses}
+              locale={l}
+              labels={t.signs}
+              model={reflections.provenance.draftModel}
+              initialDayIndex={dayIndex}
+            />
           </section>
 
           {/* ---------- Islamischer Kalender: naechste Termine ---------- */}
