@@ -1,5 +1,5 @@
-import { hijriToGregorian, gregorianToHijri } from "./hijri";
-import type { Locale } from "./i18n";
+import { hijriToGregorian, gregorianToHijri } from "./hijri.ts";
+import type { Locale } from "./i18n.ts";
 
 /**
  * Wichtige Termine des islamischen Kalenders — reine Kalenderfakten, keine
@@ -14,7 +14,7 @@ import type { Locale } from "./i18n";
  *    benannt, nicht als Festlegung.
  */
 
-type EventDef = {
+export type EventDef = {
   key: string;
   hijriMonth: number;
   hijriDay: number;
@@ -22,7 +22,7 @@ type EventDef = {
   note: Record<Locale, string>;
 };
 
-const EVENTS: EventDef[] = [
+export const EVENTS: EventDef[] = [
   {
     key: "new-year",
     hijriMonth: 1,
@@ -109,6 +109,16 @@ export type UpcomingEvent = {
   hijri: { day: number; month: number; year: number };
   gregorian: Date | null;
 };
+
+/**
+ * Liefert den Termin, dessen Hijri-Datum mit dem übergebenen Datum übereinstimmt
+ * (z.B. heute). Reine Kalenderfakten — kein Eintrag, wenn heute kein Termin ist.
+ */
+export function hijriEventFor(hijri: { day: number; month: number }): EventDef | null {
+  return (
+    EVENTS.find((e) => e.hijriMonth === hijri.month && e.hijriDay === hijri.day) ?? null
+  );
+}
 
 /**
  * Die naechsten Termine ab heute, chronologisch. Fuer jedes Ereignis wird

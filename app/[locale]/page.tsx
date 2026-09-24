@@ -6,7 +6,9 @@ import { Mark, Ornament, Rosette } from "~/components/mark";
 import { getVerse } from "~/lib/quran";
 import reflections from "~/data/reflections.json";
 import { upcomingIslamicDates } from "~/lib/islamic-dates";
+import { gregorianToHijri } from "~/lib/hijri";
 import { DailySign } from "~/components/daily-sign";
+import { TodayHijri } from "~/components/today-hijri";
 import { EarthMoonSection } from "~/components/earth-moon-section";
 import { Hero } from "~/components/hero";
 import { WorldMap } from "~/components/world-map";
@@ -31,6 +33,9 @@ export default async function Home({
   // dient nur dem SSR/SEO-Rendering zur Build-Zeit.
   const dayIndex = Math.floor(Date.now() / 86_400_000) % reflections.entries.length;
   const upcoming = upcomingIslamicDates(l);
+  // Hijri-Datum zur Build-Zeit — der Client korrigiert es nach dem Mount auf
+  // den heutigen Tag (gleiches ISR-Muster wie DailySign).
+  const initialHijri = gregorianToHijri(new Date(), l);
   // Alle Verse einmal holen (Data-Cache, revalidate 86400) — die Auswahl pro
   // Tag übernimmt der Client, damit alle Locales denselben Vers zeigen.
   const verses = await Promise.all(
@@ -168,6 +173,8 @@ export default async function Home({
               <h2 className="display text-2xl sm:text-3xl">{t.dates.heading}</h2>
               <p className="max-w-md text-sm text-muted">{t.dates.intro}</p>
             </div>
+
+            <TodayHijri locale={l} labels={t.dates} initialHijri={initialHijri} />
 
             <ol className="mt-8 divide-y divide-rule border-y border-rule">
               {upcoming.map((ev) => (

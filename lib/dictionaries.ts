@@ -22,7 +22,7 @@ type Dict = {
   what: { heading: string; items: { title: string; body: string }[] };
   promise: { heading: string; items: string[] };
   legacy: { label: string; heading: string; body: string[] };
-  dates: { label: string; heading: string; intro: string; hijriYear: string };
+  dates: { label: string; heading: string; intro: string; hijriYear: string; today: string };
   earth: {
     label: string;
     heading: string;
@@ -153,6 +153,7 @@ export const dictionaries: Record<Locale, Dict> = {
       heading: "What's coming",
       intro: "Computed locally from today's date — not a fixed list, always the next real occurrence.",
       hijriYear: "AH",
+      today: "Today",
     },
     legacy: {
       label: "the question behind it",
@@ -282,6 +283,7 @@ export const dictionaries: Record<Locale, Dict> = {
       heading: "Was ansteht",
       intro: "Lokal aus dem heutigen Datum berechnet — keine feste Liste, immer der nächste tatsächliche Termin.",
       hijriYear: "n.H.",
+      today: "Heute",
     },
     legacy: {
       label: "die Frage dahinter",
@@ -411,6 +413,7 @@ export const dictionaries: Record<Locale, Dict> = {
       heading: "ما هو قادم",
       intro: "يُحسب محلياً من تاريخ اليوم — ليست قائمة ثابتة، بل الموعد الفعلي القادم دائماً.",
       hijriYear: "هـ",
+      today: "اليوم",
     },
     legacy: {
       label: "السؤال خلف ذلك",

@@ -5,7 +5,7 @@ import type { Locale } from "./i18n";
  * Uthmani-Fassung, die Übersetzungen sind etablierte, zitierfähige Werke:
  *
  *   de → Bubenheim & Elyas (herausgegeben vom König-Fahd-Komplex)
- *   en → The Clear Quran (Mustafa Khattab)
+ *   en → Saheeh International
  *   ar → keine Übersetzung nötig; stattdessen at-Tafsīr al-Muyassar
  *        (ebenfalls König-Fahd-Komplex), bewusst kurz gehalten
  *
@@ -15,7 +15,7 @@ import type { Locale } from "./i18n";
 
 const TRANSLATION_ID: Record<Locale, number> = {
   de: 27, // Frank Bubenheim and Nadeem Elyas
-  en: 131, // Dr. Mustafa Khattab, The Clear Quran
+  en: 20, // Saheeh International
   ar: 27, // ungenutzt — Arabisch zeigt den Tafsir statt einer Übersetzung
 };
 
@@ -34,7 +34,8 @@ export type VerseText = {
   live: boolean;
 };
 
-const stripHtml = (s: string) => s.replace(/<[^>]+>/g, "").trim();
+const stripHtml = (s: string) =>
+  s.replace(/<sup[^>]*>.*?<\/sup>/g, "").replace(/<[^>]+>/g, "").trim();
 
 export async function getVerse(
   verseKey: string,
@@ -81,7 +82,7 @@ export async function getVerse(
       attribution:
         locale === "de"
           ? "Übersetzung: Bubenheim & Elyas"
-          : "Translation: Mustafa Khattab, The Clear Quran",
+          : "Translation: Saheeh International",
       sourceUrl,
       live: true,
     };
@@ -95,7 +96,7 @@ export async function getVerse(
           ? "التفسير الميسر · مجمع الملك فهد"
           : locale === "de"
             ? "Übersetzung: Bubenheim & Elyas"
-            : "Translation: Mustafa Khattab, The Clear Quran",
+            : "Translation: Saheeh International",
       sourceUrl,
       live: false,
     };
