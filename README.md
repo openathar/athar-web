@@ -1,52 +1,34 @@
 # athar-web
 
-The web frontend of Athar (openathar) — Next.js 15, App Router. A working
-product, not a mockup: prayer times, an Earth & Moon view with a real
-day/night terminator, a live world map, and a Quran-and-science section —
-all trilingual (DE/EN/AR) with proper RTL.
-
 <p align="center">
-  <img src="docs/screenshots/hero.png" alt="Athar hero — the word أثر next to the verse it's named after" width="100%" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/logo-dark.png" />
+    <img src="docs/logo-light.png" alt="Athar — the word أثر" width="420" />
+  </picture>
 </p>
+
+The web frontend of Athar (openathar) — Next.js 15, App Router. A working
+product, not a mockup: prayer times on a 3D earth and a live world map, a
+true moon-phase observatory, an Islamic calendar, and a Quran-and-science
+section — all trilingual (DE/EN/AR) with proper RTL.
+
+> No screenshots here, deliberately — the design changes weekly and stale
+> images become lies. Run it (`npm run dev`) or open
+> [openathar.org](https://openathar.org).
 
 ## What's in here
 
-<table>
-<tr>
-<td width="50%">
-
-**Earth & Moon**
-Real 3D earth, terminator computed from today's actual solar position, not
-painted on. The moon shows today's real phase. Click anywhere on earth for
-prayer times at that spot.
-
-</td>
-<td width="50%"><img src="docs/screenshots/earth-moon.png" width="100%" /></td>
-</tr>
-<tr>
-<td width="50%">
-
-**World map & prayer times**
-Pick a city or use your own location. The dotted map shows day/night live;
-prayer times are computed locally (TypeScript port of `athan-core`) with
-the next prayer highlighted.
-
-</td>
-<td width="50%"><img src="docs/screenshots/world-map.png" width="100%" /></td>
-</tr>
-<tr>
-<td width="50%">
-
-**Two Books**
-The verse as revealed, and the world as measured — side by side, neither
-claiming to prove the other. Quran text is sourced and cited, never
-generated; the observation text is AI-drafted and editorially reviewed
-before it ships (see `data/reflections.json`).
-
-</td>
-<td width="50%"><img src="docs/screenshots/two-books.png" width="100%" /></td>
-</tr>
-</table>
+- **Two lights, one clock** — a tabbed section: a 3D earth whose day/night
+  terminator is computed from today's actual solar position (click anywhere
+  for prayer times at that spot), a moon orbiting at today's true elongation
+  with a zoomable true-phase moon view, and a dotted world map with live
+  day/night and per-city prayer times.
+- **The Written Book and the Witnessed Book** — the verse as revealed, the
+  world as measured, side by side. Quran text is sourced and cited, never
+  generated; the observation text is AI-drafted and editorially reviewed
+  before it ships (`data/reflections.json`, served via `/api/reflections`).
+- **Calendar & tonight's sky** — Hijri date, upcoming Islamic events, moon
+  phase with illumination and age, all computed locally.
 
 ## Development
 
@@ -54,6 +36,7 @@ before it ships (see `data/reflections.json`).
 npm install
 npm run dev     # http://localhost:3000
 npm run build   # production build (output: standalone)
+npm test        # reference tests against athan-core-java values
 ```
 
 ## Design principles
