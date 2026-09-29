@@ -100,6 +100,25 @@ const EARTH_FRAG = /* glsl */ `
   }
 `;
 
+// Echte Atmosphaere als Fresnel-Glow (BackSide, additiv): An der Kante des
+// Planeten streift der Blick die Lufthuelle — dort leuchtet sie auf, zur
+// Mitte hin blendet sie aus. Sieht nach Raum aus statt nach Folie.
+const ATMO_VERT = /* glsl */ `
+  varying vec3 vNormal;
+  void main() {
+    vNormal = normalize(normalMatrix * normal);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`;
+
+const ATMO_FRAG = /* glsl */ `
+  varying vec3 vNormal;
+  void main() {
+    float intensity = pow(0.62 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 3.5);
+    gl_FragColor = vec4(0.38, 0.62, 1.0, 1.0) * intensity;
+  }
+`;
+
 function Earth({
   sunDir,
   nightBoost,
@@ -209,6 +228,20 @@ function Earth({
     material.uniforms.uNightBoost.value = nightBoost;
   }, [material, nightBoost]);
 
+  // Echte Atmosphaere als Fresnel-Glow (BackSide, additiv): leuchtet nur an
+  // der Planetenkante, wo der Blick die Lufthuelle streift.
+  const atmoMaterial = useMemo(
+    () =>
+      new THREE.ShaderMaterial({
+        vertexShader: ATMO_VERT,
+        fragmentShader: ATMO_FRAG,
+        side: THREE.BackSide,
+        blending: THREE.AdditiveBlending,
+        transparent: true,
+        depthWrite: false,
+      }),
+    [],
+  );
   // Gemeinsames Material fuer den Markierungs-Punkt und seinen Ring — so
   // pulsiert beides im selben Takt (eine Opacity fuer beide Meshes).
   const markerMat = useMemo(
@@ -309,16 +342,9 @@ function Earth({
           metalness={0}
         />
       </mesh>
-      {/* Atmosphaerischer Rand — Fresnel-artiges Glimmen an der Tagseite */}
-      <mesh scale={1.045}>
+      {/* Atmosphaere als Fresnel-Glow — nur die Kante leuchtet */}
+      <mesh material={atmoMaterial} scale={1.06}>
         <sphereGeometry args={[EARTH_R, 64, 64]} />
-        <meshBasicMaterial
-          color="#6fb2ff"
-          transparent
-          opacity={0.12}
-          side={THREE.BackSide}
-          depthWrite={false}
-        />
       </mesh>
 
       {/* Schwebende Stadt-Marker — kleine goldene Punkte, die sanft ueber
@@ -458,9 +484,44 @@ function Scene({
       {/* Eine Sonne fuer beide Koerper — deshalb stimmt die Mondphase. */}
       <directionalLight position={[sunDir[0] * 12, sunDir[1] * 12, sunDir[2] * 12]} intensity={2.4} color="#fff6e8" />
       <ambientLight intensity={ambient} />
+      {/* Fixsterne weit draussen — rotieren nicht mit, geben Parallaxe */}
+      <SceneStars />
       <Earth sunDir={sunDir} nightBoost={nightBoost} onPick={onPick} pickedMarker={pickedMarker} reduced={reduced} />
       <Moon sunDir={sunDir} moonPhaseAngle={moonPhaseAngle} reduced={reduced} />
     </>
+  );
+}
+
+/** Ruhiges Fixsternfeld als Kugelschale weit ausserhalb der Szene. */
+function SceneStars() {
+  const positions = useMemo(() => {
+    const count = 900;
+    const arr = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+      const r = 24 + Math.random() * 20;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      arr[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+      arr[i * 3 + 1] = r * Math.cos(phi);
+      arr[i * 3 + 2] = r * Math.sin(phi) * Math.sin(theta);
+    }
+    return arr;
+  }, []);
+
+  return (
+    <points>
+      <bufferGeometry>
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+      </bufferGeometry>
+      <pointsMaterial
+        size={0.09}
+        color="#cfe0ff"
+        sizeAttenuation
+        transparent
+        opacity={0.75}
+        depthWrite={false}
+      />
+    </points>
   );
 }
 
