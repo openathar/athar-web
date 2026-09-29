@@ -79,8 +79,63 @@ export type Dict = {
   };
   roadmap: { heading: string; phases: { title: string; body: string; state: string }[] };
   theme: { light: string; dark: string };
-  nav: { language: string };
+  nav: { language: string; developers: string };
   footer: { madeAs: string; source: string; imprint: string };
+  devs: {
+    meta: { title: string; description: string };
+    eyebrow: string;
+    heading: string;
+    intro: string;
+    backHome: string;
+    quickstart: { heading: string; intro: string };
+    endpoints: {
+      heading: string;
+      intro: string;
+      paramHeaders: { name: string; required: string; default: string; notes: string };
+      yes: string;
+      no: string;
+      prayerTimes: {
+        title: string;
+        description: string;
+        params: { lat: string; lon: string; date: string; method: string; utcOffset: string };
+      };
+      qibla: { title: string; description: string; params: { lat: string; lon: string } };
+      hijri: { title: string; description: string; params: { date: string; locale: string } };
+    };
+    errors: { heading: string; body: string };
+    limits: { heading: string; body: string; anonymous: string; keyed: string };
+    playground: {
+      heading: string;
+      intro: string;
+      run: string;
+      running: string;
+      response: string;
+      apiKeyFieldLabel: string;
+      apiKeyFieldPlaceholder: string;
+    };
+    keys: {
+      heading: string;
+      intro: string;
+      labelFieldLabel: string;
+      labelPlaceholder: string;
+      generate: string;
+      generating: string;
+      warning: string;
+      copy: string;
+      copied: string;
+      yourKey: string;
+      yourLabel: string;
+      createdAt: string;
+      usageHeading: string;
+      usageIntro: string;
+      usageFieldPlaceholder: string;
+      usageCheck: string;
+      usageChecking: string;
+      usageNotFound: string;
+      usageRequests: string;
+    };
+    cta: { heading: string; body: string; github: string; swagger: string };
+  };
 };
 
 export const dictionaries: Record<Locale, Dict> = {
@@ -229,11 +284,113 @@ export const dictionaries: Record<Locale, Dict> = {
       ],
     },
     theme: { light: "Switch to light", dark: "Switch to dark" },
-    nav: { language: "Language" },
+    nav: { language: "Language", developers: "API" },
     footer: {
       madeAs: "Built as Sadaqah Jariyah.",
       source: "Source code",
       imprint: "Legal notice",
+    },
+    devs: {
+      meta: {
+        title: "Athar API — free prayer times, Qibla and Hijri calendar for developers",
+        description:
+          "A free, rate-limited REST API for prayer times, Qibla bearing and Hijri calendar conversion. No account, no email, self-serve API keys for a higher rate limit.",
+      },
+      eyebrow: "// developer api",
+      heading: "Build with Athar",
+      intro:
+        "One free REST API for prayer times, Qibla bearing and Hijri calendar conversion — the same calculation core that powers this site and the mobile app. No account, no email, no tracking. Try every endpoint below, right in this page.",
+      backHome: "← Back to Athar",
+      quickstart: {
+        heading: "Quickstart",
+        intro:
+          "Every endpoint is a plain GET request. No auth header required — an optional API key just raises your rate limit (see below).",
+      },
+      endpoints: {
+        heading: "Endpoints",
+        intro: "Three endpoints, all deterministic and cached forever for a given input.",
+        paramHeaders: { name: "Param", required: "Required", default: "Default", notes: "Notes" },
+        yes: "yes",
+        no: "no",
+        prayerTimes: {
+          title: "Prayer times",
+          description:
+            "Fajr, Dhuhr, Asr, Maghrib, Isha, plus sunrise, sunset, midnight and the Duha window, as local HH:mm strings.",
+          params: {
+            lat: "Latitude in decimal degrees (−90..90)",
+            lon: "Longitude in decimal degrees (−180..180)",
+            date: "ISO date yyyy-MM-dd",
+            method: "MWL, ISNA, EGYPT, MAKKAH, KARACHI, TEHRAN, JAFARI, FRANCE, RUSSIA, MALAYSIA, SINGAPORE",
+            utcOffset: "Location's UTC offset in hours (−12..14), for local wall-clock times",
+          },
+        },
+        qibla: {
+          title: "Qibla bearing",
+          description: "Great-circle bearing from true north to the Kaaba, for any location.",
+          params: {
+            lat: "Latitude in decimal degrees (−90..90)",
+            lon: "Longitude in decimal degrees (−180..180)",
+          },
+        },
+        hijri: {
+          title: "Hijri calendar",
+          description: "Converts a Gregorian date to the Hijri (Umm al-Qura) calendar.",
+          params: {
+            date: "ISO date yyyy-MM-dd — defaults to today",
+            locale: "en or ar — only affects the localized month name",
+          },
+        },
+      },
+      errors: {
+        heading: "Errors",
+        body:
+          "Every 4xx response uses the same shape, everywhere — including missing or malformed parameters: {\"error\": \"latitude out of range: 95.0\"}. Nothing to special-case per endpoint.",
+      },
+      limits: {
+        heading: "Rate limits & caching",
+        body:
+          "Fixed-window rate limiting per client IP — or per API key, for a higher quota. Over the limit → 429 with a Retry-After header. Every successful response carries Cache-Control: public, max-age=31536000, immutable — safe to cache forever, since (lat, lon, date, method) always produces the same result.",
+        anonymous: "60 requests / minute — no key needed",
+        keyed: "600 requests / minute — with a free API key",
+      },
+      playground: {
+        heading: "Try it now",
+        intro: "Edit the parameters and run a real request against the live API — right from this page.",
+        run: "Run request",
+        running: "Running…",
+        response: "Response",
+        apiKeyFieldLabel: "API key (optional)",
+        apiKeyFieldPlaceholder: "ath_… (leave empty to test anonymously)",
+      },
+      keys: {
+        heading: "Get a free API key",
+        intro:
+          "Instant, no email, no account. An API key just raises your rate limit from 60 to 600 requests per minute — it isn't an identity system.",
+        labelFieldLabel: "Label (optional, for your own reference)",
+        labelPlaceholder: "my-prayer-widget",
+        generate: "Generate key",
+        generating: "Generating…",
+        warning: "Shown once — store it yourself, Athar cannot show it to you again.",
+        copy: "Copy",
+        copied: "Copied!",
+        yourKey: "Your API key",
+        yourLabel: "Label",
+        createdAt: "Created",
+        usageHeading: "Check usage",
+        usageIntro: "Look up the request count for a key you already hold.",
+        usageFieldPlaceholder: "ath_…",
+        usageCheck: "Check",
+        usageChecking: "Checking…",
+        usageNotFound: "Unknown API key.",
+        usageRequests: "Total requests",
+      },
+      cta: {
+        heading: "That's it",
+        body:
+          "Deterministic in, deterministic out. Build whatever you want on top — a widget, a bot, a smart-speaker skill. If something's missing, open an issue.",
+        github: "Source on GitHub",
+        swagger: "Full OpenAPI reference",
+      },
     },
   },
   de: {
@@ -381,11 +538,113 @@ export const dictionaries: Record<Locale, Dict> = {
       ],
     },
     theme: { light: "Zu hell wechseln", dark: "Zu dunkel wechseln" },
-    nav: { language: "Sprache" },
+    nav: { language: "Sprache", developers: "API" },
     footer: {
       madeAs: "Gebaut als Sadaqah Jariyah.",
       source: "Quellcode",
       imprint: "Impressum",
+    },
+    devs: {
+      meta: {
+        title: "Athar API — kostenlose Gebetszeiten, Qibla und Hijri-Kalender für Entwickler",
+        description:
+          "Eine kostenlose, rate-limitierte REST-API für Gebetszeiten, Qibla-Richtung und Hijri-Kalenderumrechnung. Kein Account, keine E-Mail, selbstbedienbare API-Keys für ein höheres Limit.",
+      },
+      eyebrow: "// entwickler-api",
+      heading: "Bauen mit Athar",
+      intro:
+        "Eine kostenlose REST-API für Gebetszeiten, Qibla-Richtung und Hijri-Kalenderumrechnung — derselbe Berechnungs-Kern, der diese Seite und die Mobile-App antreibt. Kein Account, keine E-Mail, kein Tracking. Probiere jeden Endpoint direkt hier auf der Seite aus.",
+      backHome: "← Zurück zu Athar",
+      quickstart: {
+        heading: "Schnellstart",
+        intro:
+          "Jeder Endpoint ist ein einfacher GET-Request. Kein Auth-Header nötig — ein optionaler API-Key erhöht nur dein Limit (siehe unten).",
+      },
+      endpoints: {
+        heading: "Endpoints",
+        intro: "Drei Endpoints, alle deterministisch und für eine gegebene Eingabe für immer gecacht.",
+        paramHeaders: { name: "Parameter", required: "Pflicht", default: "Standard", notes: "Hinweise" },
+        yes: "ja",
+        no: "nein",
+        prayerTimes: {
+          title: "Gebetszeiten",
+          description:
+            "Fadschr, Dhuhr, Asr, Maghrib, Ischa, plus Sonnenaufgang, Sonnenuntergang, Mitternacht und das Duha-Fenster, als lokale HH:mm-Strings.",
+          params: {
+            lat: "Breitengrad in Dezimalgrad (−90..90)",
+            lon: "Längengrad in Dezimalgrad (−180..180)",
+            date: "ISO-Datum yyyy-MM-dd",
+            method: "MWL, ISNA, EGYPT, MAKKAH, KARACHI, TEHRAN, JAFARI, FRANCE, RUSSIA, MALAYSIA, SINGAPORE",
+            utcOffset: "UTC-Offset des Standorts in Stunden (−12..14), für lokale Uhrzeiten",
+          },
+        },
+        qibla: {
+          title: "Qibla-Richtung",
+          description: "Großkreis-Peilung von wahrem Norden zur Kaaba, für jeden Standort.",
+          params: {
+            lat: "Breitengrad in Dezimalgrad (−90..90)",
+            lon: "Längengrad in Dezimalgrad (−180..180)",
+          },
+        },
+        hijri: {
+          title: "Hijri-Kalender",
+          description: "Wandelt ein gregorianisches Datum in den Hijri-Kalender (Umm al-Qura) um.",
+          params: {
+            date: "ISO-Datum yyyy-MM-dd — Standard: heute",
+            locale: "en oder ar — betrifft nur den lokalisierten Monatsnamen",
+          },
+        },
+      },
+      errors: {
+        heading: "Fehler",
+        body:
+          "Jede 4xx-Antwort hat überall dieselbe Form — auch bei fehlenden oder ungültigen Parametern: {\"error\": \"latitude out of range: 95.0\"}. Kein Sonderfall pro Endpoint.",
+      },
+      limits: {
+        heading: "Rate-Limits & Caching",
+        body:
+          "Fixed-Window-Rate-Limiting pro Client-IP — oder pro API-Key, für ein höheres Kontingent. Über dem Limit → 429 mit Retry-After-Header. Jede erfolgreiche Antwort trägt Cache-Control: public, max-age=31536000, immutable — sicher für immer cachebar, da (lat, lon, date, method) immer dasselbe Ergebnis liefert.",
+        anonymous: "60 Anfragen / Minute — ohne Key",
+        keyed: "600 Anfragen / Minute — mit kostenlosem API-Key",
+      },
+      playground: {
+        heading: "Jetzt ausprobieren",
+        intro: "Ändere die Parameter und schicke einen echten Request an die Live-API — direkt von dieser Seite.",
+        run: "Request senden",
+        running: "Läuft…",
+        response: "Antwort",
+        apiKeyFieldLabel: "API-Key (optional)",
+        apiKeyFieldPlaceholder: "ath_… (leer lassen für anonymen Test)",
+      },
+      keys: {
+        heading: "Kostenlosen API-Key holen",
+        intro:
+          "Sofort, ohne E-Mail, ohne Account. Ein API-Key erhöht nur dein Limit von 60 auf 600 Anfragen pro Minute — kein Identitätssystem.",
+        labelFieldLabel: "Label (optional, nur für dich selbst)",
+        labelPlaceholder: "mein-gebetszeiten-widget",
+        generate: "Key erzeugen",
+        generating: "Erzeuge…",
+        warning: "Wird nur einmal angezeigt — speichere ihn selbst, Athar kann ihn dir nicht erneut zeigen.",
+        copy: "Kopieren",
+        copied: "Kopiert!",
+        yourKey: "Dein API-Key",
+        yourLabel: "Label",
+        createdAt: "Erstellt",
+        usageHeading: "Nutzung prüfen",
+        usageIntro: "Ruf die Anzahl der Anfragen für einen Key ab, den du bereits hast.",
+        usageFieldPlaceholder: "ath_…",
+        usageCheck: "Prüfen",
+        usageChecking: "Prüfe…",
+        usageNotFound: "Unbekannter API-Key.",
+        usageRequests: "Gesamtanfragen",
+      },
+      cta: {
+        heading: "Das war's",
+        body:
+          "Deterministisch rein, deterministisch raus. Bau darauf, was du willst — ein Widget, einen Bot, eine Smart-Speaker-Skill. Fehlt etwas, eröffne ein Issue.",
+        github: "Quellcode auf GitHub",
+        swagger: "Vollständige OpenAPI-Referenz",
+      },
     },
   },
   ar: {
@@ -533,11 +792,113 @@ export const dictionaries: Record<Locale, Dict> = {
       ],
     },
     theme: { light: "الوضع الفاتح", dark: "الوضع الداكن" },
-    nav: { language: "اللغة" },
+    nav: { language: "اللغة", developers: "واجهة API" },
     footer: {
       madeAs: "بُنيت كصدقة جارية.",
       source: "الشيفرة المصدرية",
       imprint: "بيانات الناشر",
+    },
+    devs: {
+      meta: {
+        title: "واجهة أثر البرمجية — مواقيت صلاة وقبلة وتقويم هجري مجاني للمطوّرين",
+        description:
+          "واجهة REST مجانية ومحدودة المعدّل لمواقيت الصلاة، اتجاه القبلة، وتحويل التقويم الهجري. بلا حساب، بلا بريد إلكتروني، مفاتيح API ذاتية الخدمة لحد أعلى.",
+      },
+      eyebrow: "// واجهة المطوّرين",
+      heading: "ابنِ باستخدام أثر",
+      intro:
+        "واجهة REST مجانية واحدة لمواقيت الصلاة واتجاه القبلة وتحويل التقويم الهجري — نفس نواة الحساب التي تشغّل هذا الموقع وتطبيق الجوال. بلا حساب، بلا بريد إلكتروني، بلا تتبّع. جرّب كل نقطة نهاية أدناه مباشرة في هذه الصفحة.",
+      backHome: "→ العودة إلى أثر",
+      quickstart: {
+        heading: "بداية سريعة",
+        intro:
+          "كل نقطة نهاية هي طلب GET بسيط. لا حاجة لترويسة مصادقة — مفتاح API اختياري يرفع فقط حدّك (انظر أدناه).",
+      },
+      endpoints: {
+        heading: "نقاط النهاية",
+        intro: "ثلاث نقاط نهاية، جميعها حتمية النتيجة ومخزّنة مؤقتاً إلى الأبد لمدخل معيّن.",
+        paramHeaders: { name: "المعامل", required: "إلزامي", default: "الافتراضي", notes: "ملاحظات" },
+        yes: "نعم",
+        no: "لا",
+        prayerTimes: {
+          title: "مواقيت الصلاة",
+          description:
+            "الفجر والظهر والعصر والمغرب والعشاء، بالإضافة إلى الشروق والغروب ومنتصف الليل ونافذة الضحى، كسلاسل HH:mm محلية.",
+          params: {
+            lat: "خط العرض بالدرجات العشرية (−90..90)",
+            lon: "خط الطول بالدرجات العشرية (−180..180)",
+            date: "تاريخ ISO بصيغة yyyy-MM-dd",
+            method: "MWL, ISNA, EGYPT, MAKKAH, KARACHI, TEHRAN, JAFARI, FRANCE, RUSSIA, MALAYSIA, SINGAPORE",
+            utcOffset: "فارق التوقيت العالمي للموقع بالساعات (−12..14)، لعرض الوقت المحلي",
+          },
+        },
+        qibla: {
+          title: "اتجاه القبلة",
+          description: "الاتجاه بالدائرة العظمى من الشمال الحقيقي إلى الكعبة، لأي موقع.",
+          params: {
+            lat: "خط العرض بالدرجات العشرية (−90..90)",
+            lon: "خط الطول بالدرجات العشرية (−180..180)",
+          },
+        },
+        hijri: {
+          title: "التقويم الهجري",
+          description: "يحوّل تاريخاً ميلادياً إلى التقويم الهجري (أم القرى).",
+          params: {
+            date: "تاريخ ISO بصيغة yyyy-MM-dd — الافتراضي: اليوم",
+            locale: "en أو ar — يؤثر فقط على اسم الشهر المترجم",
+          },
+        },
+      },
+      errors: {
+        heading: "الأخطاء",
+        body:
+          "كل استجابة 4xx تتّخذ نفس الشكل في كل مكان — بما في ذلك المعاملات الناقصة أو غير الصالحة: {\"error\": \"latitude out of range: 95.0\"}. لا حالة خاصة لكل نقطة نهاية.",
+      },
+      limits: {
+        heading: "حدود المعدّل والتخزين المؤقت",
+        body:
+          "تحديد معدّل بنافذة ثابتة لكل عنوان IP — أو لكل مفتاح API، لحصة أعلى. عند تجاوز الحد ← 429 مع ترويسة Retry-After. كل استجابة ناجحة تحمل Cache-Control: public, max-age=31536000, immutable — يمكن تخزينها مؤقتاً إلى الأبد بأمان، لأن (lat, lon, date, method) تُنتج دائماً النتيجة نفسها.",
+        anonymous: "٦٠ طلباً / دقيقة — بلا مفتاح",
+        keyed: "٦٠٠ طلباً / دقيقة — بمفتاح API مجاني",
+      },
+      playground: {
+        heading: "جرّب الآن",
+        intro: "عدّل المعاملات وأرسل طلباً حقيقياً إلى الواجهة المباشرة — من هذه الصفحة مباشرة.",
+        run: "إرسال الطلب",
+        running: "جارٍ التنفيذ…",
+        response: "الاستجابة",
+        apiKeyFieldLabel: "مفتاح API (اختياري)",
+        apiKeyFieldPlaceholder: "ath_… (اتركه فارغاً للاختبار كزائر مجهول)",
+      },
+      keys: {
+        heading: "احصل على مفتاح API مجاني",
+        intro:
+          "فوري، بلا بريد إلكتروني، بلا حساب. مفتاح API يرفع فقط حدّك من ٦٠ إلى ٦٠٠ طلب في الدقيقة — ليس نظام هوية.",
+        labelFieldLabel: "تسمية (اختياري، لمرجعك الخاص)",
+        labelPlaceholder: "تطبيق-مواقيت-الصلاة",
+        generate: "إنشاء مفتاح",
+        generating: "جارٍ الإنشاء…",
+        warning: "يُعرض مرة واحدة فقط — احفظه بنفسك، لا يمكن لأثر عرضه لك مجدداً.",
+        copy: "نسخ",
+        copied: "تم النسخ!",
+        yourKey: "مفتاحك",
+        yourLabel: "التسمية",
+        createdAt: "تاريخ الإنشاء",
+        usageHeading: "تحقّق من الاستخدام",
+        usageIntro: "اطّلع على عدد الطلبات لمفتاح تملكه بالفعل.",
+        usageFieldPlaceholder: "ath_…",
+        usageCheck: "تحقّق",
+        usageChecking: "جارٍ التحقّق…",
+        usageNotFound: "مفتاح API غير معروف.",
+        usageRequests: "إجمالي الطلبات",
+      },
+      cta: {
+        heading: "هذا كل شيء",
+        body:
+          "حتمي في الإدخال، حتمي في الإخراج. ابنِ ما تشاء فوقها — أداة، بوت، أو مهارة لمكبّر ذكي. إن كان هناك ما ينقص، افتح Issue.",
+        github: "الشيفرة المصدرية على GitHub",
+        swagger: "المرجع الكامل لـ OpenAPI",
+      },
     },
   },
 };

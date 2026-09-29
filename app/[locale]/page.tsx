@@ -67,6 +67,9 @@ export default async function Home({
             <span role="img" aria-label="Athar" className="brand-logo h-12 aspect-[1607/742]" />
           </span>
           <nav className="flex items-center gap-6">
+            <Link href={`/${l}/developers`} className="mono text-muted transition hover:text-ink">
+              {t.nav.developers}
+            </Link>
             {/* Sprachwahl — Segment-Control mit Sprachcodes */}
             <div
               role="group"
@@ -312,9 +315,14 @@ export default async function Home({
             <Mark size={18} className="text-accent" />
             {t.footer.madeAs}
           </span>
-          <a href={GITHUB_ORG} className="mono transition hover:text-ink">
-            {t.footer.source}
-          </a>
+          <span className="flex items-center gap-6">
+            <Link href={`/${l}/developers`} className="mono transition hover:text-ink">
+              {t.nav.developers}
+            </Link>
+            <a href={GITHUB_ORG} className="mono transition hover:text-ink">
+              {t.footer.source}
+            </a>
+          </span>
         </footer>
       </div>
     </>
