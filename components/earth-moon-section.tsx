@@ -13,7 +13,7 @@ const Scene = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-80 items-center justify-center text-muted sm:h-96">…</div>
+      <div className="flex h-[62vh] max-h-[720px] min-h-[440px] items-center justify-center text-muted">…</div>
     ),
   },
 );
@@ -83,7 +83,7 @@ export function EarthMoonSection({ locale, labels }: { locale: Locale; labels: L
 
   return (
     <div className="border border-rule bg-surface">
-      <div className="grid md:grid-cols-[1.3fr_1fr]">
+      <div className="grid md:grid-cols-[1.6fr_1fr]">
         <div className="border-b border-rule md:border-b-0 md:border-e">
           <Scene
             onPick={onPick}

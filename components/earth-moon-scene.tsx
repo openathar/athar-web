@@ -10,6 +10,12 @@ import { useReducedMotion } from "~/lib/use-reduced-motion";
 /**
  * Erde + Mond, immer vollstaendig im Bild, sehr zurueckhaltende Eigenbewegung.
  *
+ * Bewegung respektiert Reduced-Motion (dann steht alles still) und pausiert
+ * zudem, solange der Zeiger die Szene bedient — die Oberflaeche wandert beim
+ * Zielen nicht unter dem Cursor weg. Ein Klick direkt nach einer Ziehgeste
+ * (inkl. Kamera-Nachlauf) zaehlt nie als Ortswahl, damit Drehen niemals
+ * versehentlich einen Ort setzt.
+ *
  * Echte Texturen (NASA-Daten, Solar System Scope, CC BY 4.0 — siehe
  * public/textures/README.md), lokal ausgeliefert: kein Fremd-Server erfaehrt
  * vom Besucher. Die Tag/Nacht-Grenze ist berechnet, nicht gemalt: Der
@@ -99,15 +105,78 @@ function Earth({
   nightBoost,
   onPick,
   pickedMarker,
+  reduced,
 }: {
   sunDir: [number, number, number];
   nightBoost: number;
   onPick: (p: Pick) => void;
   pickedMarker: Pick;
+  reduced: boolean;
 }) {
   const earthGroup = useRef<THREE.Group>(null);
   const cloudsRef = useRef<THREE.Mesh>(null);
   const markerRef = useRef<THREE.Mesh>(null);
+  const { gl } = useThree();
+  // Eigenbewegung pausiert, solange der Zeiger die Szene anfuehrt oder
+  // zieht — sonst wandert die Oberflaeche beim Zielen unter dem Cursor weg.
+  // Und: Zeitstempel der letzten Ziehgeste, damit ein Klick direkt danach
+  // (inkl. Damping-Nachlauf) nie als Ortswahl zaehlt.
+  const pausedRef = useRef(false);
+  const lastGestureRef = useRef(0);
+  const downPos = useRef<[number, number] | null>(null);
+  const movedRef = useRef(false);
+  const resumeTimer = useRef<number | null>(null);
+
+  useEffect(() => {
+    const el = gl.domElement;
+    const pause = () => {
+      pausedRef.current = true;
+      if (resumeTimer.current !== null) {
+        clearTimeout(resumeTimer.current);
+        resumeTimer.current = null;
+      }
+    };
+    const scheduleResume = () => {
+      if (resumeTimer.current !== null) clearTimeout(resumeTimer.current);
+      resumeTimer.current = window.setTimeout(() => {
+        pausedRef.current = false;
+        resumeTimer.current = null;
+      }, 2500);
+    };
+    const onDown = (e: PointerEvent) => {
+      downPos.current = [e.clientX, e.clientY];
+      movedRef.current = false;
+      pause();
+    };
+    const onMove = (e: PointerEvent) => {
+      if (e.buttons === 0 || !downPos.current) return;
+      const [x, y] = downPos.current;
+      if (Math.hypot(e.clientX - x, e.clientY - y) > 6) {
+        movedRef.current = true;
+        lastGestureRef.current = performance.now();
+        pause();
+      }
+    };
+    const onUp = () => {
+      // Nur das Loslassen einer echten Ziehgeste zaehlt als Geste — ein
+      // reiner Klick (down/up ohne Weg) darf die Ortswahl nicht blockieren.
+      if (movedRef.current) lastGestureRef.current = performance.now();
+      downPos.current = null;
+      scheduleResume();
+    };
+    const onLeave = () => scheduleResume();
+    el.addEventListener("pointerdown", onDown);
+    el.addEventListener("pointermove", onMove);
+    el.addEventListener("pointerup", onUp);
+    el.addEventListener("pointerleave", onLeave);
+    return () => {
+      el.removeEventListener("pointerdown", onDown);
+      el.removeEventListener("pointermove", onMove);
+      el.removeEventListener("pointerup", onUp);
+      el.removeEventListener("pointerleave", onLeave);
+      if (resumeTimer.current !== null) clearTimeout(resumeTimer.current);
+    };
+  }, [gl]);
 
   const [day, night, clouds, specular] = useLoader(THREE.TextureLoader, [
     TEX.earthDay,
@@ -171,6 +240,9 @@ function Earth({
   function onEarthClick(e: any) {
     e.stopPropagation();
     if (!e.point || !earthGroup.current) return;
+    // Direkt nach einer Ziehgeste (inkl. Damping-Nachlauf der Kamera) ist ein
+    // Klick fast immer das Loslassen der Geste, keine Ortswahl — ignorieren.
+    if (performance.now() - lastGestureRef.current < 350) return;
     // Zieh-Gesten (Drehen der Kamera) enden mit einem Klick-Event — erst ab
     // einer deutlichen Bewegung wird daraus ein echter Klick, sonst waehlt jede
     // Drehbewegung versehentlich einen Punkt aus. Echte Mausklicks bewegen
@@ -184,9 +256,11 @@ function Earth({
   }
 
   useFrame((_, delta) => {
-    // Zurueckhaltende, aber deutlich sichtbare Eigendrehung.
-    if (earthGroup.current) earthGroup.current.rotation.y += delta * 0.025;
-    if (cloudsRef.current) cloudsRef.current.rotation.y += delta * 0.035;
+    // Zurueckhaltende, aber deutlich sichtbare Eigendrehung — steht still bei
+    // Reduced-Motion und waehrend der Zeiger die Szene bedient.
+    const spinning = !reduced && !pausedRef.current;
+    if (earthGroup.current && spinning) earthGroup.current.rotation.y += delta * 0.025;
+    if (cloudsRef.current && spinning) cloudsRef.current.rotation.y += delta * 0.035;
 
     if (markerRef.current && pickedMarker && earthGroup.current) {
       const lat = (pickedMarker.lat * Math.PI) / 180;
@@ -208,9 +282,11 @@ function Earth({
       );
       // Pulsieren: Punkt und Ring atmen gemeinsam in Groesse und Deckkraft —
       // zurueckhaltend, damit der Punkt sichtbar bleibt, ohne zu dominieren.
-      const pulse = 0.7 + 0.3 * Math.sin(performance.now() * 0.005);
+      // Bei Reduced-Motion steht auch das still.
+      const beat = reduced ? 0 : performance.now() * 0.005;
+      const pulse = 0.7 + 0.3 * Math.sin(beat);
       markerMat.opacity = pulse;
-      markerRef.current.scale.setScalar(1 + 0.15 * Math.sin(performance.now() * 0.005));
+      markerRef.current.scale.setScalar(1 + 0.15 * Math.sin(beat));
       markerRef.current.visible = true;
     } else if (markerRef.current) {
       markerRef.current.visible = false;
@@ -344,24 +420,6 @@ function Moon({
 
   return (
     <group rotation-x={-ORBIT_TILT}>
-      {/* Bahmlinie — duenner goldener Kreis, macht die Ebene lesbar */}
-      <lineLoop>
-        <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            args={[
-              new Float32Array(
-                Array.from({ length: 128 }, (_, i) => {
-                  const a = (i / 128) * Math.PI * 2;
-                  return [Math.cos(a) * MOON_DIST, 0, -Math.sin(a) * MOON_DIST];
-                }).flat(),
-              ),
-              3,
-            ]}
-          />
-        </bufferGeometry>
-        <lineBasicMaterial color="#d4a95f" transparent opacity={0.16} />
-      </lineLoop>
       <group ref={spinRef}>
         <mesh ref={moonRef} position={[MOON_DIST, 0, 0]}>
           <sphereGeometry args={[MOON_R, 64, 64]} />
@@ -400,7 +458,7 @@ function Scene({
       {/* Eine Sonne fuer beide Koerper — deshalb stimmt die Mondphase. */}
       <directionalLight position={[sunDir[0] * 12, sunDir[1] * 12, sunDir[2] * 12]} intensity={2.4} color="#fff6e8" />
       <ambientLight intensity={ambient} />
-      <Earth sunDir={sunDir} nightBoost={nightBoost} onPick={onPick} pickedMarker={pickedMarker} />
+      <Earth sunDir={sunDir} nightBoost={nightBoost} onPick={onPick} pickedMarker={pickedMarker} reduced={reduced} />
       <Moon sunDir={sunDir} moonPhaseAngle={moonPhaseAngle} reduced={reduced} />
     </>
   );
@@ -412,23 +470,41 @@ function Scene({
  * Seitenverhaeltnis, nicht aus einem geratenen Fixwert. Reagiert auf
  * Groessenaenderungen (Fenster/Viewport).
  */
+/**
+ * Setzt die Kameradistanz so, dass Erde UND Mond bei jeder Canvas-Groesse
+ * vollstaendig sichtbar bleiben — berechnet aus dem tatsaechlichen
+ * Seitenverhaeltnis, nicht aus einem geratenen Fixwert.
+ *
+ * Passt die Kamera nur beim ersten Einhängen und bei echten
+ * Groessenaenderungen an (Schlüssel aus Breite x Höhe): Ein Re-Render des
+ * Baums — z.B. nach einer Ortswahl — darf die vom Nutzer gedrehte Kamera
+ * niemals auf die Startposition zuruecksetzen. (R3F reicht `size` als neues
+ * Objekt durch, daher der Vergleich über primitive Werte statt Identität.)
+ */
 function FitCamera() {
-  const { camera, size } = useThree();
+  const camera = useThree((s) => s.camera);
+  const width = useThree((s) => s.size.width);
+  const height = useThree((s) => s.size.height);
+  const fitted = useRef<string | null>(null);
   useEffect(() => {
+    const key = `${width}x${height}`;
+    if (fitted.current === key) return;
+    fitted.current = key;
     const cam = camera as THREE.PerspectiveCamera;
-    const aspect = size.width / size.height;
+    const aspect = width / height;
     const vFovRad = (cam.fov * Math.PI) / 180;
     const hFovRad = 2 * Math.atan(Math.tan(vFovRad / 2) * aspect);
 
-    // Margin (1.25x), damit die Koerper nicht am Rand kleben
-    const distForWidth = (SCENE_HALF_WIDTH * 1.25) / Math.tan(hFovRad / 2);
-    const distForHeight = (SCENE_HALF_HEIGHT * 1.25) / Math.tan(vFovRad / 2);
+    // Margin (1.12x), damit die Koerper formatfuellend wirken, aber bei
+    // jeder Canvas-Groesse vollstaendig im Bild bleiben
+    const distForWidth = (SCENE_HALF_WIDTH * 1.12) / Math.tan(hFovRad / 2);
+    const distForHeight = (SCENE_HALF_HEIGHT * 1.12) / Math.tan(vFovRad / 2);
     const dist = Math.max(distForWidth, distForHeight);
 
     camera.position.set(0, dist * 0.09, dist);
     camera.lookAt(0, 0, 0);
     cam.updateProjectionMatrix();
-  }, [camera, size]);
+  }, [camera, width, height]);
   return null;
 }
 
@@ -497,12 +573,21 @@ export function EarthMoonScene({
   const nightBoost = theme === "light" ? 4.6 : 3.0;
   const ambient = theme === "light" ? 0.12 : 0.05;
 
+  // Memoized: Ein inline-Objekt bekäme bei jedem Re-Render (z.B. nach einer
+  // Ortswahl) eine neue Identität — R3F würde die Kameraposition daraufhin
+  // neu anwenden und die Ansicht auf die Startposition zurücksetzen, obwohl
+  // der Nutzer gerade gedreht hat. So bleibt die Kamera, wo sie ist.
+  const cameraSettings = useMemo(
+    () => ({ position: [0, 1, 12] as [number, number, number], fov: 32 }),
+    [],
+  );
+
   return (
-    <div ref={hostRef} className="h-80 w-full cursor-grab active:cursor-grabbing sm:h-96">
+    <div ref={hostRef} className="h-[62vh] max-h-[720px] min-h-[440px] w-full cursor-grab active:cursor-grabbing">
       {visible && (
         // fov klein + Distanz gross: beide Koerper bleiben bei jeder Fensterbreite
         // vollstaendig im Bild; Zoom ist erlaubt, bleibt aber gekappt.
-        <Canvas camera={{ position: [0, 1, 12], fov: 32 }} dpr={[1, 1.5]}>
+        <Canvas camera={cameraSettings} dpr={[1, 1.5]}>
           <FitCamera />
           <Suspense fallback={null}>
             <Scene
