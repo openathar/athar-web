@@ -9,7 +9,7 @@
   --color-accent: var(--c-accent);
   --color-gold: var(--c-gold);
 
-  --font-display: var(--font-serif), Georgia, serif;
+  --font-display: var(--font-sans), system-ui, sans-serif;
   --font-body: var(--font-sans), system-ui, sans-serif;
   --font-mono: var(--font-code), ui-monospace, monospace;
   --font-quran: var(--font-quran-face), serif;
@@ -60,7 +60,7 @@ html[lang="ar"] body {
 
 /* Vokalisierte Ueberschriften brauchen Luft nach oben, sonst stossen die
    Zeichen an die Zeile darueber. */
-html[lang="ar"] .display {
+html[lang="ar"] .display:not(:lang(en)) {
   font-family: var(--font-ar-display);
   font-weight: 400;
   letter-spacing: 0;
@@ -69,26 +69,51 @@ html[lang="ar"] .display {
   font-style: normal;
 }
 
+/* Englische Bloecke innerhalb der arabischen Seite (z. B. die
+   API-Referenz, markiert mit lang="en") behalten die lateinischen Schriften.
+   Sonst setzt Amiri auch lateinische Ueberschriften — als Serife. */
+html[lang="ar"] [lang="en"] {
+  font-family: var(--font-body);
+  line-height: 1.7;
+}
+
 /* JetBrains Mono hat keine arabischen Glyphen; ohne Zuweisung wuerde der
    Browser eine beliebige Systemschrift einsetzen. */
-html[lang="ar"] .mono {
+html[lang="ar"] .mono:not(:lang(en)) {
   font-family: var(--font-ar-body);
   letter-spacing: 0;
 }
 
-.display {
-  font-family: var(--font-display);
-  font-weight: 400;
-  letter-spacing: -0.012em;
-  line-height: 1.12;
-  /* Optische Groesse mitfuehren, sonst wirkt Newsreader im Grossen zu duenn. */
-  font-variation-settings: "opsz" 40;
+/*
+ * Ueberschriften in Plus Jakarta Sans. Hierarchie ueber Gewicht und enge
+ * Laufweite — grosse Grotesk-Zeilen wirken mit Standard-Laufweite locker.
+ *
+ * Bewusst in `@layer components`: ungelayert schlug diese Regel jede
+ * Tailwind-Utility, `font-light`/`font-medium` am Element waren wirkungslos.
+ * Im Layer bleibt 600 der Standard, eine Utility am Element gewinnt aber.
+ * Die arabische Variante oben bleibt ungelayert — Amiri hat nur 400/700,
+ * dort soll keine Utility ein Zwischengewicht erzwingen.
+ */
+@layer components {
+  .display {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
 }
 
-.mono {
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  letter-spacing: 0.02em;
+/*
+ * Ebenfalls im Layer: ungelayert ueberstimmte die Regel jede Groessen- und
+ * Laufweiten-Utility — `mono text-[10px]` wurde trotzdem mit 13px gesetzt.
+ * 13px bleibt der Standard, wo keine Utility steht.
+ */
+@layer components {
+  .mono {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    letter-spacing: 0.02em;
+  }
 }
 
 .quran {

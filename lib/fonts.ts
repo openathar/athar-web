@@ -1,5 +1,4 @@
 import {
-  Newsreader,
   Plus_Jakarta_Sans,
   JetBrains_Mono,
   Amiri_Quran,
@@ -18,26 +17,21 @@ import {
  */
 
 /**
- * Newsreader als Display-Schrift.
+ * Plus Jakarta Sans traegt Fliesstext UND Ueberschriften.
  *
- * Variable Antiqua mit optischer Groessenachse (fuer redaktionelle
- * Ueberschriften entworfen, nicht fuer Fliesstext). Ruhiger und
- * zurueckhaltender als Fraunces, das im Hero zu kraftvoll/dekorativ wirkte —
- * passt besser zum kontemplativen Ton der Seite und laesst dem arabischen
- * Amiri-Satz den Vortritt, statt mit ihm zu konkurrieren.
+ * Frueher lief fuer Ueberschriften zusaetzlich Newsreader (Serif) — auf
+ * Wunsch entfernt: eine Familie fuer alles Lateinische wirkt ruhiger und
+ * spart einen Font-Download. Die Hierarchie entsteht jetzt ueber Gewicht und
+ * Laufweite statt ueber den Schriftwechsel.
+ *
+ * Ohne `weight` laedt next/font die variable Datei (200–800) — ein File pro
+ * Stil statt je eines pro Schnitt. Italic wird gebraucht, weil einige
+ * Gold-Labels `display italic` setzen; ohne echte Kursive wuerde der Browser
+ * die Aufrechte nur schraeg stellen.
  */
-export const serif = Newsreader({
-  subsets: ["latin"],
-  axes: ["opsz"],
-  style: ["normal", "italic"],
-  variable: "--font-serif",
-  display: "swap",
-});
-
-/** Etwas mehr Eigenart als Inter, ohne unruhig zu werden. */
 export const sans = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
   variable: "--font-sans",
   display: "swap",
 });

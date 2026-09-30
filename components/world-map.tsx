@@ -209,7 +209,7 @@ export function WorldMap({ locale, labels }: { locale: Locale; labels: MapLabels
               >
                 <dt className="flex items-center gap-2">
                   {nextPrayerKey === k && (
-                    <span className="mono rounded-full border border-accent px-2 py-0.5 text-[9px] uppercase tracking-wide text-accent">
+                    <span className="mono rounded-full border border-accent px-2 py-0.5 text-[10px] uppercase tracking-wide text-accent">
                       {labels.next}
                     </span>
                   )}
