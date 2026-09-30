@@ -29,7 +29,7 @@ type Labels = {
   source: string;
 };
 
-type Times = Record<"fajr" | "dhuhr" | "asr" | "maghrib" | "isha", string>;
+type Times = Record<"fajr" | "dhuhr" | "asr" | "maghrib" | "isha", string | null>;
 
 /**
  * Startseiten-Abschnitt: Erde + Mond, immer beide vollstaendig sichtbar,
@@ -109,7 +109,7 @@ export function EarthMoonSection({ locale, labels }: { locale: Locale; labels: L
                 {(["fajr", "dhuhr", "asr", "maghrib", "isha"] as const).map((k) => (
                   <div key={k} className="flex justify-between gap-6">
                     <dt className="text-ink">{labels.names[k]}</dt>
-                    <dd className="text-gold tabular-nums">{num(times[k])}</dd>
+                    <dd className="text-gold tabular-nums">{times[k] ? num(times[k]) : "—:—"}</dd>
                   </div>
                 ))}
               </dl>

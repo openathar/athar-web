@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { isLand, subsolarPoint, isDaylight } from "~/lib/noor-land";
 import { CITIES, ZONE_HINTS, type CityKey } from "~/lib/cities";
-import { getPrayerTimesForCoords, prayerKeys, toArabicDigits, type PrayerData } from "~/lib/prayer-times";
+import { getPrayerTimesForCoords, nextPrayerKey as findNextPrayer, prayerKeys, toArabicDigits, type PrayerData } from "~/lib/prayer-times";
 import { palette, useTheme } from "~/lib/use-theme";
 import type { Locale } from "~/lib/i18n";
 
@@ -158,7 +158,7 @@ export function WorldMap({ locale, labels }: { locale: Locale; labels: MapLabels
     return () => clearInterval(interval);
   }, [selected, myCoords, theme]);
 
-  const nextPrayerKey = times ? guessNextPrayer(times) : null;
+  const nextPrayerKey = times ? findNextPrayer(times.timings, clockNow()) : null;
 
   return (
     <div className="border border-rule bg-surface">
@@ -215,7 +215,7 @@ export function WorldMap({ locale, labels }: { locale: Locale; labels: MapLabels
                   )}
                   <span className="text-ink">{labels.names[k]}</span>
                 </dt>
-                <dd className="text-gold tabular-nums">{times ? num(times.timings[k]) : "—:—"}</dd>
+                <dd className="text-gold tabular-nums">{times?.timings[k] ? num(times.timings[k]) : "—:—"}</dd>
               </div>
             ))}
           </dl>
@@ -232,11 +232,8 @@ export function WorldMap({ locale, labels }: { locale: Locale; labels: MapLabels
   );
 }
 
-function guessNextPrayer(data: PrayerData): (typeof prayerKeys)[number] | null {
+/** Aktuelle Uhrzeit als "HH:mm" — Vergleichsbasis fuer das naechste Gebet. */
+function clockNow(): string {
   const now = new Date();
-  const current = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
-  for (const key of prayerKeys) {
-    if (data.timings[key] > current) return key;
-  }
-  return prayerKeys[0] ?? null;
+  return `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
 }

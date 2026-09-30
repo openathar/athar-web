@@ -1,4 +1,4 @@
-import { Methods, PrayerTimes, formatLocalTime } from "./athan-core";
+import { Methods, PrayerTimes, formatLocalTime } from "./athan-core.ts";
 
 /**
  * Gebetszeiten für die interaktiven Abschnitte der Startseite (Weltkarte,
@@ -14,9 +14,16 @@ import { Methods, PrayerTimes, formatLocalTime } from "./athan-core";
 export const prayerKeys = ["fajr", "dhuhr", "asr", "maghrib", "isha"] as const;
 export type PrayerKey = (typeof prayerKeys)[number];
 
+/**
+ * `null` = das Gebet findet an diesem Tag an diesem Ort nicht statt
+ * (Polartag/-nacht). Der Kern liefert dafuer NaN; als Zeit formatiert wurde
+ * daraus "NaN:NaN" auf der Karte.
+ */
+export type Timings = Record<PrayerKey, string | null>;
+
 export type PrayerData = {
   city: string;
-  timings: Record<PrayerKey, string>;
+  timings: Timings;
   method: string;
   /** true = lokal berechnet (kein Netzwerk nötig) */
   live: boolean;
@@ -65,8 +72,8 @@ export function getPrayerTimesForCoords(
   lon: number,
   cityName: string,
   timeZone?: string,
+  now: Date = new Date(),
 ): PrayerData {
-  const now = new Date();
   const zone = timeZone ?? Intl.DateTimeFormat().resolvedOptions().timeZone;
   const offset = utcOffsetHoursForZone(zone, now);
   const result = new PrayerTimes(Methods.MWL).getTimes(
@@ -75,13 +82,28 @@ export function getPrayerTimesForCoords(
   return {
     city: cityName,
     timings: {
-      fajr: formatLocalTime(result.fajr, offset),
-      dhuhr: formatLocalTime(result.dhuhr, offset),
-      asr: formatLocalTime(result.asr, offset),
-      maghrib: formatLocalTime(result.maghrib, offset),
-      isha: formatLocalTime(result.isha, offset),
+      fajr: localTime(result.fajr, offset),
+      dhuhr: localTime(result.dhuhr, offset),
+      asr: localTime(result.asr, offset),
+      maghrib: localTime(result.maghrib, offset),
+      isha: localTime(result.isha, offset),
     },
     method: "MWL",
     live: true,
   };
+}
+
+function localTime(utcMillis: number, offset: number): string | null {
+  return Number.isFinite(utcMillis) ? formatLocalTime(utcMillis, offset) : null;
+}
+
+/**
+ * Das naechste Gebet nach `now` ("HH:mm", Ortszeit). Nach Isha ist es das
+ * Fajr des Folgetags. Gebete, die nicht stattfinden, werden uebersprungen —
+ * als String verglichen war "NaN:NaN" > "14:00" wahr und markierte ein
+ * nicht existierendes Gebet als naechstes.
+ */
+export function nextPrayerKey(timings: Timings, now: string): PrayerKey | null {
+  const occurring = prayerKeys.filter((k) => timings[k] !== null);
+  return occurring.find((k) => (timings[k] as string) > now) ?? occurring[0] ?? null;
 }
