@@ -217,6 +217,158 @@ html[lang="ar"] .mono:not(:lang(en)) {
   }
 }
 
+/* ---------- Developer-Portal ---------- */
+
+/*
+ * Sternenfeld hinter dem Masthead: zwei versetzte radiale Punktraster als
+ * reine CSS-Textur — kein Canvas, kein Bild, keine Laufzeitkosten. Nach
+ * unten ausgeblendet, damit die Referenz darunter ruhig bleibt.
+ */
+.api-masthead {
+  position: relative;
+  isolation: isolate;
+}
+
+.api-masthead::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, var(--c-rule) 50%, transparent 50%),
+    radial-gradient(1px 1px at 70% 15%, var(--c-rule) 50%, transparent 50%),
+    radial-gradient(1px 1px at 45% 70%, var(--c-rule) 50%, transparent 50%),
+    radial-gradient(1px 1px at 85% 55%, var(--c-rule) 50%, transparent 50%);
+  background-size: 180px 180px;
+  mask-image: linear-gradient(to bottom, black, transparent 85%);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+/* Basis-URL-Pille mit Live-Punkt. */
+.api-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--color-rule);
+  background: var(--color-surface);
+  border-radius: 999px;
+}
+
+.api-pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-accent) 60%, transparent);
+  animation: api-pulse 2.4s ease-out infinite;
+}
+
+@keyframes api-pulse {
+  70% {
+    box-shadow: 0 0 0 7px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+/*
+ * Index-Schiene: durchgehende Linie links, der aktive Eintrag setzt einen
+ * leuchtenden Punkt darauf — ein Positionsanzeiger wie an einem Instrument,
+ * statt der ueblichen farbigen Hintergrundflaeche.
+ */
+.api-rail {
+  position: relative;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding-inline-start: 1rem;
+  scrollbar-width: thin;
+}
+
+.api-rail::before {
+  content: "";
+  position: absolute;
+  inset-block: 0.25rem;
+  inset-inline-start: 0;
+  width: 1px;
+  background: var(--color-rule);
+}
+
+.api-rail-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0;
+  font-size: 13.5px;
+  color: var(--color-muted);
+  transition: color 0.18s ease;
+}
+
+.api-rail-link:hover {
+  color: var(--color-ink);
+}
+
+.api-rail-link.is-active {
+  color: var(--color-accent);
+}
+
+.api-rail-dot {
+  position: absolute;
+  inset-inline-start: -1rem;
+  width: 1px;
+  height: 100%;
+  background: transparent;
+  transition: background 0.18s ease;
+}
+
+.api-rail-link:hover .api-rail-dot {
+  background: var(--color-muted);
+}
+
+.api-rail-link.is-active .api-rail-dot {
+  background: var(--color-accent);
+  box-shadow: 0 0 6px var(--color-accent);
+}
+
+/*
+ * Endpunkt-Panel mit Eckmarken (crop marks) — eine Anleihe beim
+ * Manuskript-/Druckbogen-Motiv der Marke: der Rahmen ist nicht geschlossen,
+ * sondern nur an den Ecken angerissen.
+ */
+.api-panel {
+  position: relative;
+  border: 1px solid var(--color-rule);
+  background: var(--color-surface);
+}
+
+.api-panel::before,
+.api-panel::after {
+  content: "";
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-color: var(--color-gold);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.api-panel::before {
+  inset-block-start: -1px;
+  inset-inline-start: -1px;
+  border-top: 1px solid;
+  border-left: 1px solid;
+}
+
+.api-panel::after {
+  inset-block-end: -1px;
+  inset-inline-end: -1px;
+  border-bottom: 1px solid;
+  border-right: 1px solid;
+}
+
 /* ---------- Hero: Logo mit Sternenhimmel ---------- */
 
 /* Bühne für das Athar-Logo: Galaxie (Canvas) + sanft schwebendes Logo. */
