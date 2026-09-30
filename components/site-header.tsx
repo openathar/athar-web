@@ -8,6 +8,10 @@ import { ThemeToggle } from "~/components/theme";
  * Sprachwahl/Theme-Toggle nicht zweimal gepflegt werden. `basePath` erlaubt
  * dem Portal, beim Sprachwechsel auf derselben Unterseite zu bleiben statt
  * auf die Startseite zurueckzuspringen.
+ *
+ * Das Locale gehoert dabei VOR den Pfad (`/en/developers`), weil die Route
+ * `app/[locale]/developers` so aufgebaut ist — die umgekehrte Reihenfolge
+ * ergab `/developers/en` und damit drei 404er in der Sprachwahl.
  */
 export function SiteHeader({
   locale,
@@ -39,7 +43,7 @@ export function SiteHeader({
           {locales.map((c) => (
             <Link
               key={c}
-              href={`${basePath}/${c}`}
+              href={`/${c}${basePath}`}
               lang={c}
               title={localeNames[c]}
               aria-current={c === locale ? "page" : undefined}
