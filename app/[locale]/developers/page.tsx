@@ -237,7 +237,7 @@ export default async function Developers({
                 <Row k="Coordinates" v="Decimal degrees, never degrees/minutes/seconds. Latitude −90…90, longitude −180…180." />
                 <Row k="Auth" v="Optional. Send X-API-Key to lift the rate limit; omit it and the endpoint still answers." />
                 <Row k="Caching" v="Calculation results are deterministic and sent with Cache-Control: public, max-age=31536000, immutable — cache them forever. The one exception: /v1/hijri without a date means “today” and is cached for five minutes." />
-                <Row k="CORS" v="Browser calls are allowed from openathar.org only. Call the API from your server, a mobile app or a script — CORS does not apply there — or proxy it through your own backend." />
+                <Row k="CORS" v="Browser calls are allowed from openathar.org and, for local development, http://localhost:3000; any other origin gets 403. Call the API from your server, a mobile app or a script — CORS does not apply there — or proxy it through your own backend." />
                 <Row k="Errors" v={'Always the same shape: {"error": "…"} — see Errors below.'} />
                 <Row k="Versioning" v="The path carries the major version. Breaking changes land on /v2, never silently on /v1." />
               </dl>
