@@ -41,8 +41,8 @@ npm test        # reference tests against athan-core-java values
 
 ## Design principles
 
-Calm, editorial: a paper/ink palette, serif display (Newsreader), Amiri for
-Arabic. The visual language is Islamic geometry (Khatam star as SVG) —
+Calm, editorial: a paper/ink palette, Plus Jakarta Sans throughout (headings
+set by weight and tracking, not a second face), Amiri for Arabic. The visual language is Islamic geometry (Khatam star as SVG) —
 deliberately no figurative imagery and no AI-generated letterforms. Arabic
 always renders as real webfont typography, never as an image.
 
