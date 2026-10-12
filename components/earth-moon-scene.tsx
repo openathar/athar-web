@@ -87,7 +87,10 @@ const EARTH_FRAG = /* glsl */ `
 
     // Nachtseite: Staedtelichter aus der echten Nachtkarte, aufgehellt — der
     // Boost folgt der Helligkeit der Webseite (hellles Theme = lesbare Nacht).
-    vec3 color = mix(night * uNightBoost + day * 0.22, day, dayFactor);
+    // Im hellen Theme (Boost > 5) bleibt die Nachtseite als gedaempftes Tagbild
+    // lesbar, statt auf dem Papier ein schwarzer Ball zu sein.
+    float nightDay = mix(0.22, 0.62, step(5.0, uNightBoost));
+    vec3 color = mix(night * uNightBoost + day * nightDay, day, dayFactor);
 
     // Ozean-Glanz nur auf der Tagseite (specular map = Meere).
     vec3 viewDir = normalize(cameraPosition - vWorldPosition);
@@ -343,9 +346,10 @@ function Earth({
         />
       </mesh>
       {/* Atmosphaere als Fresnel-Glow — nur die Kante leuchtet */}
-      <mesh material={atmoMaterial} scale={1.06}>
+      {/* Hell: der additive Glow wuerde auf Papier als grauer Ring stehen. */}
+      {nightBoost < 5 && <mesh material={atmoMaterial} scale={1.06}>
         <sphereGeometry args={[EARTH_R, 64, 64]} />
-      </mesh>
+      </mesh>}
 
       {/* Schwebende Stadt-Marker — kleine goldene Punkte, die sanft ueber
           der Oberflaeche schweben und mit der Erde mitrotieren. */}
@@ -616,8 +620,8 @@ export function EarthMoonScene({
 
   // Beleuchtung in Proportion zur Webseite: helles Theme = hellere Nachtseite
   // und mehr Umgebungslicht, dunkles Theme = dramatische Kontraste.
-  const nightBoost = theme === "light" ? 4.6 : 3.0;
-  const ambient = theme === "light" ? 0.12 : 0.05;
+  const nightBoost = theme === "light" ? 7.5 : 3.0;
+  const ambient = theme === "light" ? 0.5 : 0.05;
 
   // Memoized: Ein inline-Objekt bekäme bei jedem Re-Render (z.B. nach einer
   // Ortswahl) eine neue Identität — R3F würde die Kameraposition daraufhin

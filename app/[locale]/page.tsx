@@ -138,7 +138,16 @@ export default async function Home({
                   height={1664}
                   fetchPriority="high"
                   decoding="async"
-                  className="ba-frame ba-frame--round ba-float relative z-10 h-auto w-full"
+                  className="orb-dark ba-frame ba-frame--round ba-float relative z-10 h-auto w-full"
+                />
+<img
+                  src="/beit-athar/tree-light.webp"
+                  alt="" aria-hidden
+                  width={1554}
+                  height={1664}
+                  
+                  decoding="async"
+                  className="orb-light ba-frame ba-frame--round ba-float relative z-10 h-auto w-full"
                 />
               </div>
             </div>
@@ -254,7 +263,16 @@ export default async function Home({
                   height={874}
                   loading="lazy"
                   decoding="async"
-                  className="ba-frame h-auto w-full"
+                  className="orb-dark ba-frame h-auto w-full"
+                />
+<img
+                  src="/beit-athar/workers-light.webp"
+                  alt="" aria-hidden
+                  width={1510}
+                  height={874}
+                  loading="lazy"
+                  decoding="async"
+                  className="orb-light ba-frame h-auto w-full"
                 />
               </BuildIn>
             </div>
@@ -277,7 +295,16 @@ export default async function Home({
                   height={696}
                   loading="lazy"
                   decoding="async"
-                  className="ba-frame h-auto w-full"
+                  className="orb-dark ba-frame h-auto w-full"
+                />
+<img
+                  src="/beit-athar/connection-light.webp"
+                  alt="" aria-hidden
+                  width={1600}
+                  height={696}
+                  loading="lazy"
+                  decoding="async"
+                  className="orb-light ba-frame h-auto w-full"
                 />
                 <div aria-hidden className="hands-glow" />
               </BuildIn>
@@ -334,14 +361,14 @@ export default async function Home({
                 className="orb-dark h-auto w-full"
               />
               <img
-                src="/beit-athar/world.jpg"
+                src="/beit-athar/world-light.webp"
                 alt=""
                 aria-hidden
                 width={1200}
                 height={1200}
                 loading="lazy"
                 decoding="async"
-                className="orb-light ba-frame h-auto w-full"
+                className="orb-light h-auto w-full"
               />
               </BuildIn>
             </div>
@@ -624,14 +651,14 @@ formatLocalTime(t.fajr, 2.0);
                     className="orb-dark h-auto w-full"
                   />
                   <img
-                    src="/beit-athar/bridge.jpg"
+                    src="/beit-athar/bridge-light.webp"
                     alt=""
                     aria-hidden
                     width={1600}
                     height={1067}
                     loading="lazy"
                     decoding="async"
-                    className="orb-light ba-frame h-auto w-full"
+                    className="orb-light h-auto w-full"
                   />
 
                 </BuildIn>
@@ -722,14 +749,26 @@ function Img({
   height: number;
 }) {
   return (
-    <img
-      src={src}
-      alt={alt}
-      width={width}
-      height={height}
-      loading="lazy"
-      decoding="async"
-      className="ba-frame ba-fade-edges h-auto w-full"
-    />
+    <>
+      <img
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        loading="lazy"
+        decoding="async"
+        className="orb-dark ba-frame ba-fade-edges h-auto w-full"
+      />
+      <img
+        src={src.replace(/\.jpg$/, "-light.webp")}
+        alt=""
+        aria-hidden
+        width={width}
+        height={height}
+        loading="lazy"
+        decoding="async"
+        className="orb-light ba-fade-edges h-auto w-full"
+      />
+    </>
   );
 }

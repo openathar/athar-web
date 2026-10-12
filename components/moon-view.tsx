@@ -53,7 +53,7 @@ function MoonBody({ elongationDeg, theme, reduced }: { elongationDeg: number; th
   return (
     <>
       <directionalLight position={sunPos} intensity={2.3} color="#fff6e8" />
-      <ambientLight intensity={theme === "light" ? 0.1 : 0.04} />
+      <ambientLight intensity={theme === "light" ? 0.16 : 0.04} />
       <mesh ref={ref}>
         <sphereGeometry args={[MOON_R, 96, 96]} />
         <meshStandardMaterial
@@ -63,9 +63,11 @@ function MoonBody({ elongationDeg, theme, reduced }: { elongationDeg: number; th
           roughness={1}
           metalness={0}
           // Erdschein wie in der Szene mit der Erde: die Nachtseite ist nie ganz schwarz.
-          emissive="#7f93b4"
+          // Hell: die Nachtseite ist helles Taupe mit sichtbaren Kratern statt
+          // eines schwarzen Balls auf Papier.
+          emissive={theme === "light" ? "#d8d0bd" : "#7f93b4"}
           emissiveMap={tex}
-          emissiveIntensity={0.14}
+          emissiveIntensity={theme === "light" ? 0.42 : 0.14}
         />
       </mesh>
     </>
@@ -106,12 +108,12 @@ export function MoonView({
     <div>
       <div className="relative">
         <div className="stage-fade h-[460px] w-full cursor-grab active:cursor-grabbing sm:h-[580px]">
-          <Canvas camera={{ position: [5.1, 0.85, 1.5], fov: 34 }} dpr={[1, 1.75]}>
+          <Canvas camera={{ position: [7.7, 1.3, 2.3], fov: 34 }} dpr={[1, 1.75]}>
             <SceneStars />
             <Suspense fallback={null}>
               <MoonBody elongationDeg={phase.phaseAngle} theme={theme} reduced={reduced} />
             </Suspense>
-            <ZoomableControls apiRef={apiRef} min={2.6} max={11} rotateSpeed={0.4} polarRange={0.6} />
+            <ZoomableControls apiRef={apiRef} min={3.4} max={14} rotateSpeed={0.4} polarRange={0.6} />
           </Canvas>
         </div>
         <ZoomButtons

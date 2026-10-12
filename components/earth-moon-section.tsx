@@ -8,6 +8,7 @@ import { toArabicDigits } from "~/lib/prayer-times";
 import { useTheme } from "~/lib/use-theme";
 import { ZoomButtons, type ZoomApi, type ZoomLabels } from "~/components/cosmos-controls";
 import { PrayerStrip, type CosmosPlace, type StripLabels } from "~/components/prayer-strip";
+import { PlacePicker, type PickerLabels } from "~/components/place-picker";
 import type { Locale } from "~/lib/i18n";
 
 const Scene = dynamic(
@@ -20,7 +21,7 @@ const Scene = dynamic(
   },
 );
 
-type Labels = StripLabels & {
+type Labels = StripLabels & PickerLabels & {
   pickHint: string;
   dayNight: string;
   moonPhase: string;
@@ -30,8 +31,7 @@ type Labels = StripLabels & {
 /**
  * Erde + Mond direkt auf der Seite, ohne Kasten: der Globus schwebt im
  * Himmel der Seite, die Gebetszeiten des gewaehlten Ortes stehen darunter.
- * Der Ort gehoert dem uebergeordneten Zustand und ist derselbe wie in der
- * Karte.
+ * Der Ort gehoert dem uebergeordneten Zustand.
  */
 export function EarthMoonSection({
   locale,
@@ -86,6 +86,7 @@ export function EarthMoonSection({
         />
       </div>
 
+      <PlacePicker locale={locale} labels={labels} place={place} onPlace={onPlace} />
       <PrayerStrip place={place} locale={locale} labels={labels} />
       <p className="mono mt-4 text-xs text-muted">
         {labels.pickHint} · {labels.dayNight} · {labels.moonPhase}: {labels.phaseNames[phase.key]}

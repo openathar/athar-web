@@ -717,9 +717,7 @@ html[data-theme="light"] .brand-logo {
  * Stacking-Kontext, und jeder z-index am Inhaltscontainer schliesst ihn aus.
  * Nur Bilder, nie Text: die Regel haengt an .ba-frame.
  */
-[data-theme="light"] .ba-frame {
-  filter: invert(1) hue-rotate(170deg) sepia(0.6) brightness(0.96);
-}
+/* Hell: eigene Bilder mit Alpha (*-light.webp), siehe .orb-light. */
 
 /*
  * Netz nach unten auslaufen lassen — als Hintergrund darf es nicht mit
@@ -1002,7 +1000,7 @@ html[lang="ar"] .stack-word {
   animation: ba-pulse 7s ease-in-out infinite;
 }
 [data-theme="light"] .hands-glow {
-  opacity: 0.4;
+  opacity: 0.12;
 }
 .fade-block[data-build="armed"] .hands-glow {
   opacity: 0;
@@ -1046,17 +1044,6 @@ html[lang="ar"] .stack-word {
   mask-image: radial-gradient(ellipse 52% 52% at 50% 50%, #000 64%, transparent 100%);
 }
 
-/* Karte: rechteckig, aber alle vier Kanten loesen sich weich auf. */
-.map-fade {
-  -webkit-mask-image:
-    linear-gradient(to right, transparent, #000 9%, #000 91%, transparent),
-    linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
-  -webkit-mask-composite: source-in;
-  mask-image:
-    linear-gradient(to right, transparent, #000 9%, #000 91%, transparent),
-    linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
-  mask-composite: intersect;
-}
 
 /* Wurzelkugel: dunkel mit Alpha, hell mit Papier-Filter — je ein Bild. */
 .orb-light {
@@ -1075,4 +1062,9 @@ html[lang="ar"] .stack-word {
 :root:not([data-theme="light"]) .fade-block.orb-block {
   -webkit-mask-image: none;
   mask-image: none;
+}
+
+/* Dunkel: die Bilder leuchten etwas staerker, als wuerden sie selbst Licht abgeben. */
+:root:not([data-theme="light"]) .orb-dark {
+  filter: saturate(1.08) brightness(1.05);
 }

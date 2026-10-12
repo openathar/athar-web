@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { EarthMoonSection } from "~/components/earth-moon-section";
-import { WorldMap } from "~/components/world-map";
 import type { ZoomLabels } from "~/components/cosmos-controls";
 import type { CosmosPlace } from "~/components/prayer-strip";
 import { placeFromTimezone } from "~/lib/timezones";
@@ -31,13 +30,13 @@ type Props = {
 };
 
 /**
- * Eine Beobachtungsstation, drei Fenster: der 3D-Globus mit Mond, der Mond
- * in Grossaufnahme, die flache Weltkarte. Die Gebetszeiten bleiben in
- * Erd- und Karten-Tab; der Mond-Tab zaehlt Phasen statt Gebete.
+ * Eine Beobachtungsstation, zwei Fenster: der 3D-Globus mit Mond, der Mond
+ * in Grossaufnahme. Die Gebetszeiten bleiben in
+ * Erd-Tab; der Mond-Tab zaehlt Phasen statt Gebete.
  */
 export function CosmosTabs({ locale, cosmos, earth, map, zoom }: Props) {
-  const [tab, setTab] = useState<"earth" | "moon" | "map">("earth");
-  // Ein Ort fuer Globus und Karte. Start: der Ort des Geraets aus der
+  const [tab, setTab] = useState<"earth" | "moon">("earth");
+  // Ein Ort fuer Globus und Gebetszeiten. Start: der Ort des Geraets aus der
   // Zeitzone (keine Standortabfrage), sonst Amman.
   const [place, setPlace] = useState<CosmosPlace | null>(null);
   useEffect(() => {
@@ -47,12 +46,11 @@ export function CosmosTabs({ locale, cosmos, earth, map, zoom }: Props) {
     setPlace({ label: p.city, lat: p.lat, lon: p.lon, zone: known ? tz : "Asia/Amman", current: true });
   }, []);
 
-  const strip = { ...earth, next: map.next, source: earth.source };
+  const strip = { ...earth, ...map, source: earth.source };
 
   const tabs = [
     ["earth", cosmos.tabs.earth],
     ["moon", cosmos.tabs.moon],
-    ["map", cosmos.tabs.map],
   ] as const;
 
   return (
@@ -85,9 +83,6 @@ export function CosmosTabs({ locale, cosmos, earth, map, zoom }: Props) {
           )}
           {key === "moon" && (
             <MoonView locale={locale} labels={cosmos.moonView} phaseNames={earth.phaseNames} zoomLabels={zoom} />
-          )}
-          {key === "map" && (
-            <WorldMap locale={locale} labels={{ ...map, ...strip }} zoomLabels={zoom} place={place} onPlace={setPlace} />
           )}
         </div>
       ))}
