@@ -13,7 +13,7 @@ import { TodayHijri } from "~/components/today-hijri";
 import { TodaySky } from "~/components/today-sky";
 import { moonPhaseAt, nextMoonEvents } from "~/lib/moon-phase";
 import { CosmosTabs } from "~/components/cosmos-tabs";
-import { ThemeToggle } from "~/components/theme";
+import { ForceDark } from "~/components/force-dark";
 import { Reveal } from "~/components/reveal";
 import { BuildIn } from "~/components/build-in";
 import { NavShell } from "~/components/nav-shell";
@@ -114,14 +114,19 @@ export default async function Home({
                 </Link>
               ))}
             </div>
-            <ThemeToggle labels={t.theme} />
           </span>
         }
       />
 
+      <ForceDark />
+      <script
+        dangerouslySetInnerHTML={{
+          __html: 'document.documentElement.setAttribute("data-theme","dark")',
+        }}
+      />
       <main id="main">
         {/* ================= Hero ================= */}
-        <section className="night-band relative isolate overflow-hidden">
+        <section className="relative isolate overflow-hidden">
           <div
             className={`${WRAP} relative flex min-h-[100svh] flex-col justify-end pb-10 pt-36`}
           >
@@ -221,7 +226,7 @@ export default async function Home({
         </section>
 
         {/* ================= Was drinsteckt: Treppe baut sich von hinten nach vorn ================= */}
-        <section id="what" className="night-band scroll-mt-24 overflow-x-clip py-24">
+        <section id="what" className="scroll-mt-24 overflow-x-clip py-24">
           <div className={WRAP}>
             <Reveal>
               <Eyebrow>{t.what.heading}</Eyebrow>
@@ -262,7 +267,7 @@ export default async function Home({
         </section>
 
         {/* ================= Lesen. Beten. Weitergeben.: Haende finden zueinander ================= */}
-        <section className="night-band overflow-x-clip py-24">
+        <section className="overflow-x-clip py-24">
           <div className={WRAP}>
             <Reveal>
               <Eyebrow>{c.ways.label}</Eyebrow>
@@ -321,7 +326,7 @@ export default async function Home({
                   {t.cosmos.intro}
                 </p>
               </div>
-              <div className="orb-disc night-band mx-auto w-full max-w-[22rem]">
+              <div className="mx-auto w-full max-w-[22rem]">
               <BuildIn className="fade-block alpha-block orb-block w-full">
                 {/* Dunkel: Schwarz ist echte Transparenz (Alpha). Hell: das Bild mit
                 dem Filter, der das Schwarz ins Papier hebt. */}
@@ -572,7 +577,7 @@ formatLocalTime(t.fajr, 2.0);
         </section>
 
         {/* ================= Mein Athar ================= */}
-        <section id="athar" className="night-band scroll-mt-24">
+        <section id="athar" className="scroll-mt-24">
          <div className={`${WRAP} pb-8`}>
           <div className="relative overflow-x-clip py-16">
             <Ornament className="ba-orn-flow pointer-events-none absolute inset-x-0 bottom-0 text-rule" />
@@ -656,7 +661,7 @@ formatLocalTime(t.fajr, 2.0);
         </section>
 
         {/* ================= Landschaft ================= */}
-        <section className="night-band overflow-hidden pt-16">
+        <section className="overflow-hidden pt-16">
           <figure className={`${WRAP}`}>
             <Img
               src="/beit-athar/landscape.jpg"
