@@ -33,6 +33,14 @@ runner, no extra dependency). Hijri conversion is computed locally in JS
 (`lib/hijri.ts`). Both mirror the Java core; no external prayer-time API is
 called anywhere.
 
+## Prototype: Beit Athar (uncommitted)
+
+Isolated COMPUTE-rhythm prototype at `app/[locale]/beit-athar/` — the
+production landing (`/`) stays untouched. Session memory, file map,
+section decisions and verification checklist:
+`docs/memory-beit-athar.md` (design mapping:
+`docs/design-compute-beit-athar.md`).
+
 ## Languages
 
 DE / EN / AR — copy lives in `lib/dictionaries.ts`, locale routing via

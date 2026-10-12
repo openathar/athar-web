@@ -85,20 +85,25 @@ export function Hero({
   labels,
   ctaHref,
   ctaSecondaryHref,
+  showMark = true,
 }: {
   locale: Locale;
   labels: HeroLabels;
   ctaHref: string;
   ctaSecondaryHref: string;
+  /** Auf Beit Athar thront das Logo über dem Baum — hier bleibt die Bühne leer. */
+  showMark?: boolean;
 }) {
   return (
     <div>
-      <div className="hero-stage relative">
-        <HeroStars />
-        <div aria-hidden className="hero-mark">
-          <span className="brand-logo" />
+      {showMark && (
+        <div className="hero-stage relative">
+          <HeroStars />
+          <div aria-hidden className="hero-mark">
+            <span className="brand-logo" />
+          </div>
         </div>
-      </div>
+      )}
       <h1 className="sr-only">{labels.name}</h1>
       <p className="rise mt-5 text-sm text-muted" style={{ animationDelay: "0.1s" }}>
         {labels.meaning}

@@ -421,7 +421,658 @@ html[data-theme="light"] .brand-logo {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-mark .brand-logo {
+  .hero-mark .brand-logo,
+  .ba-orbit-float {
     animation: none;
   }
+}
+
+/* Das Logo als Mond über dem Baum: Gold-Glow aus der Palette, kein
+   Box-Shadow in Fremdfarben. Schwebt mit derselben 7s-Phase wie das
+   Hero-Logo — eine Marke, ein Atem. */
+.ba-orbit-glow {
+  filter: drop-shadow(
+    0 0 22px color-mix(in oklab, var(--color-gold) 45%, transparent)
+  );
+}
+
+.ba-orbit-float {
+  animation: hero-float 7s ease-in-out infinite;
+}
+
+/* Sonnen-Hof ums Logo: radialer Gold-Schein, dahinter weichgezeichnet.
+   Reines Licht, kein Bild — faerbt nichts ein, traegt nur. */
+.ba-sun-halo {
+  position: absolute;
+  inset: -18% -20%;
+  border-radius: 9999px;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in oklab, var(--color-gold) 38%, transparent),
+    transparent 72%
+  );
+  filter: blur(30px);
+}
+
+/* ---------- Beit-Athar-Prototyp ---------- */
+
+/*
+ * Scroll-Reveal. Der Zustand startet unsichtbar — deshalb braucht es hier
+ * eine eigene Reduced-Motion-Regel: die globale setzt nur Duration, nicht
+ * Opacity. Reveal zeigt bei Reduced-Motion sofort is-visible.
+ */
+.reveal {
+  opacity: 0;
+  translate: 0 14px;
+  transition:
+    opacity 0.6s cubic-bezier(0.2, 0.7, 0.2, 1),
+    translate 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  translate: 0 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* Sanftes Schweben — Bäume und Hero-Band leben auch ohne Maus. Der
+   seitliche Mitgang verhindert, dass die Bewegung wie eine Wippe wirkt. */
+.ba-float {
+  animation: ba-float 9s ease-in-out infinite;
+}
+
+@keyframes ba-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 3px -12px;
+  }
+}
+
+/*
+ * Grün-Leuchten hinter dem Baum. Radialer Verlauf statt Box-Shadow —
+ * color-mix haelt den Glow in beiden Themes auf der Akzentfarbe.
+ * isolation: isolate haelt z-Index -1 auf der Buehne, sonst wandert der
+ * Glow hinter die Seite.
+ *
+ * Die Buehne atmet langsam (6.5s) und startet nie bei null: das Bild wirkt
+ * dadurch beleuchtet statt geschaltet. Zwei versetzte Halo-Ebenen
+ * (.ba-stage::before / ::after) mit unterschiedlicher Phase lassen den
+ * Schein ungleich laufen — ein einzelner Kreis wirkt sonst mechanisch.
+ */
+.ba-stage {
+  position: relative;
+  isolation: isolate;
+}
+
+.ba-stage::before,
+.ba-stage::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in oklab, var(--color-accent) 42%, transparent),
+    transparent 72%
+  );
+}
+
+.ba-stage::before {
+  inset: 2% 4%;
+  animation: ba-pulse 6.5s ease-in-out infinite;
+}
+
+.ba-stage::after {
+  inset: 14% 22%;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in oklab, var(--color-gold) 26%, transparent),
+    transparent 74%
+  );
+  animation: ba-pulse 9s ease-in-out infinite -2.5s;
+}
+
+@keyframes ba-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    scale: 0.94;
+  }
+  50% {
+    opacity: 1;
+    scale: 1.04;
+  }
+}
+
+/*
+ * Der atmende Hintergrund.
+ *
+ * Drei weiche Lichtquellen (Gruen, Gold, Gruen) driften ueber Minuten ueber
+ * die Flaeche, ein feines Sternraster wandert gegenlaeufig. Beide Ebenen
+ * sind groesser als der Viewport (inset -20%) und werden nur mit translate
+ * bewegt — eine background-position-Animation wuerde die ganze Seite pro
+ * Frame neu aufbauen, ein Filter-Blur kostet auf schwachen Geraeten mehr,
+ * als die Wirkung rechtfertigt. Weiche Gradientenstopps tun dasselbe gratis.
+ *
+ * Die Ebene liegt hinter dem Text (z-0, der Inhalt sitzt auf z-10) und ist
+ * aria-hidden + pointer-events: none — Dekoration an der Seite, nicht an
+ * der Bedienung.
+ */
+.ba-sky {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.ba-sky::before,
+.ba-sky::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+}
+
+.ba-sky::before {
+  background:
+    radial-gradient(
+      38% 30% at 22% 18%,
+      color-mix(in oklab, var(--color-accent) 26%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      34% 26% at 78% 62%,
+      color-mix(in oklab, var(--color-gold) 20%, transparent),
+      transparent 72%
+    ),
+    radial-gradient(
+      46% 34% at 50% 104%,
+      color-mix(in oklab, var(--color-accent) 22%, transparent),
+      transparent 74%
+    );
+  animation: ba-sky-drift 78s ease-in-out infinite alternate;
+}
+
+/* Mushaf ist Tageslicht: dieselbe Lichtmenge wuerde das Papier vergilben. */
+[data-theme="light"] .ba-sky::before {
+  opacity: 0.42;
+}
+
+@keyframes ba-sky-drift {
+  from {
+    translate: -1.5% -1%;
+    scale: 1;
+  }
+  to {
+    translate: 2.5% 1.5%;
+    scale: 1.06;
+  }
+}
+
+/*
+ * Sternraster aus vier Punkten je 190px-Kachel — dieselbe Technik wie
+ * .api-masthead, nur ohne Rahmen. Die Verschiebung um genau eine Kachelbreite
+ * ist nahtlos, deshalb linear und ohne alternate.
+ */
+.ba-sky::after {
+  background-image:
+    radial-gradient(
+      1px 1px at 18% 26%,
+      color-mix(in oklab, var(--color-ink) 24%, transparent) 50%,
+      transparent 50%
+    ),
+    radial-gradient(
+      1px 1px at 64% 12%,
+      color-mix(in oklab, var(--color-ink) 18%, transparent) 50%,
+      transparent 50%
+    ),
+    radial-gradient(
+      1px 1px at 42% 71%,
+      color-mix(in oklab, var(--color-ink) 20%, transparent) 50%,
+      transparent 50%
+    ),
+    radial-gradient(
+      1px 1px at 86% 54%,
+      color-mix(in oklab, var(--color-ink) 16%, transparent) 50%,
+      transparent 50%
+    );
+  background-size: 190px 190px;
+  mask-image: linear-gradient(to bottom, black, transparent 88%);
+  opacity: 0.6;
+  animation: ba-sky-pan 120s linear infinite;
+}
+
+@keyframes ba-sky-pan {
+  to {
+    translate: -190px -190px;
+  }
+}
+
+/*
+ * Glasflaechen: die Panels der Seite, durch die der Himmel sichtbar bleibt.
+ *
+ * 78% Surface ueber Paper haelt den Textkontrast auf dem Niveau einer
+ * gewoehnlichen Surface (helle Flaeche auf Nacht, dunkle auf Manuskript),
+ * der Blur weichet nur die driftenden Lichtflecken. Ohne den Blur waere
+ * es matte Glasur — mit Blur bekommen die Panels Tiefe.
+ */
+.ba-glass {
+  background-color: color-mix(in oklab, var(--color-surface) 78%, transparent);
+  -webkit-backdrop-filter: blur(10px) saturate(115%);
+  backdrop-filter: blur(10px) saturate(115%);
+}
+
+/*
+ * Bildflaechen wachsen aus der Dunkelheit.
+ *
+ * Die COMPUTE-Bilder haben schwarze Raender (in der Ecke gemessen: #000000).
+ * Im dunklen Theme ist das folgenlos — Bild #000 auf Papier #0b0f17 ist kein
+ * Kasten. Im hellen Theme macht der invert-Filter unten den schwarzen Himmel
+ * weiss, wodurch die Bilder von selbst im Papier verschwinden.
+ *
+ * Deshalb bekommen nur die hochformatigen Motive eine Maske: dort ist der
+ * Umriss unregelmaessig und die Kante wuerde als Rechteck stehen. Die
+ * Landschaften laufen ohne Maske weich aus, sonst schneidet der Verlauf ihnen
+ * Horizont und Boden ab.
+ */
+.ba-frame--round {
+  -webkit-mask-image: radial-gradient(
+    ellipse closest-side at 50% 49%,
+    #000 60%,
+    rgba(0, 0, 0, 0.45) 84%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    ellipse closest-side at 50% 49%,
+    #000 60%,
+    rgba(0, 0, 0, 0.45) 84%,
+    transparent 100%
+  );
+}
+
+/*
+ * Mushaf ist Tageslicht, die Bilder sind Nachtaufnahmen.
+ *
+ * Die Kette ist im Browser gerechnet, nicht geschuetzt (Canvas ctx.filter,
+ * Ecken der echten JPEGs als Eingabe):
+ *
+ *   invert(1)              #000000 (schwarzer Himmel) -> #ffffff
+ *   hue-rotate(170deg)     Rosa zurueck nach Gruen, Weiss bleibt Weiss
+ *   sepia(0.6)             Weiss -> warmes Creme
+ *   brightness(0.96)       #f7f7f2, dicht an das Papier #faf5ea
+ *
+ * Ohne invert bliebe der Himmel ein schwarzes Rechteck auf warmem Papier; mit
+ * invert allein waere es neutralweiss und damit wieder ein Kasten. Die Kette
+ * trifft das Papier auf ~7 Einheiten — kein sichtbarer Rand.
+ *
+ * multiply loest das nicht: es braucht einen Backdrop im selben
+ * Stacking-Kontext, und jeder z-index am Inhaltscontainer schliesst ihn aus.
+ * Nur Bilder, nie Text: die Regel haengt an .ba-frame.
+ */
+[data-theme="light"] .ba-frame {
+  filter: invert(1) hue-rotate(170deg) sepia(0.6) brightness(0.96);
+}
+
+/*
+ * Netz nach unten auslaufen lassen — als Hintergrund darf es nicht mit
+ * voller Deckkraft auf Text treffen. Wie .api-masthead, nur umgekehrt.
+ */
+.ba-fade-down {
+  -webkit-mask-image: linear-gradient(to bottom, #000, transparent 88%);
+  mask-image: linear-gradient(to bottom, #000, transparent 88%);
+}
+
+/*
+ * Athar-Netz — die Signatur der COMPUTE-Vorlage, in Layl.
+ *
+ * Die Vorlage zeichnet jede Linie aus 1000px Strichlinie und laesst sie nach
+ * dem Lauf ausblenden, damit sich der Lauf wiederholt, ohne dass Linien
+ * stehen bleiben. Die Opazitaetskurve (0 -> 1 bei 15% -> 0.7 bei 70% -> 0)
+ * stammt 1:1 aus dem Original; nur die Farbe ist unsere.
+ */
+.ba-net-line {
+  stroke: var(--color-accent);
+  stroke-dasharray: 1000px;
+  animation: ba-draw 3s ease-in-out infinite;
+}
+
+@keyframes ba-draw {
+  0% {
+    stroke-dashoffset: 1000;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.7;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
+.ba-net-node {
+  inline-size: 6px;
+  block-size: 6px;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: var(--color-gold);
+  animation: ba-node 2s ease-in-out infinite;
+}
+
+@keyframes ba-node {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Fortschrittsbalken wie im Original (width 0 -> Ziel, linear, einmalig).
+   Startet, sobald der umgebende .reveal sichtbar wird. */
+.ba-meter {
+  inline-size: 0;
+}
+
+.reveal.is-visible .ba-meter {
+  animation: ba-meter-grow var(--ba-meter-dur, 6s) linear both;
+}
+
+@keyframes ba-meter-grow {
+  from {
+    inline-size: 0;
+  }
+  to {
+    inline-size: var(--ba-meter-to, 60%);
+  }
+}
+
+/*
+ * Sehr langsamer Strich-Fluss auf den Ornament-Sternen am Seitenende.
+ */
+.ba-orn-flow path {
+  stroke-dasharray: 22 16;
+  animation: ba-orn-drift 10s linear infinite;
+}
+
+@keyframes ba-orn-drift {
+  to {
+    stroke-dashoffset: -76;
+  }
+}
+
+/*
+ * Die grosse Rosette im Wege-Abschnitt atmet gegen die Drehung der Ringe:
+ * sonst wirkt der Hintergrund starr, waehrend das Signet sich dreht.
+ */
+.ba-breathe {
+  animation: ba-breathe 9s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+
+@keyframes ba-breathe {
+  0%,
+  100% {
+    opacity: 0.18;
+    scale: 0.98;
+  }
+  50% {
+    opacity: 0.34;
+    scale: 1.02;
+  }
+}
+
+/*
+ * Bild-Überblendung im Versprechen-Panel (wie COMPUTE-Security: ein Motiv
+ * zur Zeit, rechts angedockt). Vier Bilder, 16s-Runde, Staffelung per
+ * inline animation-delay. Ohne Bewegung steht das erste Bild.
+ */
+.ba-xfade {
+  animation: ba-xfade 16s linear infinite;
+  opacity: 0;
+}
+
+.ba-xfade:first-of-type {
+  opacity: 0.85;
+}
+
+@keyframes ba-xfade {
+  0% {
+    opacity: 0;
+  }
+  5%,
+  25% {
+    opacity: 0.85;
+  }
+  30%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ba-xfade {
+    animation: none;
+  }
+  .ba-xfade:not(:first-of-type) {
+    display: none;
+  }
+  .ba-sky::before,
+  .ba-sky::after,
+  .ba-net-line,
+  .ba-net-node,
+  .ba-orn-flow path,
+  .ba-breathe {
+    animation: none;
+  }
+
+  /* Balken stehen sofort auf ihrem Zielwert — das ist die Information,
+     die Bewegung nur inszeniert. */
+  .ba-meter {
+    inline-size: var(--ba-meter-to, 60%);
+  }
+  .reveal.is-visible .ba-meter {
+    animation: none;
+  }
+}
+
+/* ---------- Startseite: grosse, leichte Typo (COMPUTE-Rhythmus) ---------- */
+
+/*
+ * Bewusst KEINE .display-Klasse: die arabische Regel weiter oben ist
+ * ungelayert und gewinnt gegen jede Utility. Eigene Klassen mit eigener
+ * arabischer Variante halten Zeilenhoehe und Gewicht unter Kontrolle
+ * (Amiri hat nur 400/700 und braucht Luft fuer die Vokalzeichen).
+ */
+.title-xl,
+.title-l {
+  font-family: var(--font-display);
+  font-weight: 300;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+.title-xl {
+  font-size: clamp(2.75rem, 7.4vw, 6.4rem);
+  line-height: 0.98;
+}
+.title-l {
+  font-size: clamp(2.1rem, 5.6vw, 4.6rem);
+  line-height: 1.04;
+}
+html[lang="ar"] .title-xl,
+html[lang="ar"] .title-l {
+  font-family: var(--font-ar-display);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
+}
+/* Amiri wirkt bei gleicher Pixelgroesse deutlich groesser als die Grotesk. */
+html[lang="ar"] .title-xl {
+  font-size: clamp(2.3rem, 6.2vw, 5.2rem);
+  line-height: 1.25;
+}
+html[lang="ar"] .title-l {
+  font-size: clamp(1.9rem, 4.6vw, 3.6rem);
+}
+html[lang="ar"] .stack-word {
+  font-size: clamp(2.2rem, 6.8vw, 5.4rem);
+}
+
+/* Eyebrow mit Linie, wie bei COMPUTE; ersetzt das "//". */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  color: var(--color-muted);
+}
+.eyebrow::before {
+  content: "";
+  inline-size: 2.75rem;
+  block-size: 1px;
+  background: currentColor;
+  opacity: 0.55;
+}
+
+/* Landschaftsbilder laufen an allen vier Kanten weich aus — die Vorlagen
+   haben schwarze Raender, die im Dunkeln sonst als Kasten stehen. */
+.ba-fade-edges {
+  -webkit-mask-image:
+    linear-gradient(to right, transparent, #000 24%, #000 76%, transparent),
+    linear-gradient(to bottom, transparent, #000 24%, #000 76%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent, #000 24%, #000 76%, transparent),
+    linear-gradient(to bottom, transparent, #000 24%, #000 76%, transparent);
+  mask-composite: intersect;
+}
+
+/* ---------- Bilder: weich ein- und ausblenden ---------- */
+
+/*
+ * Beim Hereinscrollen blendet das Bild auf und hebt sich leicht, beim
+ * Verlassen blendet es wieder aus (BuildIn schaltet data-build). Maske,
+ * Blend-Modus und Deckkraft liegen bewusst am selben Element: eine Ebene
+ * darueber oder darunter wuerde den Blend-Modus in eine eigene Gruppe
+ * einsperren und das Schwarz der Vorlage wieder sichtbar machen.
+ */
+.fade-block {
+  position: relative;
+  transition:
+    opacity 1.3s ease,
+    transform 1.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  -webkit-mask-image:
+    linear-gradient(to right, transparent, #000 16%, #000 84%, transparent),
+    linear-gradient(to bottom, transparent, #000 16%, #000 84%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent, #000 16%, #000 84%, transparent),
+    linear-gradient(to bottom, transparent, #000 16%, #000 84%, transparent);
+  mask-composite: intersect;
+}
+.fade-block[data-build="armed"] {
+  opacity: 0;
+  transform: translateY(28px) scale(0.97);
+  transition-duration: 0.7s, 0.9s;
+}
+
+.hands-glow {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  inline-size: 46%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 9999px;
+  pointer-events: none;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in oklab, var(--color-accent) 55%, transparent),
+    transparent 72%
+  );
+  transition: opacity 1.6s ease 0.9s;
+  animation: ba-pulse 7s ease-in-out infinite;
+}
+[data-theme="light"] .hands-glow {
+  opacity: 0.4;
+}
+.fade-block[data-build="armed"] .hands-glow {
+  opacity: 0;
+  transition-delay: 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-block,
+  .fade-block[data-build="armed"] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .fade-block .hands-glow {
+    opacity: 1 !important;
+  }
+}
+
+/*
+ * Die Vorlagen sind auf Schwarz freigestellt. Im dunklen Theme loescht
+ * `screen` das Schwarz restlos aus (Schwarz + Hintergrund = Hintergrund) —
+ * kein Kasten mehr. Hell macht der invert-Filter von .ba-frame dasselbe.
+ */
+:root:not([data-theme="light"]) .fade-block {
+  mix-blend-mode: screen;
+}
+
+/* Die Kugel ist rund: Kreismaske statt Rechteck, damit beim Drehen keine
+   Bildecken durchscheinen. */
+.fade-block.orb-block {
+  -webkit-mask-image: radial-gradient(closest-side, #000 84%, transparent 100%);
+  mask-image: radial-gradient(closest-side, #000 84%, transparent 100%);
+  -webkit-mask-composite: source-over;
+  mask-composite: add;
+}
+
+/* Buehne ohne Kasten: Globus, Mond und Karte stehen frei im Himmel der
+   Seite, die Raender loesen sich weich auf. */
+.stage-fade {
+  -webkit-mask-image: radial-gradient(ellipse 52% 52% at 50% 50%, #000 64%, transparent 100%);
+  mask-image: radial-gradient(ellipse 52% 52% at 50% 50%, #000 64%, transparent 100%);
+}
+
+/* Karte: rechteckig, aber alle vier Kanten loesen sich weich auf. */
+.map-fade {
+  -webkit-mask-image:
+    linear-gradient(to right, transparent, #000 9%, #000 91%, transparent),
+    linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent, #000 9%, #000 91%, transparent),
+    linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+  mask-composite: intersect;
+}
+
+/* Wurzelkugel: dunkel mit Alpha, hell mit Papier-Filter — je ein Bild. */
+.orb-light {
+  display: none;
+}
+[data-theme="light"] .orb-dark {
+  display: none;
+}
+[data-theme="light"] .orb-light {
+  display: block;
+}
+/* Mit Alpha braucht die Kugel weder Screen-Blend noch Maske. */
+:root:not([data-theme="light"]) .fade-block.alpha-block {
+  mix-blend-mode: normal;
+}
+:root:not([data-theme="light"]) .fade-block.orb-block {
+  -webkit-mask-image: none;
+  mask-image: none;
 }

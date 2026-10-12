@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { ZoomableControls, type ZoomApi } from "~/components/cosmos-controls";
 import { CITIES } from "~/lib/cities";
 import { useReducedMotion } from "~/lib/use-reduced-motion";
 
@@ -455,6 +455,12 @@ function Moon({
             bumpScale={0.08}
             roughness={1}
             metalness={0}
+            // Erdschein: die Nachtseite des Mondes ist nie ganz schwarz, die
+            // Erde leuchtet sie matt blau an. Ohne das ist die Sichel ein
+            // schwarzes Loch, obwohl man am echten Himmel die Scheibe sieht.
+            emissive="#7f93b4"
+            emissiveMap={moonTex}
+            emissiveIntensity={0.16}
           />
         </mesh>
       </group>
@@ -493,7 +499,7 @@ function Scene({
 }
 
 /** Ruhiges Fixsternfeld als Kugelschale weit ausserhalb der Szene. */
-function SceneStars() {
+export function SceneStars() {
   const positions = useMemo(() => {
     const count = 900;
     const arr = new Float32Array(count * 3);
@@ -542,7 +548,7 @@ function SceneStars() {
  * niemals auf die Startposition zuruecksetzen. (R3F reicht `size` als neues
  * Objekt durch, daher der Vergleich über primitive Werte statt Identität.)
  */
-function FitCamera() {
+function FitCamera({ homeRef }: { homeRef: React.MutableRefObject<THREE.Vector3 | null> }) {
   const camera = useThree((s) => s.camera);
   const width = useThree((s) => s.size.width);
   const height = useThree((s) => s.size.height);
@@ -565,32 +571,8 @@ function FitCamera() {
     camera.position.set(0, dist * 0.09, dist);
     camera.lookAt(0, 0, 0);
     cam.updateProjectionMatrix();
-  }, [camera, width, height]);
-  return null;
-}
-
-function Controls() {
-  const { camera, gl } = useThree();
-  useEffect(() => {
-    const controls = new OrbitControls(camera, gl.domElement);
-    // Zoom erlaubt (Scroll/Pinch) — enger ran an den Globus oder weiter weg,
-    // mit kuenstlichem Deckel, damit nichts im Nichts oder im Erdinneren landet.
-    controls.enableZoom = true;
-    controls.zoomSpeed = 0.6;
-    controls.minDistance = 3.6;
-    controls.maxDistance = 26;
-    controls.enablePan = false;
-    controls.rotateSpeed = 0.35;
-    controls.minPolarAngle = Math.PI / 2 - 0.35;
-    controls.maxPolarAngle = Math.PI / 2 + 0.35;
-    // Federt sanft zurueck statt abrupt stehenzubleiben
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.06;
-    let raf: number;
-    const tick = () => { controls.update(); raf = requestAnimationFrame(tick); };
-    tick();
-    return () => { cancelAnimationFrame(raf); controls.dispose(); };
-  }, [camera, gl]);
+    homeRef.current = camera.position.clone();
+  }, [camera, width, height, homeRef]);
   return null;
 }
 
@@ -599,12 +581,15 @@ export function EarthMoonScene({
   moonPhaseAngle,
   pickedMarker,
   theme,
+  apiRef,
 }: {
   onPick: (p: Pick) => void;
   moonPhaseAngle: number;
   pickedMarker: Pick;
   theme: "light" | "dark";
+  apiRef: React.MutableRefObject<ZoomApi | null>;
 }) {
+  const homeRef = useRef<THREE.Vector3 | null>(null);
   const hostRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   const [sunDir, setSunDir] = useState<[number, number, number]>([1, 0.15, 0.3]);
@@ -644,12 +629,12 @@ export function EarthMoonScene({
   );
 
   return (
-    <div ref={hostRef} className="h-[62vh] max-h-[720px] min-h-[440px] w-full cursor-grab active:cursor-grabbing">
+    <div ref={hostRef} className="h-[68vh] max-h-[760px] min-h-[460px] w-full cursor-grab active:cursor-grabbing">
       {visible && (
         // fov klein + Distanz gross: beide Koerper bleiben bei jeder Fensterbreite
         // vollstaendig im Bild; Zoom ist erlaubt, bleibt aber gekappt.
         <Canvas camera={cameraSettings} dpr={[1, 1.5]}>
-          <FitCamera />
+          <FitCamera homeRef={homeRef} />
           <Suspense fallback={null}>
             <Scene
               sunDir={sunDir}
@@ -661,7 +646,7 @@ export function EarthMoonScene({
               pickedMarker={pickedMarker}
             />
           </Suspense>
-          <Controls />
+          <ZoomableControls apiRef={apiRef} homeRef={homeRef} min={2.8} max={26} />
         </Canvas>
       )}
     </div>
