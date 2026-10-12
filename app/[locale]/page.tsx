@@ -121,7 +121,7 @@ export default async function Home({
 
       <main id="main">
         {/* ================= Hero ================= */}
-        <section className="relative isolate overflow-hidden">
+        <section className="night-band relative isolate overflow-hidden">
           <div
             className={`${WRAP} relative flex min-h-[100svh] flex-col justify-end pb-10 pt-36`}
           >
@@ -139,15 +139,6 @@ export default async function Home({
                   fetchPriority="high"
                   decoding="async"
                   className="orb-dark ba-frame ba-frame--round ba-float relative z-10 h-auto w-full"
-                />
-<img
-                  src="/beit-athar/tree-light.webp"
-                  alt="" aria-hidden
-                  width={1554}
-                  height={1664}
-                  
-                  decoding="async"
-                  className="orb-light ba-frame ba-frame--round ba-float relative z-10 h-auto w-full"
                 />
               </div>
             </div>
@@ -230,7 +221,7 @@ export default async function Home({
         </section>
 
         {/* ================= Was drinsteckt: Treppe baut sich von hinten nach vorn ================= */}
-        <section id="what" className="scroll-mt-24 overflow-x-clip py-24">
+        <section id="what" className="night-band scroll-mt-24 overflow-x-clip py-24">
           <div className={WRAP}>
             <Reveal>
               <Eyebrow>{t.what.heading}</Eyebrow>
@@ -265,22 +256,13 @@ export default async function Home({
                   decoding="async"
                   className="orb-dark ba-frame h-auto w-full"
                 />
-<img
-                  src="/beit-athar/workers-light.webp"
-                  alt="" aria-hidden
-                  width={1510}
-                  height={874}
-                  loading="lazy"
-                  decoding="async"
-                  className="orb-light ba-frame h-auto w-full"
-                />
               </BuildIn>
             </div>
           </div>
         </section>
 
         {/* ================= Lesen. Beten. Weitergeben.: Haende finden zueinander ================= */}
-        <section className="overflow-x-clip py-24">
+        <section className="night-band overflow-x-clip py-24">
           <div className={WRAP}>
             <Reveal>
               <Eyebrow>{c.ways.label}</Eyebrow>
@@ -296,15 +278,6 @@ export default async function Home({
                   loading="lazy"
                   decoding="async"
                   className="orb-dark ba-frame h-auto w-full"
-                />
-<img
-                  src="/beit-athar/connection-light.webp"
-                  alt="" aria-hidden
-                  width={1600}
-                  height={696}
-                  loading="lazy"
-                  decoding="async"
-                  className="orb-light ba-frame h-auto w-full"
                 />
                 <div aria-hidden className="hands-glow" />
               </BuildIn>
@@ -348,7 +321,8 @@ export default async function Home({
                   {t.cosmos.intro}
                 </p>
               </div>
-              <BuildIn className="fade-block alpha-block orb-block mx-auto w-full max-w-[22rem]">
+              <div className="orb-disc night-band mx-auto w-full max-w-[22rem]">
+              <BuildIn className="fade-block alpha-block orb-block w-full">
                 {/* Dunkel: Schwarz ist echte Transparenz (Alpha). Hell: das Bild mit
                 dem Filter, der das Schwarz ins Papier hebt. */}
               <img
@@ -360,17 +334,8 @@ export default async function Home({
                 decoding="async"
                 className="orb-dark h-auto w-full"
               />
-              <img
-                src="/beit-athar/world-light.webp"
-                alt=""
-                aria-hidden
-                width={1200}
-                height={1200}
-                loading="lazy"
-                decoding="async"
-                className="orb-light h-auto w-full"
-              />
               </BuildIn>
+              </div>
             </div>
             <div className="mt-12">
               <CosmosTabs
@@ -607,10 +572,8 @@ formatLocalTime(t.fajr, 2.0);
         </section>
 
         {/* ================= Mein Athar ================= */}
-        <section
-          id="athar"
-          className={`${WRAP} scroll-mt-24 pb-8`}
-        >
+        <section id="athar" className="night-band scroll-mt-24">
+         <div className={`${WRAP} pb-8`}>
           <div className="relative overflow-x-clip py-16">
             <Ornament className="ba-orn-flow pointer-events-none absolute inset-x-0 bottom-0 text-rule" />
             <Reveal>
@@ -650,21 +613,12 @@ formatLocalTime(t.fajr, 2.0);
                     decoding="async"
                     className="orb-dark h-auto w-full"
                   />
-                  <img
-                    src="/beit-athar/bridge-light.webp"
-                    alt=""
-                    aria-hidden
-                    width={1600}
-                    height={1067}
-                    loading="lazy"
-                    decoding="async"
-                    className="orb-light h-auto w-full"
-                  />
 
                 </BuildIn>
               </div>
             </Reveal>
           </div>
+         </div>
         </section>
 
         {/* ================= Mitmachen ================= */}
@@ -698,15 +652,19 @@ formatLocalTime(t.fajr, 2.0);
                 );
               })}
             </ol>
-            <figure className="mt-16">
-              <Img
-                src="/beit-athar/landscape.jpg"
-                alt={c.take.landscapeAlt}
-                width={1600}
-                height={477}
-              />
-            </figure>
           </Reveal>
+        </section>
+
+        {/* ================= Landschaft ================= */}
+        <section className="night-band overflow-hidden pt-16">
+          <figure className={`${WRAP}`}>
+            <Img
+              src="/beit-athar/landscape.jpg"
+              alt={c.take.landscapeAlt}
+              width={1600}
+              height={477}
+            />
+          </figure>
         </section>
       </main>
 
@@ -758,16 +716,6 @@ function Img({
         loading="lazy"
         decoding="async"
         className="orb-dark ba-frame ba-fade-edges h-auto w-full"
-      />
-      <img
-        src={src.replace(/\.jpg$/, "-light.webp")}
-        alt=""
-        aria-hidden
-        width={width}
-        height={height}
-        loading="lazy"
-        decoding="async"
-        className="orb-light ba-fade-edges h-auto w-full"
       />
     </>
   );
