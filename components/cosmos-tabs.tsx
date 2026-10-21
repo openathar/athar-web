@@ -27,6 +27,7 @@ type Props = {
   earth: Dict["earth"];
   map: Dict["map"];
   zoom: ZoomLabels;
+  showMoon?: boolean;
 };
 
 /**
@@ -34,7 +35,7 @@ type Props = {
  * in Grossaufnahme. Die Gebetszeiten bleiben in
  * Erd-Tab; der Mond-Tab zaehlt Phasen statt Gebete.
  */
-export function CosmosTabs({ locale, cosmos, earth, map, zoom }: Props) {
+export function CosmosTabs({ locale, cosmos, earth, map, zoom, showMoon = true }: Props) {
   const [tab, setTab] = useState<"earth" | "moon">("earth");
   // Ein Ort fuer Globus und Gebetszeiten. Start: der Ort des Geraets aus der
   // Zeitzone (keine Standortabfrage), sonst Amman.
@@ -48,14 +49,13 @@ export function CosmosTabs({ locale, cosmos, earth, map, zoom }: Props) {
 
   const strip = { ...earth, ...map, source: earth.source };
 
-  const tabs = [
-    ["earth", cosmos.tabs.earth],
-    ["moon", cosmos.tabs.moon],
-  ] as const;
+  const tabs = (showMoon
+    ? ([["earth", cosmos.tabs.earth], ["moon", cosmos.tabs.moon]] as const)
+    : ([["earth", cosmos.tabs.earth]] as const)) as readonly (readonly ["earth" | "moon", string])[];
 
   return (
     <div>
-      <div role="tablist" aria-label={cosmos.label} className="flex flex-wrap gap-2">
+      <div role="tablist" aria-label={cosmos.label} className="flex flex-wrap gap-2" hidden={!showMoon}>
         {tabs.map(([key, label]) => (
           <button
             key={key}

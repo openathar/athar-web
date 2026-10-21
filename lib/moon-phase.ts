@@ -32,7 +32,7 @@ export type MoonPhase = {
   key: MoonPhaseKey;
 };
 
-function phaseKeyFromFraction(f: number): MoonPhaseKey {
+export function phaseKeyFromFraction(f: number): MoonPhaseKey {
   if (f < 0.03 || f > 0.97) return "new";
   if (f < 0.22) return "waxing-crescent";
   if (f < 0.28) return "first-quarter";

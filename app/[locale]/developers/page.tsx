@@ -4,6 +4,9 @@ import type { Metadata } from "next";
 import { locales, type Locale } from "~/lib/i18n";
 import { dictionaries } from "~/lib/dictionaries";
 import { SiteHeader } from "~/components/site-header";
+import { ForceDark } from "~/components/force-dark";
+import "~/components/lp/lp.css";
+import { OliveTree } from "~/components/lp/olive-tree";
 import { Mark } from "~/components/mark";
 import { ApiPlayground } from "~/components/api-playground";
 import { ApiKeyWidget } from "~/components/api-key-widget";
@@ -91,6 +94,8 @@ export default async function Developers({
   const t = dictionaries[l];
 
   return (
+    <div className="dev-lp">
+    <ForceDark />
     <div className="mx-auto max-w-[88rem] px-6 sm:px-10">
       <SiteHeader
         locale={l}
@@ -108,7 +113,8 @@ export default async function Developers({
           left-to-right even inside the Arabic layout. */}
       <div dir="ltr" lang="en">
         {/* ================= Masthead ================= */}
-        <div className="api-masthead border-b border-rule py-14 sm:py-20">
+        <div className="api-masthead relative border-b border-rule py-14 sm:py-20">
+          <OliveTree className="dev-tree" />
           <div className="max-w-3xl">
             <p className="mono mb-5 text-[11px] uppercase tracking-[0.22em] text-accent">Developer API · v1</p>
             <h1 className="display text-[clamp(34px,6.5vw,68px)] font-light leading-[1.05]">
@@ -413,6 +419,7 @@ export default async function Developers({
           {t.footer.source}
         </a>
       </footer>
+    </div>
     </div>
   );
 }
