@@ -35,6 +35,9 @@ export function LpShell({
           <span role="img" aria-label="Athar" className="brand-logo" />
         </Link>
         <nav className="lp-header-nav" aria-label="Athar">
+          <Link href={`/${locale}/developers`} className="lp-nav-link">
+            {c.developers}
+          </Link>
           {!home && <div role="group" aria-label={c.variant} className="lp-variants">
             {VARIANTS.map((v) => (
               <Link

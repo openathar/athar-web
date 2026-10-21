@@ -330,3 +330,4 @@ html[lang="ar"] .lp-aside-title { text-transform: none; letter-spacing: 0; font-
 .lp-olive-in::after { z-index: 1; }
 .lp-olive-in::after { inset: -2px; }
 .lp-olive-in { clip-path: inset(3px); }
+.lp-nav-link { font-size: 0.9rem; color: var(--lp-mute); transition: color .15s; } .lp-nav-link:hover { color: var(--lp-ink); } html[lang="ar"] .lp-nav-link { font-size: 1rem; }
