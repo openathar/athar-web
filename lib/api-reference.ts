@@ -113,6 +113,132 @@ export const endpoints: Endpoint[] = [
     },
   },
   {
+    id: "prayer-times-range",
+    method: "GET",
+    path: "/v1/prayer-times/range",
+    title: "Date ranges",
+    summary: "Prayer times for every day from one date to another.",
+    description:
+      "The same calculation as the daily endpoint for each day of an inclusive date range, in one call — a printable month costs one request instead of thirty. Every entry in days is exactly what /v1/prayer-times returns for that date. At most 62 days per call; a longer range, or a to before from, returns 400. Like the daily endpoint it is deterministic and cached forever.",
+    auth: "optional",
+    params: [
+      { name: "lat", type: "number", required: true, example: "52.52", notes: "Latitude in decimal degrees, −90 to 90." },
+      { name: "lon", type: "number", required: true, example: "13.405", notes: "Longitude in decimal degrees, −180 to 180." },
+      { name: "from", type: "date", required: true, example: "2026-09-14", notes: "First day, ISO 8601 (YYYY-MM-DD)." },
+      { name: "to", type: "date", required: true, example: "2026-09-15", notes: "Last day, inclusive. At most 62 days after from." },
+      {
+        name: "method",
+        type: "enum",
+        required: false,
+        default: "MWL",
+        example: "MWL",
+        notes: "Calculation method. See /v1/methods for what each one means.",
+        values: ["MWL", "ISNA", "EGYPT", "MAKKAH", "KARACHI", "TEHRAN", "JAFARI", "FRANCE", "RUSSIA", "MALAYSIA", "SINGAPORE"],
+      },
+      { name: "utcOffset", type: "number", required: false, default: "0", example: "2", notes: "Hours offset applied to render local times, −12 to 14." },
+    ],
+    response: {
+      fields: [
+        { name: "from / to", type: "string", notes: "The requested range, echoed back." },
+        { name: "method", type: "string", notes: "Calculation method actually used." },
+        { name: "latitude / longitude / utcOffsetHours", type: "number", notes: "Inputs echoed back." },
+        { name: "days", type: "object[]", notes: "One entry per day, in date order, in the shape of the /v1/prayer-times response." },
+      ],
+      sample: `{
+  "from": "2026-09-14",
+  "to": "2026-09-15",
+  "method": "MWL",
+  "latitude": 52.52,
+  "longitude": 13.405,
+  "utcOffsetHours": 2.0,
+  "days": [
+    { "date": "2026-09-14", "method": "MWL", "fajr": "04:38", "sunrise": "06:39", "dhuhr": "13:02", "asr": "16:30", "sunset": "19:24", "maghrib": "19:25", "isha": "21:17", "midnight": "01:02", "duhaStart": "06:54", "duhaEnd": "12:52", "duhaBest": "09:51", "…": "…" },
+    { "date": "2026-09-15", "…": "…" }
+  ]
+}`,
+    },
+  },
+  {
+    id: "prayer-times-next",
+    method: "GET",
+    path: "/v1/prayer-times/next",
+    title: "Current & next prayer",
+    summary: "Which prayer is now, which is next, and seconds until it.",
+    description:
+      "Answers the question every prayer app asks: which prayer has most recently started, which one comes next, and how many seconds are left. It rolls over midnight correctly — before Fajr the current prayer is yesterday’s Isha, after Isha the next one is tomorrow’s Fajr — and skips prayers that do not occur at the location (polar day or night). Without at the answer is for the current moment and is not cached; with an explicit at it is deterministic and cached forever.",
+    auth: "optional",
+    params: [
+      { name: "lat", type: "number", required: true, example: "52.52", notes: "Latitude in decimal degrees, −90 to 90." },
+      { name: "lon", type: "number", required: true, example: "13.405", notes: "Longitude in decimal degrees, −180 to 180." },
+      {
+        name: "method",
+        type: "enum",
+        required: false,
+        default: "MWL",
+        example: "MWL",
+        notes: "Calculation method. See /v1/methods.",
+        values: ["MWL", "ISNA", "EGYPT", "MAKKAH", "KARACHI", "TEHRAN", "JAFARI", "FRANCE", "RUSSIA", "MALAYSIA", "SINGAPORE"],
+      },
+      { name: "utcOffset", type: "number", required: false, default: "0", example: "2", notes: "Hours offset of the location, −12 to 14. Decides the local date and time." },
+      { name: "at", type: "string", required: false, default: "now", example: "2026-09-14T15:30:00Z", notes: "The moment to answer for, as an ISO 8601 instant. Useful for testing; defaults to now." },
+    ],
+    response: {
+      fields: [
+        { name: "localTime", type: "string", notes: "The moment the answer is for, as local date-time (utcOffset applied)." },
+        { name: "current", type: "object", notes: "The latest prayer that has started: name (fajr, dhuhr, asr, maghrib, isha), date and HH:mm time." },
+        { name: "next", type: "object", notes: "The next prayer to start, same shape. Can be on the following date." },
+        { name: "secondsUntilNext", type: "number", notes: "Seconds from localTime until next starts." },
+        { name: "method / latitude / longitude / utcOffsetHours", type: "string | number", notes: "Inputs echoed back." },
+      ],
+      sample: `{
+  "method": "MWL",
+  "latitude": 52.52,
+  "longitude": 13.405,
+  "utcOffsetHours": 2.0,
+  "localTime": "2026-09-14T17:30:00",
+  "current": { "name": "asr", "date": "2026-09-14", "time": "16:30" },
+  "next": { "name": "maghrib", "date": "2026-09-14", "time": "19:25" },
+  "secondsUntilNext": 6900
+}`,
+    },
+  },
+  {
+    id: "methods",
+    method: "GET",
+    path: "/v1/methods",
+    title: "Calculation methods",
+    summary: "Every accepted method with its angles and rules.",
+    description:
+      "The catalogue behind the method parameter: each accepted id with its authority, the Fajr angle, the Isha and Maghrib rules and the midnight rule. Build a settings picker from this instead of hardcoding a list that goes stale. Fajr is always an angle below the horizon; Isha and Maghrib are either an angle or a fixed number of minutes. All methods use the standard Asr shadow rule and place Fajr and Isha by the middle-of-the-night rule where the sun does not sink far enough. Cached for a day.",
+    auth: "optional",
+    params: [],
+    response: {
+      fields: [
+        { name: "methods[].id", type: "string", notes: "Value for the method parameter." },
+        { name: "methods[].name", type: "string", notes: "The authority or convention behind it." },
+        { name: "methods[].fajrAngle", type: "number", notes: "Sun depression angle for Fajr, in degrees." },
+        { name: "methods[].isha / maghrib", type: "object", notes: "{ type: \"angle\" | \"minutes\", value } — degrees below the horizon, or minutes (after Maghrib for Isha, after sunset for Maghrib)." },
+        { name: "methods[].midnight", type: "string", notes: "STANDARD (solar midnight) or JAFARI (midpoint of sunset and Fajr)." },
+        { name: "asr / highLatitude", type: "string", notes: "Rules shared by every method: STANDARD and NIGHT_MIDDLE." },
+      ],
+      sample: `{
+  "methods": [
+    {
+      "id": "MWL",
+      "name": "Muslim World League",
+      "fajrAngle": 18.0,
+      "isha": { "type": "angle", "value": 17.0 },
+      "maghrib": { "type": "minutes", "value": 1.0 },
+      "midnight": "STANDARD"
+    },
+    { "id": "MAKKAH", "name": "Umm al-Qura University, Makkah", "fajrAngle": 18.5, "isha": { "type": "minutes", "value": 90.0 }, "…": "…" }
+  ],
+  "asr": "STANDARD",
+  "highLatitude": "NIGHT_MIDDLE"
+}`,
+    },
+  },
+  {
     id: "qibla",
     method: "GET",
     path: "/v1/qibla",
@@ -256,38 +382,17 @@ export type Proposal = {
 export const roadmap: Proposal[] = [
   {
     method: "GET",
-    path: "/v1/prayer-times/range",
-    title: "Date ranges & monthly calendars",
-    why: "Today a printable month costs 30 requests. One call with from/to would cut the traffic an app generates by an order of magnitude and make offline caching trivial.",
-    status: "next",
-  },
-  {
-    method: "GET",
-    path: "/v1/prayer-times/next",
-    title: "Current & next prayer",
-    why: "The single most requested value in any prayer app: which prayer is now, which is next, and how many seconds until it. Every client currently reimplements this on top of the daily response.",
-    status: "next",
-  },
-  {
-    method: "GET",
-    path: "/v1/methods",
-    title: "Self-describing method catalogue",
-    why: "Lets a client build its settings picker from the API — angles, Asr school, midnight rule, high-latitude handling — instead of hardcoding a list that silently goes stale.",
-    status: "next",
-  },
-  {
-    method: "GET",
     path: "/v1/prayer-times.ics",
     title: "Calendar subscription feed",
     why: "An iCalendar feed turns prayer times into a subscribable calendar in Apple Calendar, Google Calendar or Outlook — reach far beyond people who install another app, at almost no cost.",
-    status: "planned",
+    status: "next",
   },
   {
     method: "GET",
     path: "/v1/calendar/hijri",
     title: "Hijri month grid & reverse conversion",
     why: "Hijri → Gregorian is already implemented in the web client but not exposed. A full month grid would let any client render a Hijri calendar without shipping conversion logic.",
-    status: "planned",
+    status: "next",
   },
   {
     method: "GET",

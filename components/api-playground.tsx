@@ -4,19 +4,25 @@ import { useMemo, useState } from "react";
 import { API_BASE_URL } from "~/lib/api-config";
 import { endpoints } from "~/lib/api-reference";
 
-type Tab = "prayer-times" | "qibla" | "hijri";
+type Tab = "prayer-times" | "prayer-times-range" | "prayer-times-next" | "methods" | "qibla" | "hijri";
 
 const byId = (id: string) => endpoints.find((e) => e.id === id)!;
 /** Aus der Spec statt einer zweiten, handgepflegten Liste. */
 const METHODS = byId("prayer-times").params.find((p) => p.name === "method")!.values!;
 const LOCALES = byId("hijri").params.find((p) => p.name === "locale")!.values!;
 
+function addDays(iso: string, n: number) {
+  const d = new Date(`${iso || todayIso()}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + n);
+  return d.toISOString().slice(0, 10);
+}
+
 function todayIso() {
   return new Date().toISOString().slice(0, 10);
 }
 
 /**
- * Live "try it" widget for the three calculation endpoints — real requests
+ * Live "try it" widget for the calculation endpoints — real requests
  * against the production API, run from the visitor's own browser (see
  * CorsConfig in api-service for the allowed origins).
  */
@@ -40,6 +46,15 @@ export function ApiPlayground() {
         query: { lat, lon, date, method, utcOffset },
       };
     }
+    if (tab === "prayer-times-range") {
+      return { path: "/v1/prayer-times/range", query: { lat, lon, from: date, to: addDays(date, 6), method, utcOffset } };
+    }
+    if (tab === "prayer-times-next") {
+      return { path: "/v1/prayer-times/next", query: { lat, lon, method, utcOffset } };
+    }
+    if (tab === "methods") {
+      return { path: "/v1/methods", query: {} };
+    }
     if (tab === "qibla") {
       return { path: "/v1/qibla", query: { lat, lon } };
     }
@@ -50,14 +65,15 @@ export function ApiPlayground() {
   }, [tab, lat, lon, date, method, utcOffset, hijriDate, locale]);
 
   const qs = new URLSearchParams(query).toString();
-  const curl = `curl "${API_BASE_URL}${path}?${qs}"${apiKey ? ` -H "X-API-Key: ${apiKey}"` : ""}`;
+  const url = `${API_BASE_URL}${path}${qs ? `?${qs}` : ""}`;
+  const curl = `curl "${url}"${apiKey ? ` -H "X-API-Key: ${apiKey}"` : ""}`;
 
   async function run() {
     setLoading(true);
     setResult(null);
     const start = performance.now();
     try {
-      const res = await fetch(`${API_BASE_URL}${path}?${qs}`, {
+      const res = await fetch(url, {
         headers: apiKey ? { "X-API-Key": apiKey } : {},
       });
       const ms = Math.round(performance.now() - start);
@@ -82,6 +98,9 @@ export function ApiPlayground() {
         {(
           [
             ["prayer-times", byId("prayer-times").title],
+            ["prayer-times-range", "Date range (7 days)"],
+            ["prayer-times-next", byId("prayer-times-next").title],
+            ["methods", byId("methods").title],
             ["qibla", byId("qibla").title],
             ["hijri", byId("hijri").title],
           ] as [Tab, string][]
@@ -104,7 +123,7 @@ export function ApiPlayground() {
 
       <div className="grid gap-6 p-5 sm:grid-cols-2">
         <div className="space-y-3">
-          {(tab === "prayer-times" || tab === "qibla") && (
+          {tab !== "hijri" && tab !== "methods" && (
             <>
               <Field label="lat">
                 <input value={lat} onChange={(e) => setLat(e.target.value)} className="w-full rounded border border-rule bg-paper px-3 py-2 text-sm text-ink transition focus:border-accent focus:outline-none" />
@@ -114,11 +133,27 @@ export function ApiPlayground() {
               </Field>
             </>
           )}
-          {tab === "prayer-times" && (
+          {(tab === "prayer-times" || tab === "prayer-times-range") && (
             <>
-              <Field label="date">
+              <Field label={tab === "prayer-times-range" ? "from (7 days)" : "date"}>
                 <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="w-full rounded border border-rule bg-paper px-3 py-2 text-sm text-ink transition focus:border-accent focus:outline-none" />
               </Field>
+              <Field label="method">
+                <select value={method} onChange={(e) => setMethod(e.target.value)} className="w-full rounded border border-rule bg-paper px-3 py-2 text-sm text-ink transition focus:border-accent focus:outline-none">
+                  {METHODS.map((m) => (
+                    <option key={m} value={m}>
+                      {m}
+                    </option>
+                  ))}
+                </select>
+              </Field>
+              <Field label="utcOffset">
+                <input value={utcOffset} onChange={(e) => setUtcOffset(e.target.value)} className="w-full rounded border border-rule bg-paper px-3 py-2 text-sm text-ink transition focus:border-accent focus:outline-none" />
+              </Field>
+            </>
+          )}
+          {tab === "prayer-times-next" && (
+            <>
               <Field label="method">
                 <select value={method} onChange={(e) => setMethod(e.target.value)} className="w-full rounded border border-rule bg-paper px-3 py-2 text-sm text-ink transition focus:border-accent focus:outline-none">
                   {METHODS.map((m) => (

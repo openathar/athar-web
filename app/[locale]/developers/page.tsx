@@ -252,7 +252,7 @@ export default async function Developers({
             {/* ---------- Endpoints ---------- */}
             <Section id="endpoints" index="04" title="Calculation endpoints">
               <p className="max-w-prose text-muted">
-                Three endpoints, all deterministic: the same input always produces the same output.
+                Six read-only endpoints. All are deterministic — the same input always produces the same output — except /v1/prayer-times/next without an at parameter, which answers for the current moment and is therefore never cached.
               </p>
               <div className="mt-8 space-y-12">
                 {CALC_ENDPOINTS.map((e) => (
