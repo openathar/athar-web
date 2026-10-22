@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { API_BASE_URL } from "~/lib/api-config";
 import { endpoints } from "~/lib/api-reference";
 
-type Tab = "prayer-times" | "prayer-times-range" | "prayer-times-next" | "methods" | "qibla" | "hijri";
+type Tab = "prayer-times" | "prayer-times-range" | "prayer-times-next" | "methods" | "moon" | "events" | "places" | "qibla" | "hijri";
 
 const byId = (id: string) => endpoints.find((e) => e.id === id)!;
 /** Aus der Spec statt einer zweiten, handgepflegten Liste. */
@@ -35,6 +35,7 @@ export function ApiPlayground() {
   const [utcOffset, setUtcOffset] = useState("0");
   const [hijriDate, setHijriDate] = useState("");
   const [locale, setLocale] = useState("en");
+  const [q, setQ] = useState("berlin");
   const [apiKey, setApiKey] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<{ status: number; ms: number; body: string } | null>(null);
@@ -55,6 +56,15 @@ export function ApiPlayground() {
     if (tab === "methods") {
       return { path: "/v1/methods", query: {} };
     }
+    if (tab === "moon") {
+      return { path: "/v1/moon", query: {} };
+    }
+    if (tab === "events") {
+      return { path: "/v1/events", query: { count: "3", locale } };
+    }
+    if (tab === "places") {
+      return { path: "/v1/places", query: { q, limit: "5" } };
+    }
     if (tab === "qibla") {
       return { path: "/v1/qibla", query: { lat, lon } };
     }
@@ -62,7 +72,7 @@ export function ApiPlayground() {
       path: "/v1/hijri",
       query: hijriDate ? { date: hijriDate, locale } : { locale },
     };
-  }, [tab, lat, lon, date, method, utcOffset, hijriDate, locale]);
+  }, [tab, lat, lon, date, method, utcOffset, hijriDate, locale, q]);
 
   const qs = new URLSearchParams(query).toString();
   const url = `${API_BASE_URL}${path}${qs ? `?${qs}` : ""}`;
@@ -101,6 +111,9 @@ export function ApiPlayground() {
             ["prayer-times-range", "Date range (7 days)"],
             ["prayer-times-next", byId("prayer-times-next").title],
             ["methods", byId("methods").title],
+            ["moon", byId("moon").title],
+            ["events", byId("events").title],
+            ["places", byId("places").title],
             ["qibla", byId("qibla").title],
             ["hijri", byId("hijri").title],
           ] as [Tab, string][]
@@ -123,7 +136,7 @@ export function ApiPlayground() {
 
       <div className="grid gap-6 p-5 sm:grid-cols-2">
         <div className="space-y-3">
-          {tab !== "hijri" && tab !== "methods" && (
+          {(tab === "prayer-times" || tab === "prayer-times-range" || tab === "prayer-times-next" || tab === "qibla") && (
             <>
               <Field label="lat">
                 <input value={lat} onChange={(e) => setLat(e.target.value)} className="w-full rounded border border-rule bg-paper px-3 py-2 text-sm text-ink transition focus:border-accent focus:outline-none" />
@@ -151,6 +164,22 @@ export function ApiPlayground() {
                 <input value={utcOffset} onChange={(e) => setUtcOffset(e.target.value)} className="w-full rounded border border-rule bg-paper px-3 py-2 text-sm text-ink transition focus:border-accent focus:outline-none" />
               </Field>
             </>
+          )}
+          {tab === "places" && (
+            <Field label="q">
+              <input value={q} onChange={(e) => setQ(e.target.value)} className="w-full rounded border border-rule bg-paper px-3 py-2 text-sm text-ink transition focus:border-accent focus:outline-none" />
+            </Field>
+          )}
+          {tab === "events" && (
+            <Field label="locale">
+              <select value={locale} onChange={(e) => setLocale(e.target.value)} className="w-full rounded border border-rule bg-paper px-3 py-2 text-sm text-ink transition focus:border-accent focus:outline-none">
+                {LOCALES.map((l) => (
+                  <option key={l} value={l}>
+                    {l}
+                  </option>
+                ))}
+              </select>
+            </Field>
           )}
           {tab === "prayer-times-next" && (
             <>

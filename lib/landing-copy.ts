@@ -88,7 +88,7 @@ export const landingCopy: Record<Locale, LandingCopy> = {
         { title: "Qibla-Kompass", body: "Nutzt die Sensoren deines Geräts und rechnet offline." },
         { title: "Quran und Adhkar", body: "Ein Mushaf zum Offline-Lesen, dazu Hisn al-Muslim, Ruqyah und die täglichen Adhkar." },
         { title: "Ohne Überwachung", body: "Khatma-Ziele, Tasbeeh und das Ramadan-Dashboard. Deine Daten bleiben bei dir." },
-        { title: "Offene API", body: "Kostenlos und ohne Account: Gebetszeiten, Kalender und Quran-Daten für alle, die darauf aufbauen wollen." },
+        { title: "Offene API", body: "Kostenlos und ohne Account: Gebetszeiten, Qibla, Hijri-Kalender, Mondphase und Städtesuche für alle, die darauf aufbauen wollen." },
       ],
     },
     ways: {
@@ -178,7 +178,7 @@ export const landingCopy: Record<Locale, LandingCopy> = {
         { title: "Qibla compass", body: "Uses your device's sensors and calculates offline." },
         { title: "Qur'an and Adhkar", body: "A Mushaf you can read offline, plus Hisn al-Muslim, Ruqyah and the daily Adhkar." },
         { title: "No surveillance", body: "Khatma goals, Tasbeeh and the Ramadan dashboard. Your data stays with you." },
-        { title: "Open API", body: "Free and without an account: prayer times, calendar and Qur'an data for anyone who wants to build on them." },
+        { title: "Open API", body: "Free and without an account: prayer times, Qibla, Hijri calendar, moon phase and city lookup for anyone who wants to build on them." },
       ],
     },
     ways: {
@@ -268,7 +268,7 @@ export const landingCopy: Record<Locale, LandingCopy> = {
         { title: "بوصلة القبلة", body: "تستعين بحسّاسات جهازك وتحسب دون اتصال." },
         { title: "القرآن والأذكار", body: "مصحف تقرؤه دون اتصال، مع حصن المسلم والرقية وأذكار اليوم." },
         { title: "بلا مراقبة", body: "أهداف الختمة والتسبيح ولوحة رمضان. وتبقى بياناتك عندك." },
-        { title: "واجهة برمجية مفتوحة", body: "مجانية وبلا حساب: مواقيت وتقويم وبيانات القرآن لمن أراد أن يبني عليها." },
+        { title: "واجهة برمجية مفتوحة", body: "مجانية وبلا حساب: مواقيت وقبلة وتقويم هجري وطور القمر والبحث عن المدن لمن أراد أن يبني عليها." },
       ],
     },
     ways: {

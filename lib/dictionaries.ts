@@ -146,7 +146,7 @@ export const dictionaries: Record<Locale, Dict> = {
         { title: "Qibla compass", body: "Device sensors plus offline calculation — works without network." },
         { title: "Quran & Adhkar", body: "Offline Mushaf in multiple languages and fonts, Hisn Al-Muslim, Ruqyah and daily Adhkar." },
         { title: "Tracking without surveillance", body: "Khatma goals, digital Tasbeeh and a Ramadan dashboard — your data stays yours." },
-        { title: "Public API", body: "A free, rate-limited API for prayer times, calendar conversion and Quran data — for other developers to build on." },
+        { title: "Public API", body: "A free, rate-limited API for prayer times, Qibla, the Hijri calendar, the moon and city lookup — for other developers to build on." },
       ],
     },
     promise: {
@@ -231,8 +231,8 @@ export const dictionaries: Record<Locale, Dict> = {
       phases: [
         { title: "Web tools", body: "Prayer times (live, location-aware), Qibla compass and Hijri calendar — running in your browser now.", state: "Live" },
         { title: "Calculation core", body: "A single shared library for prayer times, Qibla and Hijri conversion — published to Maven Central. The web computes locally via a TypeScript port kept in sync by reference tests; the public API consumes the library directly.", state: "Live" },
-        { title: "Public API", body: "Free and rate-limited. V1 is live at api.openathar.org — prayer times, Qibla and Hijri conversion, cacheable forever. Free self-serve API keys and a developer portal with a live playground are live too.", state: "Live" },
-        { title: "Mobile apps", body: "Android and iOS — offline-first, reliable Adhan notifications, widgets and Live Activities.", state: "Planned" },
+        { title: "Public API", body: "Free and rate-limited. Live at api.openathar.org with 15 endpoints — prayer times (day, range, batch, next prayer, calendar feed), Qibla, Hijri calendar, observances, moon and city lookup, cacheable where the answer cannot change. Free self-serve API keys and a developer portal with a live playground are live too. Qur'an and Adhkar content is still to come.", state: "Live" },
+        { title: "Mobile apps", body: "Android and iOS — offline-first, reliable Adhan notifications, widgets and Live Activities. The first version is built; store releases are next.", state: "In progress" },
         { title: "AI Quran explanation", body: "AI that explains the Quran from science and connects it with text, video and images that never existed before.", state: "Vision" },
       ],
     },
@@ -245,9 +245,9 @@ export const dictionaries: Record<Locale, Dict> = {
     },
     devs: {
       meta: {
-        title: "Athar API — free prayer times, Qibla and Hijri calendar for developers",
+        title: "Athar API — free prayer times, Qibla, Hijri calendar and moon for developers",
         description:
-          "A free, rate-limited REST API for prayer times, Qibla bearing and Hijri calendar conversion. No account, no email, self-serve API keys for a higher rate limit.",
+          "A free, rate-limited REST API for prayer times (day, range, batch, calendar feed), Qibla, the Hijri calendar, Islamic observances, moon phase and city lookup. No account, no email, self-serve API keys for a higher rate limit.",
       },
       backHome: "← Back to Athar",
     },
@@ -306,7 +306,7 @@ export const dictionaries: Record<Locale, Dict> = {
         { title: "Qibla-Kompass", body: "Gerätesensoren plus Offline-Berechnung — funktioniert ohne Netz." },
         { title: "Quran & Adhkar", body: "Offline-Mushaf in mehreren Sprachen und Schriftarten, Hisn Al-Muslim, Ruqyah und tägliche Adhkar." },
         { title: "Begleitung ohne Überwachung", body: "Khatma-Ziele, digitales Tasbeeh und Ramadan-Dashboard — deine Daten bleiben deine." },
-        { title: "Öffentliche API", body: "Eine kostenlose, rate-limitierte API für Gebetszeiten, Kalender-Konvertierung und Quran-Daten — als Grundlage für andere Entwickler." },
+        { title: "Öffentliche API", body: "Eine kostenlose, rate-limitierte API für Gebetszeiten, Qibla, Hijri-Kalender, Mond und Städtesuche — als Grundlage für andere Entwickler." },
       ],
     },
     promise: {
@@ -391,8 +391,8 @@ export const dictionaries: Record<Locale, Dict> = {
       phases: [
         { title: "Web-Werkzeuge", body: "Gebetszeiten (live, standortbezogen), Qibla-Kompass und Hijri-Kalender — laufen jetzt in deinem Browser.", state: "Live" },
         { title: "Berechnungs-Kern", body: "Eine gemeinsame Bibliothek für Gebetszeiten, Qibla und Hijri-Konvertierung — veröffentlicht auf Maven Central. Das Web rechnet lokal über einen TypeScript-Port, der durch Referenztests synchron gehalten wird; die öffentliche API nutzt die Bibliothek direkt.", state: "Live" },
-        { title: "Öffentliche API", body: "Kostenlos und rate-limitiert. V1 ist live unter api.openathar.org — Gebetszeiten, Qibla und Hijri-Konvertierung, dauerhaft cachebar. Kostenlose Self-Service-API-Keys und ein Entwicklerportal mit Live-Playground sind ebenfalls live.", state: "Live" },
-        { title: "Mobile Apps", body: "Android und iOS — offline-first, zuverlässige Adhan-Benachrichtigungen, Widgets und Live Activities.", state: "Geplant" },
+        { title: "Öffentliche API", body: "Kostenlos und rate-limitiert. Live unter api.openathar.org mit 15 Endpunkten — Gebetszeiten (Tag, Zeitraum, Batch, nächstes Gebet, Kalender-Feed), Qibla, Hijri-Kalender, islamische Termine, Mond und Städtesuche, dauerhaft cachebar, wo sich die Antwort nicht ändern kann. Kostenlose Self-Service-API-Keys und ein Entwicklerportal mit Live-Playground sind ebenfalls live. Quran- und Adhkar-Inhalte kommen noch.", state: "Live" },
+        { title: "Mobile Apps", body: "Android und iOS — offline-first, zuverlässige Adhan-Benachrichtigungen, Widgets und Live Activities. Die erste Version steht, als Nächstes kommen die Store-Veröffentlichungen.", state: "In Arbeit" },
         { title: "KI-Erklärung des Quran", body: "KI, die den Quran aus der Wissenschaft erklärt und ihn mit Text, Video und Bildern verbindet, die es nie zuvor gab.", state: "Vision" },
       ],
     },
@@ -405,9 +405,9 @@ export const dictionaries: Record<Locale, Dict> = {
     },
     devs: {
       meta: {
-        title: "Athar API — kostenlose Gebetszeiten, Qibla und Hijri-Kalender für Entwickler",
+        title: "Athar API — kostenlose Gebetszeiten, Qibla, Hijri-Kalender und Mond für Entwickler",
         description:
-          "Eine kostenlose, rate-limitierte REST-API für Gebetszeiten, Qibla-Richtung und Hijri-Kalenderumrechnung. Kein Account, keine E-Mail, selbstbedienbare API-Keys für ein höheres Limit.",
+          "Eine kostenlose, rate-limitierte REST-API für Gebetszeiten (Tag, Zeitraum, Batch, Kalender-Feed), Qibla, Hijri-Kalender, islamische Termine, Mondphase und Städtesuche. Kein Account, keine E-Mail, selbstbedienbare API-Keys für ein höheres Limit.",
       },
       backHome: "← Zurück zu Athar",
     },
@@ -466,7 +466,7 @@ export const dictionaries: Record<Locale, Dict> = {
         { title: "بوصلة القبلة", body: "حسّاسات الجهاز مع حساب دون اتصال — تعمل بلا إنترنت." },
         { title: "القرآن والأذكار", body: "مصحف دون اتصال بلغات وخطوط متعددة، حصن المسلم، الرقية والأذكار اليومية." },
         { title: "متابعة دون مراقبة", body: "أهداف الختمة، التسبيح الرقمي ولوحة رمضان — بياناتك تبقى لك." },
-        { title: "واجهة برمجية عامة", body: "واجهة مجانية لمواقيت الصلاة وتحويل التقويم وبيانات القرآن — أساس يبني عليه المطوّرون." },
+        { title: "واجهة برمجية عامة", body: "واجهة مجانية لمواقيت الصلاة والقبلة والتقويم الهجري والقمر والبحث عن المدن — أساس يبني عليه المطوّرون." },
       ],
     },
     promise: {
@@ -551,8 +551,8 @@ export const dictionaries: Record<Locale, Dict> = {
       phases: [
         { title: "أدوات الويب", body: "مواقيت الصلاة (مباشرة وحسب الموقع)، بوصلة القبلة، والتقويم الهجري — تعمل الآن في متصفحك.", state: "متاح" },
         { title: "نواة الحساب", body: "مكتبة واحدة مشتركة لمواقيت الصلاة والقبلة وتحويل التقويم — منشورة على Maven Central. يحسبها الويب محلياً عبر نسخة TypeScript تُحفظ متزامنة باختبارات مرجعية، وتستهلكها الواجهة البرمجية مباشرة.", state: "متاح" },
-        { title: "الواجهة البرمجية العامة", body: "مجانية ومحدودة المعدّل. النسخة الأولى مباشرة على api.openathar.org — مواقيت الصلاة والقبلة وتحويل التقويم، قابلة للتخزين المؤقت دائماً. ومفاتيح API مجانية ذاتية الخدمة وبوابة مطوّرين مع ساحة تجربة حيّة متاحة أيضاً.", state: "متاح" },
-        { title: "تطبيقات الجوال", body: "أندرويد وiOS — تعمل دون اتصال، تنبيهات أذان موثوقة، ودجات وأنشطة مباشرة.", state: "مخطط" },
+        { title: "الواجهة البرمجية العامة", body: "مجانية ومحدودة المعدّل. متاحة على api.openathar.org بخمس عشرة نقطة وصول — مواقيت الصلاة (يوم، فترة، دفعة، الصلاة التالية، تقويم قابل للاشتراك)، القبلة، التقويم الهجري، المناسبات، القمر والبحث عن المدن، وتُخزَّن مؤقتاً حيث لا تتغير الإجابة. ومفاتيح API مجانية ذاتية الخدمة وبوابة مطوّرين مع ساحة تجربة حيّة متاحة أيضاً. أما محتوى القرآن والأذكار فسيأتي لاحقاً.", state: "متاح" },
+        { title: "تطبيقات الجوال", body: "أندرويد وiOS — تعمل دون اتصال، تنبيهات أذان موثوقة، ودجات وأنشطة مباشرة. النسخة الأولى جاهزة، والخطوة التالية النشر في المتاجر.", state: "قيد العمل" },
         { title: "شرح القرآن بالذكاء الاصطناعي", body: "ذكاء اصطناعي يشرح القرآن من العلم ويربطه بنصوص وفيديوهات وصور لم توجد من قبل.", state: "رؤية" },
       ],
     },
@@ -565,9 +565,9 @@ export const dictionaries: Record<Locale, Dict> = {
     },
     devs: {
       meta: {
-        title: "واجهة أثر البرمجية — مواقيت صلاة وقبلة وتقويم هجري مجاني للمطوّرين",
+        title: "واجهة أثر البرمجية — مواقيت صلاة وقبلة وتقويم هجري وقمر مجاني للمطوّرين",
         description:
-          "واجهة REST مجانية ومحدودة المعدّل لمواقيت الصلاة، اتجاه القبلة، وتحويل التقويم الهجري. بلا حساب، بلا بريد إلكتروني، مفاتيح API ذاتية الخدمة لحد أعلى.",
+          "واجهة REST مجانية ومحدودة المعدّل لمواقيت الصلاة (يوم، فترة، دفعة، تقويم قابل للاشتراك)، القبلة، التقويم الهجري، المناسبات الإسلامية، طور القمر والبحث عن المدن. بلا حساب، بلا بريد إلكتروني، مفاتيح API ذاتية الخدمة لحد أعلى.",
       },
       backHome: "→ العودة إلى أثر",
     },

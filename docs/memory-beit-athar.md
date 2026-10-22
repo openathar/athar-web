@@ -1,16 +1,19 @@
-# Beit Athar → Startseite (Stand 12.10.2026)
+# Startseite „Baum unter dem Mond“ (Stand 22.10.2026)
 
-Der COMPUTE-Prototyp (`/beit-athar`) ist in die Startseite `/` eingegangen;
-`/[locale]/beit-athar` leitet nur noch dorthin um. Alles uncommitted.
+Die frühere Beit-Athar-/COMPUTE-Startseite wurde durch „Baum unter dem Mond“
+ersetzt; `/[locale]/beit-athar` leitet auf `/` um, die Varianten `/1 /2 /3`
+leiten ebenfalls auf `/`. Live auf openathar.org.
 
-- Seite: `app/[locale]/page.tsx`. Texte außerhalb von `dictionaries.ts`:
-  `lib/landing-copy.ts` (DE/EN/AR von Hand geschrieben, nicht übersetzt;
-  Regeln im Dateikopf — kurze Sätze, keine Floskeln, nichts Unbelegtes).
-- Typo: `.title-xl` / `.title-l` / `.stack-word` (leicht, groß; eigene
-  arabische Größen, weil Amiri optisch größer wirkt). Nicht `.display`
-  verwenden — die AR-Regel dort schlägt jede Utility.
-- Bilder (self-hosted, `public/beit-athar/`): tree, workers, connection,
-  bridge, landscape. `.ba-fade-edges` blendet die schwarzen Ränder aus.
-- Nav: `components/nav-shell.tsx` (Kapsel beim Scrollen, Sentinel `data-nav-sentinel`).
-- Entfernt: AtharNet, Zahlenband-Bild, Live-Balken, Anschluss-Chips
-  (nannten iOS/Android als vorhanden), abstrakte Security-Bilder.
+- Seite: `app/[locale]/page.tsx`. Komponenten: `components/lp/`
+  (`shell`, `tree-grow`, `olive-tree`, `moon-stage`, `moon-faces`,
+  `emotion-tree`). Styles: `components/lp/lp.css` (Palette `.lp-v2`, eine
+  Akzentvariable `--lp-accent`).
+- Texte von Hand je Sprache: `lib/landing-copy.ts` (Inhalte), `lib/lp-copy.ts`
+  (Kapitel, Gefühle-Karte). Kapitelnamen sachlich halten (Rechnen,
+  Funktionen, Idee, Kalender, API, Mitmachen).
+- Baum in der Navigation: Template-Video, per CSS auf die Krone beschnitten
+  und grün umgefärbt. **Lizenz ungeklärt** (`public/beit-athar/CREDITS.md`).
+- Gefühle-Karte: 133 Gefühle nach Amin Sabry, `lib/emotion-map.ts`.
+- Developer-Portal: gleiche Optik (`.dev-lp`), Link im Header der Startseite;
+  Referenz aus `lib/api-reference.ts`.
+- Falle: Server-Konstanten nie in eine `"use client"`-Datei (RSC).

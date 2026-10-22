@@ -123,8 +123,8 @@ export default async function Developers({
               <span className="text-gold">sky we do.</span>
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-muted">
-              Prayer times, Qibla and the Hijri calendar over plain HTTP — the identical calculation core that runs
-              inside the Athar apps. No account, no key required to start, no tracking, no cost. Free as in Sadaqah
+              Prayer times, Qibla, the Hijri calendar, Islamic observances, the moon and city lookup over plain
+              HTTP — the identical calculation core that runs inside the Athar apps. No account, no key required to start, no tracking, no cost. Free as in Sadaqah
               Jariyah, not as in trial.
             </p>
 
@@ -194,7 +194,8 @@ export default async function Developers({
             {/* ---------- Overview ---------- */}
             <Section id="overview" index="01" title="Overview">
               <p className="max-w-prose text-muted">
-                One free REST API for prayer times, Qibla bearing and Hijri calendar conversion — the same calculation
+                One free REST API for prayer times (a day, a range, a batch, the next prayer, a calendar feed), Qibla,
+                Hijri calendar conversion, Islamic observances, the moon and city lookup — the same calculation
                 core that powers this site and the mobile app. No account, no email, no tracking. Every endpoint below
                 can be tried right on this page.
               </p>
@@ -217,7 +218,7 @@ export default async function Developers({
             {/* ---------- Quickstart ---------- */}
             <Section id="quickstart" index="02" title="Quickstart">
               <p className="max-w-prose text-muted">
-                Every calculation endpoint is a plain GET request. No auth header required — an optional API key only
+                Every endpoint except the batch is a plain GET request. No auth header required — an optional API key only
                 raises your rate limit.
               </p>
               <div className="mt-6">
@@ -242,7 +243,7 @@ export default async function Developers({
                 <Row k="Missing values" v="A time that does not exist — sunrise during polar day, Isha without a night — is null. Never a placeholder like 00:00." />
                 <Row k="Coordinates" v="Decimal degrees, never degrees/minutes/seconds. Latitude −90…90, longitude −180…180." />
                 <Row k="Auth" v="Optional. Send X-API-Key to lift the rate limit; omit it and the endpoint still answers." />
-                <Row k="Caching" v="Calculation results are deterministic and sent with Cache-Control: public, max-age=31536000, immutable — cache them forever. The one exception: /v1/hijri without a date means “today” and is cached for five minutes." />
+                <Row k="Caching" v="Calculation results are deterministic and sent with Cache-Control: public, max-age=31536000, immutable — cache them forever. The exceptions are answers that mean “now”: /v1/hijri, /v1/events and /v1/prayer-times.ics without a date are cached for five minutes to an hour, /v1/prayer-times/next and /v1/moon without at not at all. Lookups (/v1/methods, /v1/places) are cached for a day." />
                 <Row k="CORS" v="Browser calls are allowed from openathar.org and, for local development, http://localhost:3000; any other origin gets 403. Call the API from your server, a mobile app or a script — CORS does not apply there — or proxy it through your own backend." />
                 <Row k="Errors" v={'Always the same shape: {"error": "…"} — see Errors below.'} />
                 <Row k="Versioning" v="The path carries the major version. Breaking changes land on /v2, never silently on /v1." />
@@ -250,9 +251,9 @@ export default async function Developers({
             </Section>
 
             {/* ---------- Endpoints ---------- */}
-            <Section id="endpoints" index="04" title="Calculation endpoints">
+            <Section id="endpoints" index="04" title="Endpoints">
               <p className="max-w-prose text-muted">
-                Six read-only endpoints. All are deterministic — the same input always produces the same output — except /v1/prayer-times/next without an at parameter, which answers for the current moment and is therefore never cached.
+                Prayer times (one day, a range, a batch, the next prayer, a calendar feed), the calculation methods, Qibla, Hijri calendar and observances, the moon, and city lookup. Answers are deterministic — the same input always produces the same output — except the ones that mean “now” (/v1/prayer-times/next and /v1/moon without an at parameter), which are never cached.
               </p>
               <div className="mt-8 space-y-12">
                 {CALC_ENDPOINTS.map((e) => (

@@ -1,5 +1,10 @@
 # Design: COMPUTE-Template → Beit Athar (Grün-Blau, ohne Rosa)
 
+> **Historisch (Stand 22.10.2026):** Dieser Entwurf wurde nicht so umgesetzt. Die Startseite ist
+> inzwischen „Baum unter dem Mond“ (siehe `memory-beit-athar.md`). Nur der Baum stammt noch aus dem
+> Template (Lizenz ungeklärt, `public/beit-athar/CREDITS.md`). Das Dokument bleibt als Begründung
+> der Section-Zuordnung stehen.
+
 Quelle: https://v0.app/templates/compute-the-platform-to-build-ship-ai-agents-Auw4otwlr20
 Live-Demo: https://v0-compute-11.vercel.app
 Stand: 07.10.2026

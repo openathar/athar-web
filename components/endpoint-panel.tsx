@@ -50,7 +50,7 @@ export function EndpointPanel({ endpoint }: { endpoint: Endpoint }) {
           <SectionLabel>Parameters</SectionLabel>
           {e.params.length === 0 ? (
             <p className="mt-3 text-sm text-muted">
-              None. {e.method === "POST" && "An optional JSON body lets you label the key."}
+              None.{e.method === "POST" && (e.id === "api-keys" ? " An optional JSON body lets you label the key." : " Everything goes in the JSON body below.")}
             </p>
           ) : (
             <ul className="mt-3 space-y-3" dir="ltr">

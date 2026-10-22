@@ -33,13 +33,27 @@ runner, no extra dependency). Hijri conversion is computed locally in JS
 (`lib/hijri.ts`). Both mirror the Java core; no external prayer-time API is
 called anywhere.
 
-## Prototype: Beit Athar (uncommitted)
+## Start page and developer portal
 
-Isolated COMPUTE-rhythm prototype at `app/[locale]/beit-athar/` — the
-production landing (`/`) stays untouched. Session memory, file map,
-section decisions and verification checklist:
-`docs/memory-beit-athar.md` (design mapping:
-`docs/design-compute-beit-athar.md`).
+The start page `/` (formerly the Beit Athar / COMPUTE prototype, which now
+only redirects) is the "tree under the moon" page: `app/[locale]/page.tsx`,
+components in `components/lp/`, styles in `components/lp/lp.css`
+(`.lp-v2` palette, one `--lp-accent`), texts in `lib/landing-copy.ts` and
+`lib/lp-copy.ts` (handwritten per language, no machine translation; keep
+chapter names plain — no poetic metaphors). Server constants (locales,
+`isRtl`) must never live in a `"use client"` file. Session notes:
+`docs/memory-beit-athar.md`.
+
+- **Licence debt:** the tree video/poster and some images are template media
+  with an unclarified licence (`public/beit-athar/CREDITS.md`). Do not add
+  more third-party media without recording its licence there.
+- **Developer portal** (`app/[locale]/developers`): English-only reference
+  driven by `lib/api-reference.ts` — add an endpoint there and the index,
+  panel, code samples and (for GET endpoints) the playground tab follow
+  (`components/api-playground.tsx`). When the API (`../api`) changes, update
+  the spec in the same change.
+- Emotion map: `lib/emotion-map.ts` (data, handwritten names) +
+  `components/lp/emotion-tree.tsx`.
 
 ## Languages
 

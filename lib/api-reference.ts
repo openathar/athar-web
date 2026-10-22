@@ -239,6 +239,252 @@ export const endpoints: Endpoint[] = [
     },
   },
   {
+    id: "prayer-times-batch",
+    method: "POST",
+    path: "/v1/prayer-times/batch",
+    title: "Batch prayer times",
+    summary: "One date and method, up to 50 locations, one request.",
+    description:
+      "For mosque directories, dashboards and multi-city widgets: send many locations in one body and get the prayer times back in the same order, each with the label you sent. At most 50 locations per call. The whole request is rejected if one location is invalid, and the message names its index (locations[3]: latitude out of range). One batch counts as one request against the rate limit. POST responses are not cached.",
+    auth: "optional",
+    params: [],
+    body: `{
+  "date": "2026-09-14",
+  "method": "MWL",
+  "locations": [
+    { "label": "berlin", "lat": 52.52, "lon": 13.405, "utcOffset": 2 },
+    { "label": "makkah", "lat": 21.4225, "lon": 39.8262, "utcOffset": 3 }
+  ]
+}`,
+    response: {
+      fields: [
+        { name: "date / method", type: "string", notes: "Echoed back." },
+        { name: "results[].label", type: "string | null", notes: "The label you sent for that location." },
+        { name: "results[].times", type: "object", notes: "Same shape as the /v1/prayer-times response." },
+      ],
+      sample: `{
+  "date": "2026-09-14",
+  "method": "MWL",
+  "results": [
+    { "label": "berlin", "times": { "date": "2026-09-14", "fajr": "04:38", "dhuhr": "13:02", "…": "…" } },
+    { "label": "makkah", "times": { "date": "2026-09-14", "…": "…" } }
+  ]
+}`,
+    },
+  },
+  {
+    id: "prayer-times-ics",
+    method: "GET",
+    path: "/v1/prayer-times.ics",
+    title: "Calendar feed (iCalendar)",
+    summary: "Prayer times as a subscribable calendar.",
+    description:
+      "An iCalendar feed (text/calendar) that Apple Calendar, Google Calendar and Outlook can subscribe to by URL, so prayer times show up in a calendar people already use. One short event per prayer, optionally sunrise, for days days from from (default: today, 30 days, at most 62). Event times are written in UTC and are therefore right on every device. Calendar apps refresh the feed on their own; because the window starts today, it keeps rolling forward. With an explicit from the feed is cached forever, otherwise for an hour.",
+    auth: "optional",
+    params: [
+      { name: "lat", type: "number", required: true, example: "52.52", notes: "Latitude in decimal degrees." },
+      { name: "lon", type: "number", required: true, example: "13.405", notes: "Longitude in decimal degrees." },
+      { name: "from", type: "date", required: false, default: "today", example: "2026-09-14", notes: "First day, ISO 8601." },
+      { name: "days", type: "number", required: false, default: "30", example: "30", notes: "Number of days, 1 to 62." },
+      { name: "method", type: "enum", required: false, default: "MWL", example: "MWL", notes: "Calculation method. See /v1/methods.", values: ["MWL", "ISNA", "EGYPT", "MAKKAH", "KARACHI", "TEHRAN", "JAFARI", "FRANCE", "RUSSIA", "MALAYSIA", "SINGAPORE"] },
+      { name: "utcOffset", type: "number", required: false, default: "0", example: "2", notes: "Hours offset of the location, −12 to 14." },
+      { name: "lang", type: "enum", required: false, default: "en", example: "en", notes: "Language of the event names.", values: ["en", "de", "ar"] },
+      { name: "sunrise", type: "string", required: false, default: "false", example: "false", notes: "true adds a sunrise event." },
+    ],
+    response: {
+      fields: [
+        { name: "(body)", type: "text/calendar", notes: "A VCALENDAR with one VEVENT per prayer: SUMMARY is the prayer name, DTSTART in UTC, ten minutes long, marked as free time." },
+      ],
+      sample: `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Athar//Prayer times//EN
+X-WR-CALNAME:Prayer times
+REFRESH-INTERVAL;VALUE=DURATION:PT12H
+BEGIN:VEVENT
+UID:fajr-2026-09-14-52.52,13.405-MWL@openathar.org
+DTSTART:20260914T023800Z
+DTEND:20260914T024800Z
+SUMMARY:Fajr
+TRANSP:TRANSPARENT
+END:VEVENT
+…
+END:VCALENDAR`,
+    },
+  },
+  {
+    id: "moon",
+    method: "GET",
+    path: "/v1/moon",
+    title: "Moon phase",
+    summary: "Phase, illumination, age and the next new and full moon.",
+    description:
+      "The moon at an instant (default: now): phase name, illuminated fraction, age in days, and the next new and full moon as UTC instants. It is calculated from the true times of new and full moon (Meeus), accurate to a couple of minutes — the same astronomy that drives the visuals on openathar.org. It is astronomy, not a moon sighting: a Hijri month begins with the observed crescent, not with the conjunction. With at the answer is cached forever, without it not at all.",
+    auth: "optional",
+    params: [
+      { name: "at", type: "string", required: false, default: "now", example: "2026-09-14T15:30:00Z", notes: "ISO 8601 instant." },
+    ],
+    response: {
+      fields: [
+        { name: "phase", type: "string", notes: "new, waxing-crescent, first-quarter, waxing-gibbous, full, waning-gibbous, last-quarter or waning-crescent." },
+        { name: "illumination", type: "number", notes: "Illuminated fraction of the disc, 0 to 1." },
+        { name: "ageDays", type: "number", notes: "Days since the last new moon." },
+        { name: "phaseAngleDegrees", type: "number", notes: "0 = new, 180 = full, along the lunation." },
+        { name: "previousNewMoon / nextNewMoon / nextFullMoon", type: "string", notes: "UTC instants." },
+      ],
+      sample: `{
+  "at": "2026-09-14T15:30:00Z",
+  "phase": "waxing-crescent",
+  "illumination": 0.1326,
+  "ageDays": 3.5,
+  "phaseAngleDegrees": 42.7,
+  "previousNewMoon": "2026-09-11T03:26:58Z",
+  "nextNewMoon": "2026-10-10T15:49:58Z",
+  "nextFullMoon": "2026-09-26T16:48:56Z"
+}`,
+    },
+  },
+  {
+    id: "events",
+    method: "GET",
+    path: "/v1/events",
+    title: "Islamic observances",
+    summary: "Upcoming Ramadan, Eids, Ashura and more, with countdowns.",
+    description:
+      "The next observances from a date, in order, each with its Hijri date, Gregorian date and the days until it: Islamic New Year, Ashura, Mawlid, start of Ramadan, Laylat al-Qadr, Eid al-Fitr and Eid al-Adha. These are calendar facts from the Umm al-Qura calendar; a local moon sighting may differ by a day, and two entries are worded neutrally on purpose — Mawlid is a date, not a call to observe it, and the night of Laylat al-Qadr is stated as unknown. With from the answer is cached forever, otherwise for an hour.",
+    auth: "optional",
+    params: [
+      { name: "from", type: "date", required: false, default: "today", example: "2026-09-14", notes: "Count days from here, ISO 8601." },
+      { name: "count", type: "number", required: false, default: "5", example: "3", notes: "How many observances, 1 to 20." },
+      { name: "locale", type: "enum", required: false, default: "en", example: "en", notes: "Language of names and notes.", values: ["en", "ar", "de"] },
+    ],
+    response: {
+      fields: [
+        { name: "events[].key", type: "string", notes: "Stable identifier, e.g. ramadan-start." },
+        { name: "events[].name / note", type: "string", notes: "Localized name and a one-line note." },
+        { name: "events[].hijriDay / hijriMonth / hijriYear", type: "number", notes: "The Hijri date." },
+        { name: "events[].gregorianDate", type: "string", notes: "The Gregorian date." },
+        { name: "events[].daysUntil", type: "number", notes: "Days from from; 0 on the day itself." },
+      ],
+      sample: `{
+  "from": "2026-09-14",
+  "locale": "en",
+  "events": [
+    {
+      "key": "ramadan-start",
+      "name": "Start of Ramadan",
+      "note": "Subject to moon sighting; the calculated date may shift by a day.",
+      "hijriDay": 1, "hijriMonth": 9, "hijriYear": 1448,
+      "gregorianDate": "2027-02-08",
+      "daysUntil": 147
+    }
+  ]
+}`,
+    },
+  },
+  {
+    id: "calendar-hijri",
+    method: "GET",
+    path: "/v1/calendar/hijri",
+    title: "Hijri month grid",
+    summary: "One Hijri month, day by day with Gregorian dates.",
+    description:
+      "A whole Umm al-Qura month with the Gregorian date and weekday of every day — enough to draw a Hijri calendar without shipping any conversion logic. Years 1300 to 1600 AH are supported (the span of the table); anything else returns 400. Cached forever.",
+    auth: "optional",
+    params: [
+      { name: "year", type: "number", required: true, example: "1448", notes: "Hijri year, 1300 to 1600." },
+      { name: "month", type: "number", required: true, example: "4", notes: "Hijri month, 1 to 12." },
+      { name: "locale", type: "enum", required: false, default: "en", example: "en", notes: "Language of the month name.", values: ["en", "ar", "de"] },
+    ],
+    response: {
+      fields: [
+        { name: "year / month / monthName", type: "number | string", notes: "The month, with its localized name." },
+        { name: "length", type: "number", notes: "29 or 30." },
+        { name: "days[]", type: "object[]", notes: "day, gregorianDate and weekday (English, upper case) for every day." },
+      ],
+      sample: `{
+  "year": 1448,
+  "month": 4,
+  "monthName": "Rabi' al-thani",
+  "length": 30,
+  "days": [
+    { "day": 1, "gregorianDate": "2026-09-12", "weekday": "SATURDAY" },
+    { "day": 2, "gregorianDate": "2026-09-13", "weekday": "SUNDAY" },
+    { "day": 3, "gregorianDate": "2026-09-14", "weekday": "MONDAY" },
+    "…"
+  ]
+}`,
+    },
+  },
+  {
+    id: "calendar-gregorian",
+    method: "GET",
+    path: "/v1/calendar/gregorian",
+    title: "Hijri to Gregorian",
+    summary: "The reverse conversion.",
+    description:
+      "Converts a Hijri (Umm al-Qura) date to its Gregorian date — the counterpart of /v1/hijri. The response has the same shape. A day that does not exist in that month (the 30th of a 29-day month) returns 400. Cached forever.",
+    auth: "optional",
+    params: [
+      { name: "year", type: "number", required: true, example: "1448", notes: "Hijri year, 1300 to 1600." },
+      { name: "month", type: "number", required: true, example: "4", notes: "1 to 12." },
+      { name: "day", type: "number", required: true, example: "3", notes: "1 to 30." },
+      { name: "locale", type: "enum", required: false, default: "en", example: "en", notes: "Language of monthName.", values: ["en", "ar", "de"] },
+    ],
+    response: {
+      fields: [
+        { name: "gregorianDate", type: "string", notes: "The Gregorian date." },
+        { name: "day / month / year / monthName", type: "number | string", notes: "The Hijri date that was converted." },
+      ],
+      sample: `{
+  "gregorianDate": "2026-09-14",
+  "day": 3,
+  "month": 4,
+  "year": 1448,
+  "monthName": "Rabi' al-thani"
+}`,
+    },
+  },
+  {
+    id: "places",
+    method: "GET",
+    path: "/v1/places",
+    title: "City lookup",
+    summary: "City name to coordinates, time zone and UTC offset.",
+    description:
+      "Most integrations start from a city name, not from coordinates. This resolves a name — Latin or Arabic script, accents ignored — to the latitude, longitude, IANA time zone and the UTC offset on a date, daylight saving included, which are exactly the inputs the prayer-time endpoints need. It covers cities above 15,000 people and runs on a bundled dataset, so no query is ever sent to a third-party geocoder. Best match first: exact name, then prefix, then contained; larger cities first within a tier. Data: GeoNames, CC BY 4.0 — the response names it as source. Cached for a day.",
+    auth: "optional",
+    params: [
+      { name: "q", type: "string", required: true, example: "berlin", notes: "City name, at least 2 characters." },
+      { name: "limit", type: "number", required: false, default: "10", example: "5", notes: "Maximum results, 1 to 25." },
+      { name: "date", type: "date", required: false, default: "today", example: "2026-09-14", notes: "Date for the UTC offset (daylight saving)." },
+    ],
+    response: {
+      fields: [
+        { name: "source", type: "string", notes: "Attribution required by the data licence." },
+        { name: "places[].name / country", type: "string", notes: "City and ISO country code." },
+        { name: "places[].latitude / longitude", type: "number", notes: "Coordinates." },
+        { name: "places[].timezone", type: "string", notes: "IANA time zone." },
+        { name: "places[].utcOffsetHours", type: "number", notes: "Offset on the requested date — pass it as utcOffset." },
+        { name: "places[].population", type: "number", notes: "Inhabitants, used for ranking." },
+      ],
+      sample: `{
+  "query": "berlin",
+  "source": "GeoNames (CC BY 4.0), https://www.geonames.org/",
+  "places": [
+    {
+      "name": "Berlin",
+      "country": "DE",
+      "latitude": 52.52437,
+      "longitude": 13.41053,
+      "timezone": "Europe/Berlin",
+      "utcOffsetHours": 2.0,
+      "population": 3426354
+    }
+  ]
+}`,
+    },
+  },
+  {
     id: "qibla",
     method: "GET",
     path: "/v1/qibla",
@@ -382,48 +628,6 @@ export type Proposal = {
 export const roadmap: Proposal[] = [
   {
     method: "GET",
-    path: "/v1/prayer-times.ics",
-    title: "Calendar subscription feed",
-    why: "An iCalendar feed turns prayer times into a subscribable calendar in Apple Calendar, Google Calendar or Outlook — reach far beyond people who install another app, at almost no cost.",
-    status: "next",
-  },
-  {
-    method: "GET",
-    path: "/v1/calendar/hijri",
-    title: "Hijri month grid & reverse conversion",
-    why: "Hijri → Gregorian is already implemented in the web client but not exposed. A full month grid would let any client render a Hijri calendar without shipping conversion logic.",
-    status: "next",
-  },
-  {
-    method: "GET",
-    path: "/v1/events",
-    title: "Islamic dates & observances",
-    why: "Ramadan, the two Eids, Ashura, Laylat al-Qadr — with countdowns from a given date. The event table already exists client-side; promoting it to the API makes it reusable and correctable in one place.",
-    status: "planned",
-  },
-  {
-    method: "GET",
-    path: "/v1/moon",
-    title: "Moon phase & events",
-    why: "Phase, illumination, age, next new and full moon. It is the astronomy that underpins the Hijri month and it powers the visuals on this very site — worth exposing rather than keeping private.",
-    status: "planned",
-  },
-  {
-    method: "GET",
-    path: "/v1/places",
-    title: "City lookup & timezone resolution",
-    why: "Most integrations start from a city name, not coordinates. Resolving name → lat/lon/timezone removes the one dependency that pushes developers to a third-party geocoder.",
-    status: "exploring",
-  },
-  {
-    method: "POST",
-    path: "/v1/prayer-times/batch",
-    title: "Batch requests",
-    why: "One request, many locations — for mosque directories, dashboards and multi-city widgets that would otherwise hammer the rate limit.",
-    status: "exploring",
-  },
-  {
-    method: "GET",
     path: "/v1/quran/verse",
     title: "Quran & Adhkar content",
     why: "The largest expansion, and the one that turns a calculation API into a platform API. Needs a licence-clean text source and careful versioning before it can be promised.",
@@ -475,6 +679,8 @@ export function exampleUrl(e: Endpoint): string {
 export function codeSample(e: Endpoint, lang: Lang): string {
   const url = exampleUrl(e);
   const isPost = e.method === "POST";
+  const bodyJson = (e.body ?? "{}").trim();
+  const bodyOneLine = bodyJson.replace(/\n\s*/g, " ");
 
   switch (lang) {
     case "curl":
@@ -488,7 +694,7 @@ export function codeSample(e: Endpoint, lang: Lang): string {
         return `const res = await fetch("${url}", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ label: "my-prayer-widget" }),
+  body: JSON.stringify(${bodyJson.replace(/\n/g, "\n  ")}),
 });
 const data = await res.json();`;
       }
@@ -501,7 +707,7 @@ const data = await res.json();`;
 
 res = requests.post(
     "${url}",
-    json={"label": "my-prayer-widget"},
+    json=${bodyJson.replace(/\n/g, "\n    ")},
 )
 data = res.json()`;
       }
@@ -515,7 +721,9 @@ data = res.json()`;
         return `var request = URLRequest(url: URL(string: "${url}")!)
 request.httpMethod = "POST"
 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-request.httpBody = try JSONSerialization.data(withJSONObject: ["label": "my-prayer-widget"])
+request.httpBody = Data(#"""
+${bodyJson}
+"""#.utf8)
 let (data, _) = try await URLSession.shared.data(for: request)
 let json = try JSONSerialization.jsonObject(with: data)`;
       }
@@ -528,7 +736,7 @@ let json = try JSONSerialization.jsonObject(with: data)`;
         return `import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 
-val body = """{"label":"my-prayer-widget"}"""
+val body = """${bodyOneLine}"""
     .toRequestBody("application/json".toMediaType())
 val request = Request.Builder()
     .url("${url}")
