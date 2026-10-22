@@ -30,7 +30,7 @@ const CHAPTERS = ["roots", "trunk", "branches", "crown", "fruit", "seeds"] as co
  * Hero: der echte Mond (heutige Phase) geht hinter der leuchtenden Baumkrone
  * auf. Danach waechst der Baum beim Scrollen, und jedes Kapitel ist ein Teil
  * von ihm: Wurzeln (rechnet lokal), Stamm (was traegt), Aeste (zueinander),
- * Krone (der Himmel), Fruechte (API, Versprechen), Samen (mitmachen).
+ * Krone (Kalender), Fruechte (API), Samen (mitmachen); die Navigation nennt sie sachlich.
  */
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -260,7 +260,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           <h2 className="title-l">{p.v3.emotions.title}</h2>
           <p className="lp-lead">{p.v3.emotions.lead}</p>
         </div>
-        <EmotionTree copy={p.v3.emotions} rtl={l === "ar"} />
+        <EmotionTree copy={p.v3.emotions} rtl={l === "ar"} locale={l} />
         <p className="lp-emo-note">
           <span>{p.v3.emotions.note}</span>
           <a href={p.v3.emotions.sourceUrl} rel="noopener">

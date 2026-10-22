@@ -37,6 +37,11 @@ export type EmotionCopy = {
   belly: string;
   hint: string;
   counterpart: string;
+  sideStrong: string;
+  sideWeak: string;
+  sideMid: string;
+  all: string;
+  count: string;
   heart: { name: string; body: string };
   /** Reihenfolge: Liebe, Hass, Angst, Trauer, Vertrauen, Frieden */
   items: { name: string; body: string }[];
@@ -77,12 +82,12 @@ export const lpCopy: Record<Locale, LpCopy> = {
       growHint: "Scroll, and the tree grows.",
       faces: { title: "Eight faces of one moon", hint: "Pick one: when does it come back?", inDays: "in", today: "tonight", days: "days" },
       chapters: {
-        roots: { name: "Roots", title: "It works without the internet." },
-        trunk: { name: "Trunk", title: "What carries it." },
-        branches: { name: "Branches", title: "Reaching toward each other." },
-        crown: { name: "Crown", title: "Under the same sky." },
-        fruit: { name: "Fruit", title: "What you can pick." },
-        seeds: { name: "Seeds", title: "Plant one yourself." },
+        roots: { name: "Calculation", title: "Calculated on your device." },
+        trunk: { name: "Features", title: "What's inside." },
+        branches: { name: "Idea", title: "Read, pray, pass it on." },
+        crown: { name: "Calendar", title: "Dates and signs of the day." },
+        fruit: { name: "API", title: "Build on it." },
+        seeds: { name: "Take part", title: "Three ways to help." },
       },
     },
     v3: {
@@ -97,6 +102,11 @@ export const lpCopy: Record<Locale, LpCopy> = {
         belly: "Belly · roots",
         hint: "Tap a feeling on the tree.",
         counterpart: "Its counterpart",
+        sideStrong: "Right side of the body · stronger",
+        sideWeak: "Left side of the body · weaker",
+        sideMid: "Centre",
+        all: "All {n} feelings",
+        count: "The map counts 135 feelings and sensors. {n} of them are here.",
         heart: { name: "The heart", body: "A flower in the middle of the tree, in the centre of the chest." },
         items: [
           { name: "Love", body: "A branch in the chest. You feel love there, not in the belly." },
@@ -150,12 +160,12 @@ export const lpCopy: Record<Locale, LpCopy> = {
       growHint: "Scroll, und der Baum wächst.",
       faces: { title: "Acht Gesichter eines Mondes", hint: "Wähl eins: wann kommt es wieder?", inDays: "in", today: "heute Nacht", days: "Tagen" },
       chapters: {
-        roots: { name: "Wurzeln", title: "Es rechnet auf deinem Gerät." },
-        trunk: { name: "Stamm", title: "Was es trägt." },
-        branches: { name: "Äste", title: "Zueinander." },
-        crown: { name: "Krone", title: "Unter demselben Himmel." },
-        fruit: { name: "Früchte", title: "Was du pflücken kannst." },
-        seeds: { name: "Samen", title: "Pflanz selbst einen." },
+        roots: { name: "Rechnen", title: "Gerechnet auf deinem Gerät." },
+        trunk: { name: "Funktionen", title: "Was drinsteckt." },
+        branches: { name: "Idee", title: "Lesen, beten, weitergeben." },
+        crown: { name: "Kalender", title: "Daten und Zeichen des Tages." },
+        fruit: { name: "API", title: "Darauf bauen." },
+        seeds: { name: "Mitmachen", title: "Drei Wege, zu helfen." },
       },
     },
     v3: {
@@ -170,6 +180,11 @@ export const lpCopy: Record<Locale, LpCopy> = {
         belly: "Bauch · Wurzeln",
         hint: "Tipp ein Gefühl am Baum an.",
         counterpart: "Sein Gegenstück",
+        sideStrong: "Rechte Körperseite · stärker",
+        sideWeak: "Linke Körperseite · schwächer",
+        sideMid: "Mitte",
+        all: "Alle {n} Gefühle",
+        count: "Die Karte zählt 135 Gefühle und Sensoren. {n} davon sind hier.",
         heart: { name: "Das Herz", body: "Eine Blume in der Mitte des Baums, im Zentrum der Brust." },
         items: [
           { name: "Liebe", body: "Ein Ast in der Brust. Liebe spürst du dort, nicht im Bauch." },
@@ -223,12 +238,12 @@ export const lpCopy: Record<Locale, LpCopy> = {
       growHint: "مرّر الصفحة وشاهد الشجرة تنمو.",
       faces: { title: "ثمانية وجوه لقمر واحد", hint: "اختر وجهًا لترى متى يعود.", inDays: "بعد", today: "الليلة", days: "يومًا" },
       chapters: {
-        roots: { name: "الجذور", title: "يعمل بلا إنترنت." },
-        trunk: { name: "الجذع", title: "ما يحمله." },
-        branches: { name: "الأغصان", title: "تمتدّ نحو بعضها." },
-        crown: { name: "التاج", title: "تحت السماء نفسها." },
-        fruit: { name: "الثمار", title: "ما يمكنك قطفه." },
-        seeds: { name: "البذور", title: "ازرع واحدة بنفسك." },
+        roots: { name: "الحساب", title: "يُحسب على جهازك." },
+        trunk: { name: "الميزات", title: "ما بداخله." },
+        branches: { name: "الفكرة", title: "اقرأ، صلِّ، شارِك." },
+        crown: { name: "التقويم", title: "تواريخ اليوم وآياته." },
+        fruit: { name: "الواجهة البرمجية", title: "ابنِ عليها." },
+        seeds: { name: "شارك", title: "ثلاث طرق للمساعدة." },
       },
     },
     v3: {
@@ -243,6 +258,11 @@ export const lpCopy: Record<Locale, LpCopy> = {
         belly: "البطن · الجذور",
         hint: "المس شعورًا على الشجرة.",
         counterpart: "ما يقابله",
+        sideStrong: "الجهة اليمنى · أقوى",
+        sideWeak: "الجهة اليسرى · أضعف",
+        sideMid: "الوسط",
+        all: "كل المشاعر ({n})",
+        count: "تضم الخريطة ١٣٥ شعورًا ومستشعرًا، وهنا {n} منها.",
         heart: { name: "القلب", body: "زهرة في وسط الشجرة، في منتصف الصدر." },
         items: [
           { name: "الحب", body: "غصن في الصدر. تشعر به هناك، لا في البطن." },
