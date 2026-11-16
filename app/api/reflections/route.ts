@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getVerse } from "~/lib/quran";
 import { locales, type Locale } from "~/lib/i18n";
 import reflections from "~/data/reflections.json";
+import { randomLiveReflection } from "~/lib/reflections-db";
 
 export const dynamic = "force-dynamic";
 
@@ -12,6 +13,9 @@ export const dynamic = "force-dynamic";
  * geholt (mit Rückfalltext aus dem Repo bei Netzproblemen, siehe
  * lib/quran.ts). Jeder Klick soll frische Inhalte laden, deshalb
  * force-dynamic statt ISR-Cache.
+ *
+ * Quelle: zuerst der Postgres-Live-Pool (n8n-generiert + menschlich
+ * freigegeben), sonst der statische reflections.json-Seed.
  */
 export async function GET(req: NextRequest) {
   const localeParam = req.nextUrl.searchParams.get("locale");
@@ -20,6 +24,19 @@ export async function GET(req: NextRequest) {
     : "en";
   const exclude = Number(req.nextUrl.searchParams.get("exclude") ?? "-1");
 
+  // 1) Dynamischer Live-Pool aus Postgres.
+  const live = await randomLiveReflection(exclude);
+  if (live) {
+    const verse = await getVerse(live.verse, locale, { arabic: "", rendered: "" });
+    return NextResponse.json({
+      dayIndex: live.id,
+      field: live.field[locale],
+      observation: live.observation[locale],
+      verse,
+    });
+  }
+
+  // 2) Statischer Seed (Reflections aus dem Repo).
   const entries = reflections.entries;
   let dayIndex = Math.floor(Math.random() * entries.length);
   if (entries.length > 1) {
