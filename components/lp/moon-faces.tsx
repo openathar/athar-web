@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { moonPhaseAt } from "~/lib/moon-phase";
+import { moonPhaseAt } from "@openathar/athan-core-ts";
 import { toArabicDigits } from "~/lib/prayer-times";
 import type { Locale } from "~/lib/i18n";
 

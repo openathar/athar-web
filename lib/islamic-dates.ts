@@ -1,4 +1,4 @@
-import { hijriToGregorian, gregorianToHijri } from "./hijri.ts";
+import { hijriToGregorian, gregorianToHijri } from "@openathar/athan-core-ts";
 import type { Locale } from "./i18n.ts";
 
 /**

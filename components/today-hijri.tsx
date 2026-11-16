@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { Locale } from "~/lib/i18n";
-import { gregorianToHijri, type HijriDate } from "~/lib/hijri";
+import { gregorianToHijri, type HijriDate } from "@openathar/athan-core-ts";
 import { hijriEventFor, type EventDef } from "~/lib/islamic-dates";
 
 type Labels = {

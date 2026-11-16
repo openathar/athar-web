@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import dynamic from "next/dynamic";
-import { moonPhaseAt } from "~/lib/moon-phase";
+import { moonPhaseAt } from "@openathar/athan-core-ts";
 import { nearestPlace, timezoneForCoords } from "~/lib/timezones";
 import { toArabicDigits } from "~/lib/prayer-times";
 import { useTheme } from "~/lib/use-theme";

@@ -1,11 +1,11 @@
-import { Methods, PrayerTimes, formatLocalTime } from "./athan-core.ts";
+import { Methods, PrayerTimes, formatLocalTime } from "@openathar/athan-core-ts";
 
 /**
  * Gebetszeiten für die interaktiven Abschnitte der Startseite (Weltkarte,
  * Erde & Mond).
  *
  * Berechnet lokal mit dem TypeScript-Port von `athan-core-java`
- * (`lib/athan-core.ts`) — kein externer API-Aufruf mehr. Die Zeiten werden
+ * (`@openathar/athan-core-ts`) — kein externer API-Aufruf mehr. Die Zeiten werden
  * in der Zeitzone des Ortes angezeigt; dafür wird der UTC-Offset der
  * IANA-Zeitzone (Browser-Zeitzone oder Stadtzuordnung) zum aktuellen
  * Zeitpunkt bestimmt.

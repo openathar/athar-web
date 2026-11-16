@@ -5,7 +5,7 @@ import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { ZoomableControls, ZoomButtons, type ZoomApi, type ZoomLabels } from "~/components/cosmos-controls";
 import { SceneStars } from "~/components/earth-moon-scene";
-import { moonPhaseAt, nextMoonEvents } from "~/lib/moon-phase";
+import { moonPhaseAt, nextMoonEvents } from "@openathar/athan-core-ts";
 import { toArabicDigits } from "~/lib/prayer-times";
 import { useTheme } from "~/lib/use-theme";
 import { useReducedMotion } from "~/lib/use-reduced-motion";

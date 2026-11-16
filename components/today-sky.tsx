@@ -7,7 +7,7 @@ import {
   type MoonEvents,
   type MoonPhase,
   type MoonPhaseKey,
-} from "~/lib/moon-phase";
+} from "@openathar/athan-core-ts";
 
 type SkyLabels = {
   moon: string;
