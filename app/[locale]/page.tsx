@@ -17,6 +17,7 @@ import { NumberedList, pad } from "~/components/lp/parts";
 import { Reveal } from "~/components/reveal";
 import { BuildIn } from "~/components/build-in";
 import { DailySign } from "~/components/daily-sign";
+import { DuaNow } from "~/components/lp/dua-now";
 import { EmotionTree } from "~/components/lp/emotion-tree";
 import { ForceDark } from "~/components/force-dark";
 
@@ -112,6 +113,13 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             </blockquote>
             <figcaption className="mono">{t.ayah.ref}</figcaption>
           </figure>
+        </Reveal>
+      </section>
+
+      {/* ---------- Du'a des Tages ---------- */}
+      <section className="lp-wrap lp-dua-sec">
+        <Reveal>
+          <DuaNow locale={l} />
         </Reveal>
       </section>
 

@@ -361,3 +361,14 @@ html[lang="ar"] .lp-aside-title { text-transform: none; letter-spacing: 0; font-
 }
 .lp-fm-side, .lp-fm-panel { width: 100%; max-width: 100%; }
 .lp-fm-panel p { max-width: min(26rem, 100%); }
+
+/* ---------- Du'a des Tages ---------- */
+.lp-dua-sec { padding-block: clamp(3rem, 7vw, 5rem) 0; }
+.lp-dua { margin: 0; text-align: center; }
+.lp-dua-label { color: var(--lp-accent); text-transform: uppercase; letter-spacing: .08em; font-size: .75rem; margin: 0 0 1rem; }
+html[lang=ar] .lp-dua-label { text-transform: none; letter-spacing: 0; font-size: .9rem; }
+.lp-dua-occ { color: var(--lp-mute); font-size: .95rem; margin: 0 0 1.5rem; }
+.lp-dua blockquote { margin: 0; }
+.lp-dua-ar { font-size: clamp(1.8rem, 4.5vw, 3.25rem); line-height: 1.6; margin: 0 0 1.25rem; }
+.lp-dua-tr { margin: 0 auto 1.5rem; max-width: 40rem; font-size: 1.15rem; color: var(--lp-mute); }
+.lp-dua-src { margin: 0; color: var(--lp-accent); font-size: .8rem; }
