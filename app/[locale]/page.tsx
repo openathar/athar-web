@@ -122,17 +122,17 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         </Reveal>
       </section>
 
-      {/* ---------- Du'a des Tages ---------- */}
-      <section className="lp-wrap lp-dua-sec">
+      {/* ---------- Du'a und Name des Tages: nebeneinander, nacheinander aufgedeckt ---------- */}
+      <section className="lp-wrap lp-pair-sec">
         <Reveal>
-          <DuaNow locale={l} />
-        </Reveal>
-      </section>
-
-      {/* ---------- Name des Tages ---------- */}
-      <section className="lp-wrap lp-name-sec">
-        <Reveal>
-          <NameOfDay locale={l} />
+          <div className="lp-pair">
+            <div className="lp-pair-a">
+              <DuaNow locale={l} />
+            </div>
+            <div className="lp-pair-b">
+              <NameOfDay locale={l} />
+            </div>
+          </div>
         </Reveal>
       </section>
 

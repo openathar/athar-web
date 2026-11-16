@@ -363,7 +363,6 @@ html[lang="ar"] .lp-aside-title { text-transform: none; letter-spacing: 0; font-
 .lp-fm-panel p { max-width: min(26rem, 100%); }
 
 /* ---------- Du'a des Tages ---------- */
-.lp-dua-sec { padding-block: clamp(3rem, 7vw, 5rem) 0; }
 .lp-dua { margin: 0; text-align: center; }
 .lp-dua-label { color: var(--lp-accent); text-transform: uppercase; letter-spacing: .08em; font-size: .75rem; margin: 0 0 1rem; }
 html[lang=ar] .lp-dua-label { text-transform: none; letter-spacing: 0; font-size: .9rem; }
@@ -374,7 +373,6 @@ html[lang=ar] .lp-dua-label { text-transform: none; letter-spacing: 0; font-size
 .lp-dua-src { margin: 0; color: var(--lp-accent); font-size: .8rem; }
 
 /* ---------- Name des Tages ---------- */
-.lp-name-sec { padding-block: clamp(3rem, 7vw, 5rem) 0; }
 .lp-name { margin: 0; text-align: center; }
 .lp-name-label { color: var(--lp-accent); text-transform: uppercase; letter-spacing: .08em; font-size: .75rem; margin: 0 0 1rem; }
 html[lang=ar] .lp-name-label { text-transform: none; letter-spacing: 0; font-size: .9rem; }
@@ -386,9 +384,9 @@ html[lang=ar] .lp-name-label { text-transform: none; letter-spacing: 0; font-siz
 .lp-mymoon { margin: 0; }
 .lp-mymoon-label { color: var(--lp-accent); text-transform: uppercase; letter-spacing: .08em; font-size: .75rem; margin: 0 0 1.75rem; text-align: center; }
 html[lang=ar] .lp-mymoon-label { text-transform: none; letter-spacing: 0; font-size: .9rem; }
-.lp-mymoon-scene { width: min(100%, 30rem); height: 22rem; margin: 0 auto 1.5rem; }
-.lp-mymoon-scene canvas { width: 100% !important; height: 100% !important; }
-.lp-mymoon-facts { display: flex; flex-direction: column; gap: .5rem; }
+.lp-mymoon-scene { width: min(100%, 24rem); aspect-ratio: 1; margin: 0 auto 1.75rem; }
+.lp-mymoon-scene canvas { width: 100%; height: 100%; display: block; }
+.lp-mymoon-facts { display: flex; flex-direction: column; gap: .5rem; text-align: center; align-items: center; }
 .lp-mymoon-name { font-size: 1.6rem; font-weight: 300; margin: 0; }
 .lp-mymoon-fact { margin: 0; color: var(--lp-mute); font-variant-numeric: tabular-nums; font-size: 1.05rem; }
 .lp-mymoon-hint { margin: 0; color: var(--lp-mute); max-width: 24rem; }
@@ -427,4 +425,38 @@ html[lang=ar] .lp-mymoon-label { text-transform: none; letter-spacing: 0; font-s
   .reveal.is-visible .lp-dua-ar,
   .reveal.is-visible .lp-name-ar { animation: none; }
   .lp-count { animation: none; }
+}
+
+/* ---------- Du'a + Name nebeneinander, von oben nach unten, nacheinander ---------- */
+.lp-pair-sec { padding-block: clamp(3rem, 7vw, 5rem) 0; }
+.lp-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3rem clamp(2rem, 5vw, 5rem); align-items: stretch; }
+.lp-pair-b { border-inline-start: 1px solid var(--lp-rule); padding-inline-start: clamp(2rem, 5vw, 5rem); }
+.lp-pair .lp-dua-ar { font-size: clamp(1.5rem, 2.7vw, 2.4rem); }
+.lp-pair .lp-name-ar { font-size: clamp(2.4rem, 5vw, 4rem); }
+.lp-pair .lp-dua-tr, .lp-pair .lp-name-tr { font-size: 1.05rem; }
+.lp-pair .lp-dua-ar { text-wrap: balance; }
+.lp-pair .lp-dua-tr { text-wrap: balance; }
+@media (max-width: 760px) {
+  .lp-pair { grid-template-columns: 1fr; }
+  .lp-pair-b { border-inline-start: 0; padding-inline-start: 0; border-top: 1px solid var(--lp-rule); padding-top: 2.5rem; }
+}
+
+/* Aufdecken: ein Vorhang läuft von oben nach unten. Erst Du'a (links), dann der Name. */
+.lp-pair-a, .lp-pair-b { clip-path: inset(-2rem -2rem 100% -2rem); }
+.reveal.is-visible .lp-pair-a { animation: lp-wipe-down 1.6s cubic-bezier(.3,.6,.2,1) forwards; }
+.reveal.is-visible .lp-pair-b { animation: lp-wipe-down 1.6s cubic-bezier(.3,.6,.2,1) 1.7s forwards; }
+@keyframes lp-wipe-down {
+  from { clip-path: inset(-2rem -2rem 100% -2rem); }
+  to   { clip-path: inset(-2rem -2rem -2rem -2rem); }
+}
+/* Die Schrift zündet erst, wenn der Vorhang sie erreicht (Lampe-Effekt auf dem Text). */
+.reveal.is-visible .lp-pair-a .lp-dua-ar  { animation: lp-lamp-text 2.8s ease-out 0.5s both; }
+.reveal.is-visible .lp-pair-b .lp-name-ar { animation: lp-lamp-text 2.8s ease-out 2.2s both; }
+@media (max-width: 760px) {
+  /* Untereinander: der Name folgt nach dem Du'a, die Reihenfolge bleibt. */
+  .reveal.is-visible .lp-pair-b { animation-delay: 1.7s; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-pair-a, .lp-pair-b { clip-path: none; animation: none !important; }
+  .reveal.is-visible .lp-pair-a .lp-dua-ar, .reveal.is-visible .lp-pair-b .lp-name-ar { animation: none; }
 }

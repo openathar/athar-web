@@ -26,6 +26,9 @@ const LABEL: Record<Locale, string> = {
 const ARABIC_DIGITS = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
 const num = (n: string, l: Locale) => (l === "ar" ? n.replace(/\d/g, (d) => ARABIC_DIGITS[Number(d)]) : n);
 
+const GRADE_AR: Record<string, string> = { Sahih: "صحيح", Hasan: "حسن", "Hasan Sahih": "حسن صحيح" };
+const gradeLabel = (g: string, l: Locale) => (l === "ar" ? (GRADE_AR[g] ?? g) : g);
+
 const KEYS = Object.keys(DUAS);
 
 export function DuaNow({ locale }: { locale: Locale }) {
@@ -34,7 +37,7 @@ export function DuaNow({ locale }: { locale: Locale }) {
   const meaning = locale === "ar" ? null : dua.meaning[locale as "en" | "de"];
   const occasion = dua.occasion[locale];
   const source = `${COLLECTION_NAME[dua.collection][locale]} ${num(dua.number, locale)}${
-    dua.grade && !["bukhari", "muslim"].includes(dua.collection) ? ` · ${dua.grade}` : ""
+    dua.grade && !["bukhari", "muslim"].includes(dua.collection) ? ` · ${gradeLabel(dua.grade, locale)}` : ""
   }`;
 
   return (
