@@ -3,6 +3,7 @@ name: build
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
 concurrency:
@@ -19,11 +20,15 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npx tsc --noEmit
       - run: npm test
       - run: node scripts/verify-verses.mjs
+      - run: npm run build
 
   image:
     needs: verify
+    # PRs only run the gate above; images are built from main.
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     permissions:
       contents: read
