@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "node --test lib/*.test.ts",
-    "verify:content": "node scripts/verify-verses.mjs"
+    "verify:content": "node scripts/verify-verses.mjs",
+    "sync:openapi": "node scripts/sync-openapi-snapshot.mjs"
   },
   "dependencies": {
     "@openathar/athan-core-ts": "0.1.0",

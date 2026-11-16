@@ -1,0 +1,17 @@
+[
+  "GET /v1/api-keys/{apiKey}/usage",
+  "GET /v1/calendar/gregorian",
+  "GET /v1/calendar/hijri",
+  "GET /v1/events",
+  "GET /v1/hijri",
+  "GET /v1/methods",
+  "GET /v1/moon",
+  "GET /v1/places",
+  "GET /v1/prayer-times",
+  "GET /v1/prayer-times.ics",
+  "GET /v1/prayer-times/next",
+  "GET /v1/prayer-times/range",
+  "GET /v1/qibla",
+  "POST /v1/api-keys",
+  "POST /v1/prayer-times/batch"
+]
