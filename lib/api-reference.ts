@@ -599,7 +599,7 @@ export const errorCodes: { status: string; meaning: string; fix: string }[] = [
   { status: "404", meaning: "Not found", fix: "Unknown path — or, on the usage endpoint, a key that does not exist (\"unknown API key\")." },
   { status: "405", meaning: "Method not allowed", fix: "Wrong HTTP method for the path. The Allow header lists the right one." },
   { status: "415", meaning: "Unsupported media type", fix: "POST bodies must be sent as Content-Type: application/json. A bare curl -d sends form data and lands here." },
-  { status: "429", meaning: "Rate limited", fix: "You crossed the window limit. Wait for the seconds given in the Retry-After header, or send an API key for the higher ceiling." },
+  { status: "429", meaning: "Rate limited", fix: "You crossed the window limit. Wait for the seconds given in the Retry-After header, or send an API key for the higher ceiling. Watch X-RateLimit-Remaining on normal answers to see it coming." },
   { status: "500", meaning: "Server error", fix: "Something broke on the Athar side; the message is deliberately generic. Worth an issue on GitHub — include the full request URL." },
 ];
 

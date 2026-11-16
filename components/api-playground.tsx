@@ -38,7 +38,7 @@ export function ApiPlayground() {
   const [q, setQ] = useState("berlin");
   const [apiKey, setApiKey] = useState("");
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<{ status: number; ms: number; body: string } | null>(null);
+  const [result, setResult] = useState<{ status: number; ms: number; body: string; quota?: { limit: number; remaining: number } } | null>(null);
 
   const { path, query } = useMemo((): { path: string; query: Record<string, string> } => {
     if (tab === "prayer-times") {
@@ -94,7 +94,14 @@ export function ApiPlayground() {
       } catch {
         // not JSON, show raw text
       }
-      setResult({ status: res.status, ms, body });
+      // Readable because the API exposes these headers through CORS.
+      const limit = Number(res.headers.get("X-RateLimit-Limit"));
+      const remaining = Number(res.headers.get("X-RateLimit-Remaining"));
+      const quota =
+        res.headers.get("X-RateLimit-Limit") !== null && Number.isFinite(limit) && Number.isFinite(remaining)
+          ? { limit, remaining }
+          : undefined;
+      setResult({ status: res.status, ms, body, quota });
     } catch {
       setResult({ status: 0, ms: Math.round(performance.now() - start), body: "Network error — is the API reachable?" });
     } finally {
@@ -249,6 +256,7 @@ export function ApiPlayground() {
               <>
                 <p className={`mono mb-2 text-xs ${result.status >= 200 && result.status < 300 ? "text-accent" : "text-gold"}`}>
                   {result.status || "ERR"} · {result.ms}ms
+                  {result.quota ? ` · ${result.quota.remaining} / ${result.quota.limit} requests left this minute` : ""}
                 </p>
                 <pre className="mono overflow-x-auto whitespace-pre-wrap break-all text-[12px] text-ink">{result.body}</pre>
               </>

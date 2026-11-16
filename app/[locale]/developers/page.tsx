@@ -294,6 +294,28 @@ export default async function Developers({
                   </div>
                 ))}
               </div>
+              <div className="mt-6 border border-rule">
+                <p className="mono border-b border-rule bg-surface px-4 py-2 text-[11px] uppercase tracking-wider text-muted">
+                  Response headers — on every answer from the API
+                </p>
+                <dl className="divide-y divide-rule text-sm">
+                  {[
+                    ["X-RateLimit-Limit", "Requests allowed per one-minute window for you (60 anonymous, 600 with a key)."],
+                    ["X-RateLimit-Remaining", "Requests left in the current window. 0 on a 429."],
+                    ["Retry-After", "Only on 429: seconds until the window resets."],
+                  ].map(([k, v]) => (
+                    <div key={k} className="grid gap-1 px-4 py-3 sm:grid-cols-[14rem_1fr]">
+                      <dt className="mono text-ink">{k}</dt>
+                      <dd className="text-muted">{v}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+              <p className="mt-4 text-sm text-muted">
+                The headers are exposed through CORS, so browser JavaScript can read them (the playground below shows
+                your remaining quota after every call). A response replayed from a browser or CDN cache carries the
+                headers of the request that filled the cache, not a fresh count.
+              </p>
               <p className="mt-4 text-sm text-muted">
                 Exceeding the window returns <code className="mono text-ink">429</code> with a{" "}
                 <code className="mono text-ink">Retry-After</code> header in seconds. The limiter fails open: if its store
