@@ -31,7 +31,7 @@ type MoonLabels = {
   days: string;
 };
 
-function MoonBody({ elongationDeg, theme, reduced }: { elongationDeg: number; theme: "light" | "dark"; reduced: boolean }) {
+export function MoonBody({ elongationDeg, theme, reduced }: { elongationDeg: number; theme: "light" | "dark"; reduced: boolean }) {
   const ref = useRef<THREE.Mesh>(null);
   const tex = useLoader(THREE.TextureLoader, MOON_TEX);
 

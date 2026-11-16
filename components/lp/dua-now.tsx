@@ -1,7 +1,6 @@
 import { DUAS, type Collection, type Dua } from "~/data/duas";
 import type { Locale } from "~/lib/i18n";
 import { ShareButton } from "~/components/lp/share-button";
-import { Lamp } from "~/components/lp/lamp";
 
 /**
  * "Du'a des Tages" — one sahih/hasan du'a from the hadith collections per
@@ -39,8 +38,7 @@ export function DuaNow({ locale }: { locale: Locale }) {
   }`;
 
   return (
-    <Lamp>
-      <figure className="lp-dua">
+    <figure className="lp-dua">
         <p className="lp-dua-label mono">{LABEL[locale]}</p>
         <figcaption className="lp-dua-occ">{occasion}</figcaption>
         <blockquote>
@@ -57,7 +55,6 @@ export function DuaNow({ locale }: { locale: Locale }) {
             label={{ en: "Share", de: "Teilen", ar: "مشاركة" }[locale]}
           />
         </p>
-      </figure>
-    </Lamp>
+    </figure>
   );
 }

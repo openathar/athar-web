@@ -1,6 +1,5 @@
 import { ASMA } from "~/data/asma-ul-husna";
 import type { Locale } from "~/lib/i18n";
-import { Lamp } from "~/components/lp/lamp";
 
 /**
  * "Name des Tages" — ein Name Allahs pro UTC-Tag (deterministisch),
@@ -29,8 +28,7 @@ export function NameOfDay({ locale }: { locale: Locale }) {
   const num = locale === "ar" ? String(index + 1).replace(/\d/g, (d) => ARABIC_DIGITS[Number(d)]) : String(index + 1);
 
   return (
-    <Lamp>
-      <figure className="lp-name">
+    <figure className="lp-name">
         <p className="lp-name-label mono">
           {LABEL[locale]} · {num} {OF[locale]}
         </p>
@@ -38,7 +36,6 @@ export function NameOfDay({ locale }: { locale: Locale }) {
           {name.arabic}
         </p>
         <p className="lp-name-tr">{meaning ? `${name.translit} — ${meaning}` : name.translit}</p>
-      </figure>
-    </Lamp>
+    </figure>
   );
 }

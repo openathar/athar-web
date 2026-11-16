@@ -1,21 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { Canvas } from "@react-three/fiber";
 import { gregorianToHijri, moonPhaseAt, type MoonPhaseKey } from "@openathar/athan-core-ts";
+import { MoonBody } from "~/components/moon-view";
+import { SceneStars } from "~/components/earth-moon-scene";
 import type { Locale } from "~/lib/i18n";
 
 /**
- * "Dein Mond" — the moon phase and the Hijri date of a chosen day (e.g. a
- * birth date). Fully computed on the device via @openathar/athan-core-ts, no
- * network call. The phase disc is a plain SVG (lit/dark regions from the
- * illumination), matching the site's dark/gold palette.
+ * "Dein Mond" — der echte, texturierte Mond (gleiche 3D-Szene wie der Hero,
+ * NASA-/Solar-System-Scope-Textur, CC BY 4.0) für ein gewähltes Datum,
+ * z.B. den Geburtstag. Beleuchtung = echte Elongation (moonPhaseAt).
  */
 
-const LABEL: Record<Locale, string> = {
-  en: "Your moon",
-  de: "Dein Mond",
-  ar: "قمرك",
-};
+const LABEL: Record<Locale, string> = { en: "Your moon", de: "Dein Mond", ar: "قمرك" };
 const HINT: Record<Locale, string> = {
   en: "Pick a date — the day you were born, or any day that matters.",
   de: "Wähle ein Datum — deinen Geburtstag oder jeden Tag, der zählt.",
@@ -27,30 +25,9 @@ const HIJRI: Record<Locale, string> = { en: "Hijri date", de: "Hijri-Datum", ar:
 const ARABIC_DIGITS = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
 const num = (n: number, l: Locale) => (l === "ar" ? String(n).replace(/\d/g, (d) => ARABIC_DIGITS[Number(d)]) : String(n));
 
-/** Region of a disc of radius R lit at `illumination`; the unlit region is the mirror. */
-function discRegion(R: number, illumination: number, rightSide: boolean): string {
-  const rx = Math.max(0.001, R * Math.abs(1 - 2 * illumination));
-  const outerSweep = rightSide ? 1 : 0;
-  const termSweep = rightSide === illumination < 0.5 ? 0 : 1;
-  return `M 0 ${-R} A ${R} ${R} 0 0 ${outerSweep} 0 ${R} A ${rx} ${R} 0 0 ${termSweep} 0 ${-R} Z`;
-}
-
-function MoonDisc({ illumination, waxing, size }: { illumination: number; waxing: boolean; size: number }) {
-  const R = 50;
-  const dark = discRegion(R, 1 - illumination, !waxing);
-  return (
-    <svg viewBox="-50 -50 100 100" width={size} height={size} role="img" aria-label="moon">
-      <circle r={R} fill="#e9e3d4" />
-      <path d={dark} fill="#0b0f17" />
-      <circle r={R - 0.5} fill="none" stroke="#d4a95f" strokeOpacity={0.35} strokeWidth={1} />
-    </svg>
-  );
-}
-
 export function YourMoon({ locale, phaseNames }: { locale: Locale; phaseNames: Record<MoonPhaseKey, string> }) {
   const [dateStr, setDateStr] = useState<string>("");
   useEffect(() => {
-    // Client-only default: today, in the visitor's own timezone.
     setDateStr((prev) => prev || new Date().toISOString().slice(0, 10));
   }, []);
 
@@ -61,26 +38,34 @@ export function YourMoon({ locale, phaseNames }: { locale: Locale; phaseNames: R
   return (
     <figure className="lp-mymoon">
       <p className="lp-mymoon-label mono">{LABEL[locale]}</p>
-      <div className="lp-mymoon-body">
-        <div className="lp-mymoon-disc">
-          {phase ? <MoonDisc illumination={phase.illumination} waxing={phase.phaseAngle < 180} size={180} /> : null}
+
+      {date && phase ? (
+        <div className="lp-mymoon-scene">
+          <Canvas camera={{ position: [4.6, 0.9, 1.4], fov: 34 }} dpr={[1, 1.75]}>
+            <SceneStars />
+            <Suspense fallback={null}>
+              <MoonBody elongationDeg={phase.phaseAngle} theme="dark" reduced={false} />
+            </Suspense>
+          </Canvas>
         </div>
-        <div className="lp-mymoon-facts">
-          {phase ? (
-            <>
-              <p className="lp-mymoon-name">{phaseNames[phase.key]}</p>
-              <p className="lp-mymoon-fact">
-                {num(Math.round(phase.illumination * 100), locale)}% {ILLUM[locale]}
-              </p>
-              <p className="lp-mymoon-fact">
-                {HIJRI[locale]}: {num(hijri!.day, locale)} {hijri!.monthName} {num(hijri!.year, locale)}
-              </p>
-            </>
-          ) : (
-            <p className="lp-mymoon-hint">{HINT[locale]}</p>
-          )}
-        </div>
+      ) : null}
+
+      <div className="lp-mymoon-facts">
+        {phase ? (
+          <>
+            <p className="lp-mymoon-name">{phaseNames[phase.key]}</p>
+            <p className="lp-mymoon-fact">
+              {num(Math.round(phase.illumination * 100), locale)}% {ILLUM[locale]}
+            </p>
+            <p className="lp-mymoon-fact">
+              {HIJRI[locale]}: {num(hijri!.day, locale)} {hijri!.monthName} {num(hijri!.year, locale)}
+            </p>
+          </>
+        ) : (
+          <p className="lp-mymoon-hint">{HINT[locale]}</p>
+        )}
       </div>
+
       <div className="lp-mymoon-pick">
         <input
           type="date"

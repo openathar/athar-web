@@ -386,8 +386,8 @@ html[lang=ar] .lp-name-label { text-transform: none; letter-spacing: 0; font-siz
 .lp-mymoon { margin: 0; }
 .lp-mymoon-label { color: var(--lp-accent); text-transform: uppercase; letter-spacing: .08em; font-size: .75rem; margin: 0 0 1.75rem; text-align: center; }
 html[lang=ar] .lp-mymoon-label { text-transform: none; letter-spacing: 0; font-size: .9rem; }
-.lp-mymoon-body { display: flex; align-items: center; justify-content: center; gap: 2.5rem; flex-wrap: wrap; }
-.lp-mymoon-disc { flex-shrink: 0; }
+.lp-mymoon-scene { width: min(100%, 30rem); height: 22rem; margin: 0 auto 1.5rem; }
+.lp-mymoon-scene canvas { width: 100% !important; height: 100% !important; }
 .lp-mymoon-facts { display: flex; flex-direction: column; gap: .5rem; }
 .lp-mymoon-name { font-size: 1.6rem; font-weight: 300; margin: 0; }
 .lp-mymoon-fact { margin: 0; color: var(--lp-mute); font-variant-numeric: tabular-nums; font-size: 1.05rem; }
@@ -403,56 +403,28 @@ html[lang=ar] .lp-mymoon-label { text-transform: none; letter-spacing: 0; font-s
 .lp-share { all: unset; cursor: pointer; font-weight: 600; border-bottom: 1px solid var(--lp-accent); padding-bottom: 2px; color: inherit; }
 .lp-share:hover { color: var(--lp-accent); }
 
-/* ---------- Alte Lampe geht an ---------- */
-.lp-lamp { position: relative; isolation: isolate; }
-.lp-lamp-halo {
-  position: absolute; inset: -4.5rem -2.5rem; z-index: -1;
-  background: radial-gradient(ellipse 55% 50% at 50% 48%, rgba(212,169,95,0.30), rgba(212,169,95,0.10) 45%, transparent 72%);
-  opacity: 0; filter: blur(6px);
-}
-.reveal.is-visible .lp-lamp-halo { animation: lp-lamp-warm 2.6s ease-out forwards; }
-@keyframes lp-lamp-warm {
-  0%   { opacity: 0; }
-  6%   { opacity: 0.7; }
-  12%  { opacity: 0.22; }
-  18%  { opacity: 0.8; }
-  24%  { opacity: 0.32; }
-  30%  { opacity: 0.85; }
-  38%  { opacity: 0.48; }
-  46%  { opacity: 0.95; }
-  55%  { opacity: 0.6; }
-  70%  { opacity: 0.88; }
-  85%  { opacity: 1; }
-  100% { opacity: 1; }
-}
-/* Der Schriftzug "wärmt" mit an — startet trüb, zieht hell. */
+/* ---------- Schrift-Lampe: der Text selbst zündet (kein Hintergrund) ---------- */
 .reveal.is-visible .lp-dua-ar,
 .reveal.is-visible .lp-name-ar {
-  animation: lp-lamp-text 2.2s ease-out forwards;
+  animation: lp-lamp-text 2.8s ease-out forwards;
 }
 @keyframes lp-lamp-text {
-  0%   { opacity: 0.3; filter: brightness(0.72) saturate(0.65); }
-  70%  { opacity: 1; }
-  100% { opacity: 1; filter: brightness(1) saturate(1); }
-}
-
-/* Mond-Scheibe: ruhiges Atmen. */
-.lp-mymoon-disc svg { animation: lp-moon-breathe 5.5s ease-in-out infinite; }
-@keyframes lp-moon-breathe {
-  0%, 100% { filter: drop-shadow(0 0 6px rgba(212,169,95,0.10)); }
-  50%      { filter: drop-shadow(0 0 20px rgba(212,169,95,0.28)); }
+  0%   { opacity: 0.2; text-shadow: 0 0 0 rgba(212,169,95,0); }
+  12%  { opacity: 0.7; text-shadow: 0 0 20px rgba(212,169,95,0.55); }
+  24%  { opacity: 0.4; text-shadow: 0 0 5px rgba(212,169,95,0.18); }
+  36%  { opacity: 0.85; text-shadow: 0 0 28px rgba(212,169,95,0.7); }
+  48%  { opacity: 0.55; text-shadow: 0 0 10px rgba(212,169,95,0.3); }
+  60%  { opacity: 0.95; text-shadow: 0 0 30px rgba(212,169,95,0.75); }
+  74%  { opacity: 0.75; text-shadow: 0 0 14px rgba(212,169,95,0.4); }
+  100% { opacity: 1; text-shadow: 0 0 24px rgba(212,169,95,0.5); }
 }
 
 /* Countdown: sanfter Puls. */
 .lp-count { display: inline-block; animation: lp-count-pulse 2s ease-in-out infinite; }
-@keyframes lp-count-pulse {
-  0%, 100% { opacity: 1; }
-  50%      { opacity: 0.62; }
-}
+@keyframes lp-count-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.62; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal.is-visible .lp-lamp-halo { animation: none; opacity: 0.55; }
   .reveal.is-visible .lp-dua-ar,
   .reveal.is-visible .lp-name-ar { animation: none; }
-  .lp-mymoon-disc svg, .lp-count { animation: none; }
+  .lp-count { animation: none; }
 }
