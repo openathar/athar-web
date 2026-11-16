@@ -71,6 +71,7 @@ export function LpShell({
         <p className="lp-footer-links">
           {!home && <Link href={`/${locale}`}>{c.fullSite}</Link>}
           <Link href={`/${locale}/developers`}>{c.developers}</Link>
+          <Link href={`/${locale}/privacy`}>{c.privacy}</Link>
           <a href={GITHUB_ORG} rel="noopener">
             {c.github}
           </a>
