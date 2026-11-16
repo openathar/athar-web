@@ -1,6 +1,7 @@
 import { DUAS, type Collection, type Dua } from "~/data/duas";
 import type { Locale } from "~/lib/i18n";
 import { ShareButton } from "~/components/lp/share-button";
+import { Lamp } from "~/components/lp/lamp";
 
 /**
  * "Du'a des Tages" — one sahih/hasan du'a from the hadith collections per
@@ -38,23 +39,25 @@ export function DuaNow({ locale }: { locale: Locale }) {
   }`;
 
   return (
-    <figure className="lp-dua">
-      <p className="lp-dua-label mono">{LABEL[locale]}</p>
-      <figcaption className="lp-dua-occ">{occasion}</figcaption>
-      <blockquote>
-        <p className="quran lp-dua-ar" lang="ar" dir="rtl">
-          {dua.arabic}
+    <Lamp>
+      <figure className="lp-dua">
+        <p className="lp-dua-label mono">{LABEL[locale]}</p>
+        <figcaption className="lp-dua-occ">{occasion}</figcaption>
+        <blockquote>
+          <p className="quran lp-dua-ar" lang="ar" dir="rtl">
+            {dua.arabic}
+          </p>
+          {meaning ? <p className="lp-dua-tr">{meaning}</p> : null}
+        </blockquote>
+        <p className="lp-dua-src mono">{source}</p>
+        <p className="lp-dua-share">
+          <ShareButton
+            text={`${dua.arabic}\n${meaning ?? ""}\n— ${source}`}
+            url="https://openathar.org"
+            label={{ en: "Share", de: "Teilen", ar: "مشاركة" }[locale]}
+          />
         </p>
-        {meaning ? <p className="lp-dua-tr">{meaning}</p> : null}
-      </blockquote>
-      <p className="lp-dua-src mono">{source}</p>
-      <p className="lp-dua-share">
-        <ShareButton
-          text={`${dua.arabic}\n${meaning ?? ""}\n— ${source}`}
-          url="https://openathar.org"
-          label={{ en: "Share", de: "Teilen", ar: "مشاركة" }[locale]}
-        />
-      </p>
-    </figure>
+      </figure>
+    </Lamp>
   );
 }
