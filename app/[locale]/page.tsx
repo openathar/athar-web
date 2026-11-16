@@ -18,6 +18,8 @@ import { Reveal } from "~/components/reveal";
 import { BuildIn } from "~/components/build-in";
 import { DailySign } from "~/components/daily-sign";
 import { DuaNow } from "~/components/lp/dua-now";
+import { NameOfDay } from "~/components/lp/name-of-day";
+import { YourMoon } from "~/components/lp/your-moon";
 import { EmotionTree } from "~/components/lp/emotion-tree";
 import { ForceDark } from "~/components/force-dark";
 
@@ -120,6 +122,20 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       <section className="lp-wrap lp-dua-sec">
         <Reveal>
           <DuaNow locale={l} />
+        </Reveal>
+      </section>
+
+      {/* ---------- Name des Tages ---------- */}
+      <section className="lp-wrap lp-name-sec">
+        <Reveal>
+          <NameOfDay locale={l} />
+        </Reveal>
+      </section>
+
+      {/* ---------- Dein Mond ---------- */}
+      <section className="lp-wrap lp-mymoon-sec">
+        <Reveal>
+          <YourMoon locale={l} phaseNames={t.earth.phaseNames} />
         </Reveal>
       </section>
 

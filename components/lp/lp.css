@@ -372,3 +372,26 @@ html[lang=ar] .lp-dua-label { text-transform: none; letter-spacing: 0; font-size
 .lp-dua-ar { font-size: clamp(1.8rem, 4.5vw, 3.25rem); line-height: 1.6; margin: 0 0 1.25rem; }
 .lp-dua-tr { margin: 0 auto 1.5rem; max-width: 40rem; font-size: 1.15rem; color: var(--lp-mute); }
 .lp-dua-src { margin: 0; color: var(--lp-accent); font-size: .8rem; }
+
+/* ---------- Name des Tages ---------- */
+.lp-name-sec { padding-block: clamp(3rem, 7vw, 5rem) 0; }
+.lp-name { margin: 0; text-align: center; }
+.lp-name-label { color: var(--lp-accent); text-transform: uppercase; letter-spacing: .08em; font-size: .75rem; margin: 0 0 1rem; }
+html[lang=ar] .lp-name-label { text-transform: none; letter-spacing: 0; font-size: .9rem; }
+.lp-name-ar { font-size: clamp(2.4rem, 6vw, 4.25rem); margin: 0 0 .75rem; }
+.lp-name-tr { margin: 0 auto; color: var(--lp-mute); font-size: 1.1rem; max-width: 40rem; }
+
+/* ---------- Dein Mond ---------- */
+.lp-mymoon-sec { padding-block: clamp(3rem, 7vw, 5rem) 0; }
+.lp-mymoon { margin: 0; }
+.lp-mymoon-label { color: var(--lp-accent); text-transform: uppercase; letter-spacing: .08em; font-size: .75rem; margin: 0 0 1.75rem; text-align: center; }
+html[lang=ar] .lp-mymoon-label { text-transform: none; letter-spacing: 0; font-size: .9rem; }
+.lp-mymoon-body { display: flex; align-items: center; justify-content: center; gap: 2.5rem; flex-wrap: wrap; }
+.lp-mymoon-disc { flex-shrink: 0; }
+.lp-mymoon-facts { display: flex; flex-direction: column; gap: .5rem; }
+.lp-mymoon-name { font-size: 1.6rem; font-weight: 300; margin: 0; }
+.lp-mymoon-fact { margin: 0; color: var(--lp-mute); font-variant-numeric: tabular-nums; font-size: 1.05rem; }
+.lp-mymoon-hint { margin: 0; color: var(--lp-mute); max-width: 24rem; }
+.lp-mymoon-pick { margin-top: 1.75rem; text-align: center; }
+.lp-mymoon-input { background: transparent; color: var(--lp-ink); border: 1px solid var(--lp-rule); border-radius: .5rem; padding: .6rem 1rem; font: inherit; color-scheme: dark; }
+.lp-mymoon-input:focus-visible { outline: 2px solid var(--lp-accent); outline-offset: 2px; }
