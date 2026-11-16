@@ -13,7 +13,7 @@
   "dependencies": {
     "@openathar/athan-core-ts": "0.1.0",
     "@react-three/fiber": "^9.7.0",
-    "next": "^15.5.28",
+    "next": "^15.5.29",
     "pg": "^8.23.1",
     "react": "19.2.0",
     "react-dom": "19.2.0",
