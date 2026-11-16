@@ -20,6 +20,7 @@ import { DailySign } from "~/components/daily-sign";
 import { DuaNow } from "~/components/lp/dua-now";
 import { NameOfDay } from "~/components/lp/name-of-day";
 import { YourMoon } from "~/components/lp/your-moon";
+import { PrayerCountdown } from "~/components/lp/prayer-countdown";
 import { EmotionTree } from "~/components/lp/emotion-tree";
 import { ForceDark } from "~/components/force-dark";
 
@@ -93,6 +94,9 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             <a href={GITHUB_ORG} className="lp-link" rel="noopener">
               {p.common.github} →
             </a>
+          </p>
+          <p className="lp-count-wrap mono">
+            <PrayerCountdown locale={l} />
           </p>
         </div>
         <div className="lp-hero2-moon">

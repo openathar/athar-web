@@ -395,3 +395,10 @@ html[lang=ar] .lp-mymoon-label { text-transform: none; letter-spacing: 0; font-s
 .lp-mymoon-pick { margin-top: 1.75rem; text-align: center; }
 .lp-mymoon-input { background: transparent; color: var(--lp-ink); border: 1px solid var(--lp-rule); border-radius: .5rem; padding: .6rem 1rem; font: inherit; color-scheme: dark; }
 .lp-mymoon-input:focus-visible { outline: 2px solid var(--lp-accent); outline-offset: 2px; }
+
+/* ---------- Countdown + Teilen ---------- */
+.lp-count-wrap { margin: 1.25rem 0 0; color: var(--lp-mute); font-size: .9rem; }
+.lp-count { color: var(--lp-accent); }
+.lp-dua-share { margin: 1.25rem 0 0; }
+.lp-share { all: unset; cursor: pointer; font-weight: 600; border-bottom: 1px solid var(--lp-accent); padding-bottom: 2px; color: inherit; }
+.lp-share:hover { color: var(--lp-accent); }

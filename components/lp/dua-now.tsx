@@ -1,5 +1,6 @@
 import { DUAS, type Collection, type Dua } from "~/data/duas";
 import type { Locale } from "~/lib/i18n";
+import { ShareButton } from "~/components/lp/share-button";
 
 /**
  * "Du'a des Tages" — one sahih/hasan du'a from the hadith collections per
@@ -47,6 +48,13 @@ export function DuaNow({ locale }: { locale: Locale }) {
         {meaning ? <p className="lp-dua-tr">{meaning}</p> : null}
       </blockquote>
       <p className="lp-dua-src mono">{source}</p>
+      <p className="lp-dua-share">
+        <ShareButton
+          text={`${dua.arabic}\n${meaning ?? ""}\n— ${source}`}
+          url="https://openathar.org"
+          label={{ en: "Share", de: "Teilen", ar: "مشاركة" }[locale]}
+        />
+      </p>
     </figure>
   );
 }
