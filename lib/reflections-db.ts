@@ -39,28 +39,25 @@ export type LiveReflection = {
   observation: Record<Locale, string>;
 };
 
-export async function randomLiveReflection(excludeId?: number): Promise<LiveReflection | null> {
+/** All approved ('live') rows. The table is tiny (dozens), so one query is cheaper than clever sampling. */
+export async function allLiveReflections(): Promise<LiveReflection[]> {
   const p = getPool();
-  if (!p) return null;
+  if (!p) return [];
   try {
     const { rows } = await p.query(
       `SELECT id, verse, field_de, field_en, field_ar,
               observation_de, observation_en, observation_ar
          FROM reflections
-        WHERE status = 'live' AND ($1::bigint IS NULL OR id <> $1)
-        ORDER BY random()
-        LIMIT 1`,
-      [excludeId ?? null]
+        WHERE status = 'live'
+        ORDER BY id`
     );
-    const r = rows[0];
-    if (!r) return null;
-    return {
-      id: r.id,
+    return rows.map((r) => ({
+      id: Number(r.id),
       verse: r.verse,
       field: { de: r.field_de, en: r.field_en, ar: r.field_ar },
       observation: { de: r.observation_de, en: r.observation_en, ar: r.observation_ar },
-    };
+    }));
   } catch {
-    return null;
+    return [];
   }
 }

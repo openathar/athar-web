@@ -62,13 +62,14 @@ export function DailySign({
       const res = await fetch(`/api/reflections?locale=${locale}&exclude=${dayIndex}`);
       if (!res.ok) return;
       const data = await res.json();
-      const entry = entries[data.dayIndex];
+      // Alles Nötige kommt aus der Antwort; der Eintrag muss nicht im Seed-Array stehen
+      // (freigegebene Postgres-Zeilen haben einen eigenen Nummernbereich).
       setDayIndex(data.dayIndex);
-      setSign({
-        ...entry,
-        field: { ...entry.field, [locale]: data.field },
-        observation: { ...entry.observation, [locale]: data.observation },
-      });
+      setSign((prev) => ({
+        ...prev,
+        field: { ...prev.field, [locale]: data.field },
+        observation: { ...prev.observation, [locale]: data.observation },
+      }));
       setVerse(data.verse);
     } catch {
       // Netz weg — der aktuelle Eintrag bleibt stehen, kein Fehler-Nutzen
