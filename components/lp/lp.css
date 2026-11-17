@@ -468,3 +468,17 @@ html[lang=ar] .lp-mymoon-label { text-transform: none; letter-spacing: 0; font-s
 .lp-privacy-sec .title-l { font-size: clamp(1.4rem, 2.4vw, 1.9rem); margin-bottom: 1rem; }
 .lp-privacy-sec p { color: var(--lp-mute); line-height: 1.75; margin: 0 0 1rem; max-width: 40rem; }
 html[lang=ar] .lp-privacy-sec p { line-height: 2; }
+
+/* Blog */
+.lp-blog { padding-block: clamp(2.5rem, 6vw, 4.5rem) 0; max-width: 46rem; }
+.lp-blog .title-xl { margin: 0 0 1.5rem; }
+.lp-blog-list { list-style: none; margin: 2.5rem 0 0; padding: 0; }
+.lp-blog-list li { border-top: 1px solid var(--lp-rule); }
+.lp-blog-item { display: block; padding-block: 1.75rem; color: inherit; text-decoration: none; }
+.lp-blog-item time { color: var(--lp-accent); font-size: 0.8rem; }
+.lp-blog-item .title-l { font-size: clamp(1.3rem, 2.2vw, 1.7rem); margin: 0.5rem 0; }
+.lp-blog-item p { color: var(--lp-mute); line-height: 1.7; margin: 0; max-width: 40rem; }
+.lp-blog-item:hover .title-l, .lp-blog-item:focus-visible .title-l { color: var(--lp-accent); }
+html[lang=ar] .lp-blog-item p { line-height: 2; }
+.lp-blog-back { border-top: 1px solid var(--lp-rule); margin-top: 2.5rem; padding-top: 1.5rem; }
+.lp-blog-back a { color: var(--lp-accent); }
