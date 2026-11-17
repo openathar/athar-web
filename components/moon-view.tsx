@@ -1,5 +1,6 @@
 "use client";
 
+import { sunPosition, type Vec3 } from "~/lib/moon-light";
 import { Suspense, useEffect, useRef } from "react";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import * as THREE from "three";
@@ -18,6 +19,8 @@ import type { Locale } from "~/lib/i18n";
  * aus der Geometrie. Zoom per Scroll/Pinch, Drehen per Ziehen.
  */
 
+/** Camera of this scene; the sun is computed relative to it (lib/moon-light.ts). */
+const CAMERA: Vec3 = [7.7, 1.3, 2.3];
 const MOON_R = 1.5;
 const MOON_TEX = "/textures/2k_moon.jpg";
 
@@ -43,8 +46,7 @@ export function MoonBody({ elongationDeg, theme, reduced }: { elongationDeg: num
   // Sonnenrichtung aus Mondsicht: Bei Neumond (Elongation 0°) steht die Sonne
   // hinter dem Mond (Kamera sieht die dunkle Seite), bei Vollmond (180°) hinter
   // der Kamera — die erdzugewandte Seite ist dann voll beleuchtet.
-  const e = (elongationDeg * Math.PI) / 180;
-  const sunPos: [number, number, number] = [-Math.cos(e) * 8, 0.6, Math.sin(e) * 8];
+  const sunPos = sunPosition(elongationDeg, CAMERA);
 
   useFrame((_, delta) => {
     if (!reduced && ref.current) ref.current.rotation.y += delta * 0.02;
@@ -108,7 +110,7 @@ export function MoonView({
     <div>
       <div className="relative">
         <div className="stage-fade h-[460px] w-full cursor-grab active:cursor-grabbing sm:h-[580px]">
-          <Canvas camera={{ position: [7.7, 1.3, 2.3], fov: 34 }} dpr={[1, 1.75]}>
+          <Canvas camera={{ position: CAMERA, fov: 34 }} dpr={[1, 1.75]}>
             <SceneStars />
             <Suspense fallback={null}>
               <MoonBody elongationDeg={phase.phaseAngle} theme={theme} reduced={reduced} />

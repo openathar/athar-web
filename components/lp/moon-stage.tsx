@@ -1,5 +1,6 @@
 "use client";
 
+import { sunPosition, type Vec3 } from "~/lib/moon-light";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import * as THREE from "three";
@@ -19,6 +20,9 @@ type Labels = {
   hijri: string;
 };
 
+/** Camera of the hero scene; the sun is computed relative to it (lib/moon-light.ts). */
+const CAMERA: Vec3 = [5.8, 1, 1.75];
+
 /**
  * Der Mond mit seiner echten Phase: Die Sonne steht dort, wo sie zur aktuellen
  * Elongation stehen muss, die Lichtgestalt ergibt sich aus der Geometrie.
@@ -30,8 +34,7 @@ function Moon({ elongationDeg, reduced }: { elongationDeg: number; reduced: bool
   useEffect(() => {
     tex.colorSpace = THREE.SRGBColorSpace;
   }, [tex]);
-  const e = (elongationDeg * Math.PI) / 180;
-  const sun: [number, number, number] = [-Math.cos(e) * 8, 0.6, Math.sin(e) * 8];
+  const sun = sunPosition(elongationDeg, CAMERA);
   useFrame((_, dt) => {
     if (!reduced && ref.current) ref.current.rotation.y += dt * 0.02;
   });
@@ -96,7 +99,7 @@ export function MoonStage({
     <>
       {part !== "facts" && (
       <div className="lp-moon" role="img" aria-label={`${phaseNames[phase.key]}, ${Math.round(phase.illumination * 100)}%`}>
-        <Canvas camera={{ position: [5.8, 1, 1.75], fov: 34 }} dpr={[1, 1.75]} gl={{ alpha: true }}>
+        <Canvas camera={{ position: CAMERA, fov: 34 }} dpr={[1, 1.75]} gl={{ alpha: true }}>
           <SceneStars />
           <Suspense fallback={null}>
             <Moon elongationDeg={phase.phaseAngle} reduced={reduced} />
