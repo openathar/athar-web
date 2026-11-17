@@ -8,7 +8,7 @@ import type { Locale } from "~/lib/i18n";
  * einziger Netzzugriff = Städtesuche an api.openathar.org, Standort nur
  * lokal). Ändert sich eines davon, MUSS dieser Text mit.
  *
- * Arabisch: noch ohne muttersprachliche Prüfung (wie die übrigen arabischen Texte).
+ * Arabisch: von Ahmad gelesen und freigegeben am 2026-11-17 (docs/arabic-review.md).
  */
 
 export type PrivacyCopy = {
@@ -24,7 +24,7 @@ export const privacyCopy: Record<Locale, PrivacyCopy> = {
     title: "Privacy",
     metaDescription:
       "What Athar does and does not do with your data: no accounts, no ads, no tracking — on the website, in the app and in the API.",
-    updated: "Last updated: 16 November 2026",
+    updated: "Last updated: 17 November 2026",
     intro:
       "Athar is built as a Sadaqah Jariyah: free, without ads, without accounts and without tracking. This page says exactly what that means in practice — for the website, the app and the public API.",
     sections: [
@@ -86,7 +86,7 @@ export const privacyCopy: Record<Locale, PrivacyCopy> = {
     title: "Datenschutz",
     metaDescription:
       "Was Athar mit deinen Daten macht und was nicht: keine Konten, keine Werbung, kein Tracking — auf der Website, in der App und in der API.",
-    updated: "Stand: 16. November 2026",
+    updated: "Stand: 17. November 2026",
     intro:
       "Athar ist als Sadaqah Jariyah gebaut: kostenlos, ohne Werbung, ohne Konten und ohne Tracking. Diese Seite sagt genau, was das konkret heißt — für die Website, die App und die öffentliche API.",
     sections: [
@@ -148,7 +148,7 @@ export const privacyCopy: Record<Locale, PrivacyCopy> = {
     title: "الخصوصية",
     metaDescription:
       "ما يفعله «أثر» بياناتك وما لا يفعله: لا حسابات ولا إعلانات ولا تتبّع — في الموقع والتطبيق وواجهة البرمجة.",
-    updated: "آخر تحديث: ١٦ نوفمبر ٢٠٢٦",
+    updated: "آخر تحديث: ١٧ نوفمبر ٢٠٢٦",
     intro:
       "«أثر» مبنيّ صدقةً جارية: مجاني، بلا إعلانات، بلا حسابات، وبلا تتبّع. توضّح هذه الصفحة بالضبط ما يعنيه ذلك عمليًا — للموقع والتطبيق وواجهة البرمجة العامة.",
     sections: [
