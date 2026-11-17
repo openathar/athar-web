@@ -68,7 +68,8 @@ export const privacyCopy: Record<Locale, PrivacyCopy> = {
         id: "logs",
         h: "Technical logs",
         p: [
-          "Like any web service, our server and Cloudflare, which sits in front of the website and the API, process technical data such as your IP address, the requested address and the time in order to deliver pages and to protect against abuse. We use this only to operate and secure the service — not for analytics, advertising or profiling.",
+          "Like any web service, Cloudflare, which sits in front of the website and the API, processes technical data such as your IP address, the requested address and the time in order to deliver pages and to protect against abuse.",
+          "Our own server keeps an access log: time, requested address including its parameters (for example the city you searched for) and the response status. It does not contain your IP address, because requests reach our server through Cloudflare. These logs are deleted after 30 days. We use them only to operate and secure the service — not for analytics, advertising or profiling.",
         ],
       },
       {
@@ -129,7 +130,8 @@ export const privacyCopy: Record<Locale, PrivacyCopy> = {
         id: "logs",
         h: "Technische Protokolle",
         p: [
-          "Wie jeder Webdienst verarbeiten unser Server und Cloudflare, das vor Website und API sitzt, technische Daten wie deine IP-Adresse, die angeforderte Adresse und die Uhrzeit, um Seiten auszuliefern und vor Missbrauch zu schützen. Wir nutzen das nur zum Betrieb und zur Absicherung — nicht für Analyse, Werbung oder Profilbildung.",
+          "Wie jeder Webdienst verarbeitet Cloudflare, das vor Website und API sitzt, technische Daten wie deine IP-Adresse, die angeforderte Adresse und die Uhrzeit, um Seiten auszuliefern und vor Missbrauch zu schützen.",
+          "Unser eigener Server führt ein Zugriffsprotokoll: Uhrzeit, angeforderte Adresse samt Parametern (zum Beispiel die Stadt, nach der du gesucht hast) und Antwortstatus. Deine IP-Adresse steht nicht darin, weil Anfragen über Cloudflare bei unserem Server ankommen. Diese Protokolle werden nach 30 Tagen gelöscht. Wir nutzen sie nur zum Betrieb und zur Absicherung — nicht für Analyse, Werbung oder Profilbildung.",
         ],
       },
       {
@@ -190,7 +192,8 @@ export const privacyCopy: Record<Locale, PrivacyCopy> = {
         id: "logs",
         h: "السجلات التقنية",
         p: [
-          "كأي خدمة ويب، يعالج خادمنا وCloudflare — الموضوعة أمام الموقع والواجهة — بيانات تقنية مثل عنوان IP والعنوان المطلوب والوقت، من أجل تقديم الصفحات والحماية من إساءة الاستخدام. نستخدمها فقط لتشغيل الخدمة وتأمينها — لا للتحليل ولا للإعلان ولا لبناء ملفات تعريفية.",
+          "كأي خدمة ويب، تعالج Cloudflare — الموضوعة أمام الموقع والواجهة — بيانات تقنية مثل عنوان IP والعنوان المطلوب والوقت، من أجل تقديم الصفحات والحماية من إساءة الاستخدام.",
+          "يحتفظ خادمنا بسجلّ وصول: الوقت والعنوان المطلوب بمعاملاته (مثل المدينة التي بحثتَ عنها) وحالة الردّ. لا يتضمن عنوان IP الخاص بك لأن الطلبات تصل إلى خادمنا عبر Cloudflare. تُحذف هذه السجلات بعد ٣٠ يومًا. نستخدمها فقط لتشغيل الخدمة وتأمينها — لا للتحليل ولا للإعلان ولا لبناء ملفات تعريفية.",
         ],
       },
       {
