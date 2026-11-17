@@ -14,6 +14,7 @@ export type LpCopy = {
     github: string;
     developers: string;
     privacy: string;
+    blog: string;
     footer: string;
     city: string;
     next: string;
@@ -58,6 +59,7 @@ export const lpCopy: Record<Locale, LpCopy> = {
       github: "GitHub",
       developers: "Developers",
       privacy: "Privacy",
+      blog: "Blog",
       footer: "Free. No ads. No tracking. Open source under the MIT licence.",
       city: "City",
       next: "Next",
@@ -137,6 +139,7 @@ export const lpCopy: Record<Locale, LpCopy> = {
       github: "GitHub",
       developers: "Entwickler",
       privacy: "Datenschutz",
+      blog: "Blog",
       footer: "Kostenlos. Ohne Werbung. Ohne Tracking. Open Source unter MIT-Lizenz.",
       city: "Stadt",
       next: "Als Nächstes",
@@ -216,6 +219,7 @@ export const lpCopy: Record<Locale, LpCopy> = {
       github: "GitHub",
       developers: "المطوّرون",
       privacy: "الخصوصية",
+      blog: "المدوّنة",
       footer: "مجاني، بلا إعلانات ولا تتبّع، ومفتوح المصدر برخصة MIT.",
       city: "المدينة",
       next: "التالية",
