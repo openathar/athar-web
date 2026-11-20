@@ -33,4 +33,10 @@ describe("blog", () => {
     assert.deepEqual(visible, ["one-core-two-languages", "prayer-times-on-your-device"]);
     assert.equal(findPost("a-free-public-api", day), undefined);
   });
+
+  it("die App-Ankündigung erscheint am 20. November", () => {
+    const day = new Date("2026-11-20T12:00:00Z");
+    assert.equal(publishedPosts(day)[0].slug, "athar-on-your-phone");
+    assert.equal(findPost("athar-on-your-phone", new Date("2026-11-19T12:00:00Z")), undefined);
+  });
 });

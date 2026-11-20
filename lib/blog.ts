@@ -8,6 +8,8 @@ import type { Locale } from "./i18n";
  * Umm al-Qura, 38 Referenztests), TS-Port in lib/athan-core.ts mit
  * Referenztests, API V1 (15 Endpunkte, Rate-Limit je IP oder Schlüssel,
  * Schlüssel per Self-Service), Datenschutz wie in lib/privacy-copy.ts.
+ * App-Artikel (2026-11-20): gegen athar-mobile-app 1.0 geprüft (Tasbih-Baum,
+ * lokale Alarme, einzige Netzanfrage = Städtesuche an api.openathar.org).
  * Ändert sich eines davon, muss der betroffene Artikel mit.
  *
  * Texte je Sprache handgeschrieben, keine Maschinenübersetzung.
@@ -339,6 +341,138 @@ export const blogPosts: BlogPost[] = [
             p: [
               "محتوى القرآن والأذكار ليس في الواجهة بعد. نريد مصدرًا للنص تسمح رخصته بوضوح بإعادة النشر المجاني قبل أن ننشره، ونفضّل الانتظار على التخمين.",
               "بوابة المطوّرين على openathar.org تعرض كل نقطة وصول مع أمثلة وبيئة تجربة. وإن كان شيء تحتاجه ناقصًا، افتح طلبًا (issue) على GitHub؛ هكذا تُرسم خارطة الطريق.",
+            ],
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: "athar-on-your-phone",
+    date: "2026-11-20",
+    text: {
+      en: {
+        title: "Athar comes to your phone",
+        description:
+          "The Athar app 1.0: prayer times, adhan alarms, Qibla and the moon, calculated on your phone, and a tree that grows with your dhikr. Submitted to the App Store this weekend.",
+        sections: [
+          {
+            p: [
+              "Until now Athar lived in the browser. This weekend we hand version 1.0 of the Athar app to Apple's review. It is the same night, the same gold and the same moon as this website, only in your pocket and without needing a connection.",
+            ],
+          },
+          {
+            h: "What is in it",
+            p: [
+              "Prayer times for where you are, with a live countdown to the next prayer. The calculation runs on the phone with the same TypeScript core as this website, so the app works offline.",
+              "Adhan alarms for each of the five prayers. They are set on the phone itself, seven days ahead, never through a push service, because a push message cannot be trusted to arrive on the minute.",
+              "A Qibla compass, tonight's real moon with its age and the next new and full moon, the Hijri month, the coming Islamic dates, a du'a for the part of the day with its hadith source, and English, German, Arabic, Polish and Turkish with full right-to-left layout.",
+            ],
+          },
+          {
+            h: "A tree that grows with your dhikr",
+            p: [
+              "The new part is the tree. It is a tasbih counter: 33 times SubhanAllah, 33 times Alhamdulillah, 34 times Allahu akbar, the round the Prophet ﷺ taught Fatimah (Sahih al-Bukhari 6318, Sahih Muslim 2727).",
+              "Every count grows the tree a little: first the trunk, then branches, then leaves. Every full round of 100 opens a gold blossom. The tree is drawn from code, not from a picture, and its shape comes from a seed planted on your phone, so no two trees are the same. Athar means trace. This is one you can watch grow.",
+              "The count stays on your phone. There is no account it could be sent to. Below it is the feelings tree from this website: branches in the chest, roots in the belly, 133 feelings to tap.",
+            ],
+          },
+          {
+            h: "The same promise",
+            p: [
+              "No account, no ads, no tracking, no analytics. Your location is used on the phone and stays there. The only thing the app ever sends is a city name you type into the search, and that goes to our own API, not to a third party.",
+              "The code is open under the MIT licence: github.com/openathar/athar-mobile-app.",
+            ],
+          },
+          {
+            h: "When, and how you can help",
+            p: [
+              "iPhone: we submit this weekend. The app appears in the App Store as soon as Apple's review is through, usually within a few days. We will link it here.",
+              "Android follows. Google asks new developer accounts to run a closed test with at least twelve testers over fourteen days first. If you have an Android phone and would like to be one of them, open an issue on GitHub in openathar/athar-mobile-app and we will add you.",
+            ],
+          },
+        ],
+      },
+      de: {
+        title: "Athar kommt aufs Telefon",
+        description:
+          "Die Athar-App 1.0: Gebetszeiten, Adhan-Alarme, Qibla und der Mond, auf deinem Telefon berechnet, und ein Baum, der mit deinem Dhikr wächst. Am Wochenende geht sie an den App Store.",
+        sections: [
+          {
+            p: [
+              "Bisher lebte Athar im Browser. An diesem Wochenende geben wir Version 1.0 der Athar-App in Apples Prüfung. Es ist dieselbe Nacht, dasselbe Gold und derselbe Mond wie auf dieser Website, nur in deiner Tasche und ohne Verbindung.",
+            ],
+          },
+          {
+            h: "Was drin ist",
+            p: [
+              "Gebetszeiten für deinen Ort, mit einem laufenden Countdown bis zum nächsten Gebet. Die Berechnung läuft auf dem Telefon, mit demselben TypeScript-Kern wie diese Website. Deshalb funktioniert die App auch offline.",
+              "Adhan-Alarme für jedes der fünf Gebete. Sie werden auf dem Telefon selbst gestellt, sieben Tage im Voraus, nie über einen Push-Dienst, denn auf eine Push-Nachricht ist minutengenau kein Verlass.",
+              "Ein Qibla-Kompass, der echte Mond heute Nacht mit Alter, nächstem Neu- und Vollmond, der Hijri-Monat, die nächsten islamischen Daten, ein Du'a zur Tageszeit mit Hadith-Quelle, und Englisch, Deutsch, Arabisch, Polnisch und Türkisch mit vollständigem Rechts-nach-links-Layout.",
+            ],
+          },
+          {
+            h: "Ein Baum, der mit deinem Dhikr wächst",
+            p: [
+              "Neu ist der Baum. Er ist ein Tasbih-Zähler: 33-mal SubhanAllah, 33-mal Alhamdulillah, 34-mal Allahu akbar, die Runde, die der Prophet ﷺ Fatima lehrte (Sahih al-Bukhari 6318, Sahih Muslim 2727).",
+              "Jede Zählung lässt den Baum ein Stück wachsen: erst den Stamm, dann Äste, dann Blätter. Jede volle Runde von 100 öffnet eine goldene Blüte. Der Baum ist aus Code gezeichnet, nicht aus einem Bild, und seine Form kommt aus einem Samen, der auf deinem Telefon gesetzt wird. Kein Baum gleicht dem anderen. Athar heißt Spur. Diese kannst du wachsen sehen.",
+              "Die Zählung bleibt auf deinem Telefon. Es gibt kein Konto, an das sie gehen könnte. Darunter steht der Gefühlsbaum von dieser Website: Äste in der Brust, Wurzeln im Bauch, 133 Gefühle zum Antippen.",
+            ],
+          },
+          {
+            h: "Dasselbe Versprechen",
+            p: [
+              "Kein Konto, keine Werbung, kein Tracking, keine Analyse. Dein Standort wird auf dem Telefon genutzt und bleibt dort. Das Einzige, was die App je sendet, ist ein Städtename, den du in die Suche tippst, und der geht an unsere eigene API, nicht an Dritte.",
+              "Der Code ist offen unter der MIT-Lizenz: github.com/openathar/athar-mobile-app.",
+            ],
+          },
+          {
+            h: "Wann, und wie du helfen kannst",
+            p: [
+              "iPhone: Wir reichen an diesem Wochenende ein. Die App erscheint im App Store, sobald Apples Prüfung durch ist, meist innerhalb weniger Tage. Wir verlinken sie dann hier.",
+              "Android folgt. Google verlangt von neuen Entwicklerkonten zuerst einen geschlossenen Test mit mindestens zwölf Testern über vierzehn Tage. Wenn du ein Android-Telefon hast und dabei sein möchtest, eröffne ein Issue auf GitHub in openathar/athar-mobile-app, dann nehmen wir dich auf.",
+            ],
+          },
+        ],
+      },
+      ar: {
+        title: "أثر يصل إلى هاتفك",
+        description:
+          "تطبيق أثر ١٫٠: مواقيت الصلاة وتنبيهات الأذان والقبلة والقمر، تُحسب على هاتفك، وشجرة تنمو مع ذكرك. نقدّمه إلى متجر App Store في عطلة نهاية هذا الأسبوع.",
+        sections: [
+          {
+            p: [
+              "عاش أثر حتى الآن في المتصفح. وفي عطلة نهاية هذا الأسبوع نقدّم الإصدار ١٫٠ من تطبيق أثر إلى مراجعة Apple. هو الليل نفسه، والذهبي نفسه، والقمر نفسه الذي في هذا الموقع، لكن في جيبك، ودون حاجة إلى اتصال.",
+            ],
+          },
+          {
+            h: "ما فيه",
+            p: [
+              "مواقيت الصلاة لمكانك، مع عدّ تنازلي حيّ حتى الصلاة التالية. يجري الحساب على الهاتف بالنواة نفسها المكتوبة بلغة TypeScript التي يستخدمها هذا الموقع، لذلك يعمل التطبيق دون اتصال.",
+              "تنبيهات الأذان لكل صلاة من الصلوات الخمس. تُضبط على الهاتف نفسه لسبعة أيام مقبلة، ولا تمرّ أبدًا عبر خدمة إشعارات خارجية، لأن رسالة كهذه لا يُعتمد على وصولها في دقيقتها.",
+              "بوصلة القبلة، وقمر الليلة الحقيقي بعمره وموعد المحاق والبدر القادمين، والشهر الهجري، والمناسبات الإسلامية القادمة، ودعاء لوقت اليوم مع مصدره من الحديث، وخمس لغات: الإنجليزية والألمانية والعربية والبولندية والتركية، مع اتجاه كامل من اليمين إلى اليسار.",
+            ],
+          },
+          {
+            h: "شجرة تنمو مع ذكرك",
+            p: [
+              "الجديد هو الشجرة. إنها عدّاد تسبيح: سبحان الله ثلاثًا وثلاثين، والحمد لله ثلاثًا وثلاثين، والله أكبر أربعًا وثلاثين، كما علّمها النبي ﷺ فاطمة (صحيح البخاري ٦٣١٨، صحيح مسلم ٢٧٢٧).",
+              "كل تسبيحة تُنمي الشجرة قليلًا: الجذع أولًا، ثم الأغصان، ثم الأوراق. وكل دورة كاملة من مئة تفتح زهرة ذهبية. الشجرة مرسومة بالبرمجة لا بصورة، وشكلها يأتي من بذرة تُزرع على هاتفك، فلا تشبه شجرةٌ أخرى. أثر يعني ما يبقى بعدك، وهذا أثر تراه ينمو.",
+              "العدّ يبقى على هاتفك، فلا حساب يمكن أن يُرسل إليه. وتحتها شجرة المشاعر من هذا الموقع: أغصان في الصدر، وجذور في البطن، و١٣٣ شعورًا تلمسها.",
+            ],
+          },
+          {
+            h: "الوعد نفسه",
+            p: [
+              "بلا حساب، بلا إعلانات، بلا تتبّع، بلا أدوات تحليل. موقعك يُستخدم على الهاتف ويبقى عليه. والشيء الوحيد الذي يرسله التطبيق هو اسم مدينة تكتبه في البحث، ويذهب إلى واجهتنا البرمجية نحن، لا إلى طرف آخر.",
+              "البرمجة مفتوحة برخصة MIT على: github.com/openathar/athar-mobile-app.",
+            ],
+          },
+          {
+            h: "متى، وكيف تساعد",
+            p: [
+              "آيفون: نقدّم التطبيق في عطلة نهاية هذا الأسبوع، ويظهر في متجر App Store حين تنتهي مراجعة Apple، وغالبًا خلال أيام قليلة. وسنضع رابطه هنا.",
+              "أندرويد يلحق به. تطلب Google من حسابات المطوّرين الجديدة اختبارًا مغلقًا أولًا مع اثني عشر مختبِرًا على الأقل لأربعة عشر يومًا. إن كان لديك هاتف أندرويد وتودّ أن تكون منهم، افتح طلبًا (issue) على GitHub في openathar/athar-mobile-app وسنضيفك.",
             ],
           },
         ],
