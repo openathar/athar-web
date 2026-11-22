@@ -41,7 +41,7 @@ html[lang="ar"] .lp-eyebrow { text-transform: none; letter-spacing: 0; font-size
 .lp-variants a[aria-current] { color: var(--lp-ink); border-color: var(--lp-accent); }
 .lp-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem 2rem; border-top: 1px solid var(--lp-rule); padding-block: 2rem 3rem; margin-top: 5rem; color: var(--lp-mute); font-size: 0.9rem; }
 .lp-footer p { margin: 0; }
-.lp-footer-links { display: flex; gap: 1.5rem; }
+.lp-footer-links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
 .lp-footer-links a:hover { color: var(--lp-ink); }
 
 /* ---------- Bausteine ---------- */
@@ -483,63 +483,119 @@ html[lang=ar] .lp-blog-item p { line-height: 2; }
 .lp-blog-back { border-top: 1px solid var(--lp-rule); margin-top: 2.5rem; padding-top: 1.5rem; }
 .lp-blog-back a { color: var(--lp-accent); }
 
-/* ---------- App (iOS) ---------- */
+/* ---------- App: Kopfzeilen-Aufruf (alle Seiten) ---------- */
 .lp-nav-link[aria-current="page"] { color: var(--lp-ink); box-shadow: inset 0 -1px 0 var(--lp-accent); padding-bottom: 0.2rem; }
-.lp-app-hero { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.9fr); gap: 3rem clamp(3rem, 7vw, 6rem); align-items: end; padding-block: clamp(2.5rem, 6vw, 5rem) clamp(3rem, 6vw, 4.5rem); }
+.lp-nav-cta { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.4rem 0.95rem; border: 1px solid var(--lp-accent); border-radius: 999px; color: var(--lp-accent) !important; font-size: 0.9rem; font-weight: 600; white-space: nowrap; transition: background-color 0.18s ease, color 0.18s ease; }
+.lp-nav-cta:hover, .lp-nav-cta[aria-current="page"] { background: var(--lp-accent); color: var(--lp-on-accent) !important; }
+.lp-nav-cta svg { flex: none; }
+.lp-nav-cta .lp-short { display: none; }
+@media (max-width: 560px) { .lp-nav-cta .lp-long, .lp-nav-cta svg { display: none; } .lp-nav-cta .lp-short { display: inline; } .lp-nav-cta { padding: 0.3rem 0.75rem; } }
+/* Sehr schmal: "Entwickler" steht ohnehin in der Fußzeile — Platz für App-Knopf und Sprachwahl. */
+@media (max-width: 430px) { .lp-header-nav .lp-nav-link { display: none; } }
+
+/* ---------- App: Store-Knöpfe (eigener Stil, keine Badges) ---------- */
+.lp-stores { display: flex; flex-wrap: wrap; gap: 0.9rem; margin: 0; }
+.lp-store { display: inline-flex; align-items: center; gap: 0.8rem; min-height: 3.6rem; padding: 0.55rem 1.4rem 0.55rem 1.1rem; padding-inline: 1.1rem 1.5rem; border-radius: 999px; border: 1px solid var(--lp-accent); color: var(--lp-accent) !important; transition: transform 0.18s ease; }
+.lp-store-main { background: var(--lp-accent); color: var(--lp-on-accent) !important; }
+a.lp-store:hover { transform: translateY(-2px); }
+.lp-store svg { flex: none; }
+.lp-store-text { display: flex; flex-direction: column; line-height: 1.15; text-align: start; }
+.lp-store-text small { font-size: 0.72rem; opacity: 0.85; }
+.lp-store-text b { font-size: 1.15rem; font-weight: 600; letter-spacing: -0.01em; }
+.lp-store-soon { border-style: dashed; border-color: var(--lp-rule); color: var(--lp-mute) !important; cursor: default; }
+html[lang="ar"] .lp-store-text small { font-size: 0.8rem; }
+.lp-nodata { display: inline-flex; align-items: center; gap: 0.5rem; margin: 1.5rem 0 0; padding: 0.35rem 0.85rem 0.35rem 0.7rem; padding-inline: 0.7rem 0.95rem; border: 1px solid var(--lp-rule); border-radius: 999px; color: var(--lp-ink); font-size: 0.9rem; }
+.lp-nodata svg { color: var(--lp-accent); }
+@media (prefers-reduced-motion: reduce) { .lp-store, .lp-nav-cta { transition: none; } a.lp-store:hover { transform: none; } }
+
+/* ---------- App: Telefonrahmen (nur Linien, kein Glas) ---------- */
+.lp-phone { position: relative; aspect-ratio: 660 / 1434; padding: 0.45rem; border-radius: 2.6rem; background: #05070b; outline: 1px solid var(--lp-rule); outline-offset: 0; }
+.lp-phone picture, .lp-phone img { display: block; width: 100%; height: 100%; }
+.lp-phone img { border-radius: 2.2rem; object-fit: cover; }
+
+/* ---------- App-Seite ---------- */
+.lp-app-hero { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.95fr); gap: 3rem clamp(2rem, 6vw, 5rem); align-items: center; padding-block: clamp(2rem, 5vw, 4rem) clamp(3rem, 6vw, 4.5rem); }
 .lp-app-hero-text .title-xl { margin-bottom: 2rem; }
 .lp-app-hero-text .lp-lead { max-width: 36rem; margin-bottom: 2.25rem; }
-.lp-app-store { align-items: center; gap: 0.75rem; }
+.lp-app-hero-phones { position: relative; display: flex; justify-content: center; padding-block: 1rem; }
+.lp-app-hero-phones .lp-phone-front { position: relative; width: min(17rem, 62%); z-index: 1; }
+.lp-app-hero-phones .lp-phone-back { position: absolute; width: min(15rem, 54%); inset-block-start: 3.5rem; inset-inline-start: 50%; translate: 18% 0; opacity: 0.55; }
+[dir="rtl"] .lp-app-hero-phones .lp-phone-back { translate: -18% 0; }
+.lp-app-hero-phones:has(.lp-phone-back) .lp-phone-front { translate: -22% 0; }
+[dir="rtl"] .lp-app-hero-phones:has(.lp-phone-back) .lp-phone-front { translate: 22% 0; }
 .lp-app-arrow { display: inline-block; transition: transform 0.18s ease; }
-.lp-app-store:hover .lp-app-arrow, .lp-link:hover .lp-app-arrow { transform: translateX(3px); }
+.lp-link:hover .lp-app-arrow { transform: translateX(3px); }
 [dir="rtl"] .lp-app-arrow { transform: scaleX(-1); }
-[dir="rtl"] :is(.lp-app-store, .lp-link):hover .lp-app-arrow { transform: scaleX(-1) translateX(3px); }
-.lp-app-note { margin: 1.5rem 0 0; color: var(--lp-mute); font-size: 0.9rem; max-width: 34rem; }
-.lp-app-card { display: flex; flex-direction: column; align-items: flex-start; gap: 1.25rem; padding-inline-start: clamp(0rem, 3vw, 2.5rem); border-inline-start: 1px solid var(--lp-rule); }
-.lp-app-icon { width: 7.5rem; height: auto; aspect-ratio: 1; border-radius: 22.5%; display: block; outline: 1px solid var(--lp-rule); outline-offset: -1px; }
-.lp-app-name { margin: 0; font-size: 1.25rem; font-weight: 500; letter-spacing: -0.01em; }
-html[lang="ar"] .lp-app-name { font-weight: 600; letter-spacing: 0; }
-.lp-app-facts { width: 100%; margin: 0; }
-.lp-app-facts > div { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding-block: 0.7rem; border-top: 1px solid var(--lp-rule); }
-.lp-app-facts dt { color: var(--lp-mute); font-size: 0.9rem; }
-.lp-app-facts dd { margin: 0; color: var(--lp-accent); text-align: end; }
+[dir="rtl"] .lp-link:hover .lp-app-arrow { transform: scaleX(-1) translateX(3px); }
+.lp-app-note { margin: 1.25rem 0 0; color: var(--lp-mute); font-size: 0.9rem; max-width: 34rem; }
 @media (max-width: 860px) {
-  .lp-app-hero { grid-template-columns: 1fr; align-items: start; }
-  .lp-app-card { padding-inline-start: 0; border-inline-start: 0; }
-  .lp-app-icon { width: 5.5rem; }
+  .lp-app-hero { grid-template-columns: 1fr; }
+  .lp-app-hero-phones .lp-phone-front { width: min(13rem, 48%); }
+  .lp-app-hero-phones .lp-phone-back { width: min(11.5rem, 42%); inset-block-start: 2.5rem; }
 }
 
-.lp-app-body > .lp-chapter:first-child { border-top: 1px solid var(--lp-rule); padding-top: clamp(3.5rem, 7vw, 5.5rem); }
+.lp-app-card { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 2rem clamp(2rem, 5vw, 4rem); align-items: center; border-top: 1px solid var(--lp-rule); padding-block: 2.5rem; }
+.lp-app-id { display: flex; flex-direction: column; gap: 0.9rem; max-width: 13rem; }
+.lp-app-icon { width: 6rem; height: auto; aspect-ratio: 1; border-radius: 22.5%; display: block; outline: 1px solid var(--lp-rule); outline-offset: -1px; }
+.lp-app-name { margin: 0; font-size: 1.1rem; font-weight: 500; letter-spacing: -0.01em; }
+html[lang="ar"] .lp-app-name { font-weight: 600; letter-spacing: 0; }
+.lp-app-facts { width: 100%; margin: 0; }
+.lp-app-facts > div { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding-block: 0.6rem; border-top: 1px solid var(--lp-rule); }
+.lp-app-facts > div:last-child { border-bottom: 1px solid var(--lp-rule); }
+.lp-app-facts dt { color: var(--lp-mute); font-size: 0.9rem; }
+.lp-app-facts dd { margin: 0; color: var(--lp-accent); text-align: end; }
+.lp-app-codes { display: flex; flex-direction: column; align-items: center; gap: 0.75rem; }
+.lp-app-codes .lp-qr-hint { text-align: center; }
+@media (max-width: 960px) { .lp-app-card { grid-template-columns: auto minmax(0, 1fr); } .lp-app-codes { display: none; } }
+@media (max-width: 600px) { .lp-app-card { grid-template-columns: 1fr; } .lp-app-id { flex-direction: row; align-items: center; max-width: none; } .lp-app-icon { width: 4.5rem; } }
+
+.lp-app-body > .lp-chapter:first-child { border-top: 1px solid var(--lp-rule); }
 .lp-app-body .lp-chap .title-l { max-width: 18ch; }
 .lp-app-body .lp-chap { padding-inline-end: 0; }
-.lp-app-body .lp-chapter > .lp-lead { max-width: 38rem; }
-.lp-app-points { max-width: 46rem; margin: 0; }
+.lp-app-body .lp-list li:last-child { border-bottom: 0; }
+.lp-app-sources { margin: 1.5rem 0 0; padding-top: 1.25rem; border-top: 1px solid var(--lp-rule); color: var(--lp-mute); font-size: 0.85rem; }
+
+.lp-app-shots { list-style: none; margin: 0; padding: 0.25rem 0.25rem 1rem; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(1rem, 2.5vw, 2rem); }
+.lp-app-shots li { display: flex; flex-direction: column; gap: 1rem; }
+.lp-app-shots li:nth-child(even) { margin-top: 2.5rem; }
+.lp-app-shots p { margin: 0; font-size: 0.9rem; line-height: 1.5; }
+.lp-app-shots b { font-weight: 600; }
+@media (max-width: 860px) {
+  .lp-app-shots { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: minmax(11.5rem, 62vw); overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; margin-inline: calc(-1 * clamp(1.25rem, 4vw, 2.5rem)); padding-inline: clamp(1.25rem, 4vw, 2.5rem); scroll-padding-inline: clamp(1.25rem, 4vw, 2.5rem); }
+  .lp-app-shots li { scroll-snap-align: start; }
+  .lp-app-shots li:nth-child(even) { margin-top: 0; }
+}
+
+.lp-app-privacy { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 2rem clamp(2rem, 6vw, 5rem); align-items: start; }
+.lp-app-nodata-big { margin: 0; font-size: clamp(2rem, 4.5vw, 3.2rem); line-height: 1.05; font-weight: 300; letter-spacing: -0.02em; color: var(--lp-accent); }
+html[lang="ar"] .lp-app-nodata-big { line-height: 1.4; letter-spacing: 0; font-weight: 500; }
+.lp-app-points { max-width: 46rem; margin: 0 0 1.5rem; }
 .lp-app-points li { padding-block: 1rem; line-height: 1.65; }
 html[lang="ar"] .lp-app-points li { line-height: 1.95; }
-.lp-app-body .lp-chapter > p { margin: 0; }
-
-.lp-app-shots { list-style: none; margin: 0; padding: 0 0 1rem; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(11rem, 15rem); gap: clamp(1rem, 2.5vw, 2rem); overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; }
-.lp-app-shots li { scroll-snap-align: start; display: flex; flex-direction: column; gap: 0.9rem; }
-.lp-app-shots img { width: 100%; height: auto; display: block; border-radius: 1.6rem; outline: 1px solid var(--lp-rule); outline-offset: -1px; }
-.lp-app-shots p { margin: 0; color: var(--lp-mute); font-size: 0.9rem; }
+.lp-app-privacy .lp-lead { max-width: 38rem; }
+@media (max-width: 860px) { .lp-app-privacy { grid-template-columns: 1fr; } }
 
 .lp-app-closing { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 2rem 3rem; border-top: 1px solid var(--lp-rule); padding-top: clamp(3.5rem, 7vw, 5.5rem); }
 .lp-app-closing .title-l { max-width: 14ch; }
-.lp-app-closing-cta { display: flex; flex-direction: column; align-items: flex-start; }
-.lp-app-closing-cta .lp-app-note { margin-top: 1rem; }
-@media (prefers-reduced-motion: reduce) { .lp-app-arrow { transition: none; } }
-.lp-app-body .lp-list li:last-child { border-bottom: 0; }
-@media (max-width: 420px) { .lp-logo .brand-logo { height: 2.6rem; } .lp-header-nav { gap: 0.5rem; } .lp-pills a { padding: 0.25rem 0.4rem; } }
 html[lang="ar"] .lp-app-closing .title-l { max-width: 22ch; }
+.lp-app-closing-cta { display: flex; flex-direction: column; align-items: flex-start; gap: 2rem; }
+@media (prefers-reduced-motion: reduce) { .lp-app-arrow { transition: none; } }
+@media (max-width: 420px) { .lp-logo .brand-logo { height: 2.6rem; } .lp-header-nav { gap: 0.5rem; } .lp-pills a { padding: 0.25rem 0.4rem; } }
 
-/* ---------- App page: store QR codes + Google Play ---------- */
-.lp-btn-ghost { background: transparent; color: var(--lp-accent) !important; border: 1px solid var(--lp-accent); }
-.lp-app-soon { display: inline-flex; align-items: center; padding: 0.95rem 1.4rem; border-radius: 999px; border: 1px dashed var(--lp-rule); color: var(--lp-mute); font-size: 0.85rem; letter-spacing: 0.04em; }
-.lp-qr-row { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 0.5rem; }
+/* ---------- Store-QR-Codes ---------- */
+.lp-qr-row { display: flex; flex-wrap: wrap; gap: 1.5rem; }
 .lp-qr { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 0.6rem; }
-.lp-qr-code { width: 148px; height: 148px; border-radius: 14px; overflow: hidden; background: #f4efe4; }
+.lp-qr-code { width: 140px; height: 140px; border-radius: 14px; overflow: hidden; background: #f4efe4; }
 .lp-qr-code svg { display: block; width: 100%; height: 100%; }
 .lp-qr figcaption { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lp-mute); }
-.lp-qr-hint { margin-top: 0; font-size: 0.85rem; max-width: 18rem; }
-.lp-app-closing-cta .lp-qr-row { margin-top: 2rem; }
+.lp-qr-hint { margin-top: 0; font-size: 0.85rem; max-width: 15rem; }
 /* On a phone the store button is right there — the codes are for someone on a computer. */
 @media (max-width: 720px) { .lp-qr-row, .lp-qr-hint { display: none; } }
+
+/* ---------- Startseite: App-Abschnitt ---------- */
+.lp-appband { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr); gap: 2rem clamp(2rem, 6vw, 5rem); align-items: center; margin-top: clamp(3rem, 6vw, 5rem); padding-block: clamp(3rem, 6vw, 4.5rem) 0; border-top: 1px solid var(--lp-rule); }
+.lp-appband .title-l { margin-bottom: 1.25rem; }
+.lp-appband .lp-lead { margin-bottom: 2rem; }
+.lp-appband-more { margin: 1.5rem 0 0; }
+.lp-appband .lp-phone { width: min(15rem, 100%); margin-inline: auto; }
+@media (max-width: 760px) { .lp-appband { grid-template-columns: 1fr; } .lp-appband .lp-phone { width: min(12rem, 60%); } }

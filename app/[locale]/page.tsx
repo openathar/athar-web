@@ -23,6 +23,8 @@ import { YourMoon } from "~/components/lp/your-moon";
 import { PrayerCountdown } from "~/components/lp/prayer-countdown";
 import { EmotionTree } from "~/components/lp/emotion-tree";
 import { ForceDark } from "~/components/force-dark";
+import { appCopy } from "~/lib/app-copy";
+import { Phone, StoreButtons, screenshotsFor } from "~/components/lp/app-store";
 
 export const revalidate = 3600;
 
@@ -54,6 +56,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   const stat = c.hero.stats[0];
   const moonLabels = { ...t.cosmos.moonView, hijri: t.dates.label };
   const iso = new Date().toISOString();
+  const app = appCopy[l];
+  const appShot = screenshotsFor(l).find((s) => s.key === "today");
 
   const Head = ({ i }: { i: number }) => (
     <header className="lp-chap" data-chapter={i}>
@@ -81,8 +85,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           </h1>
           <p className="lp-lead">{c.hero.lead}</p>
           <p className="lp-actions">
-            <Link href={`/${l}`} className="lp-btn">
-              {p.common.tryIt}
+            <Link href={`/${l}/app`} className="lp-btn">
+              {app.getApp}
             </Link>
             <a href={GITHUB_ORG} className="lp-link" rel="noopener">
               {p.common.github} →
@@ -288,6 +292,24 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             {p.v3.emotions.source}
           </a>
         </p>
+      </section>
+
+      {/* ---------- Die App ---------- */}
+      <section className="lp-wrap" aria-labelledby="lp-appband-title">
+        <div className="lp-appband">
+          <div>
+            <p className="lp-eyebrow mono">{app.band.eyebrow}</p>
+            <h2 className="title-l" id="lp-appband-title">{app.band.title}</h2>
+            <p className="lp-lead">{app.band.lead}</p>
+            <StoreButtons locale={l} />
+            <p className="lp-appband-more">
+              <Link href={`/${l}/app`} className="lp-link">
+                {app.band.more} <span aria-hidden className="lp-app-arrow">→</span>
+              </Link>
+            </p>
+          </div>
+          {appShot && <Phone shot={appShot} alt={`${app.appName} — ${app.shots.today.title}`} />}
+        </div>
       </section>
 
       {/* ---------- Abschluss ---------- */}

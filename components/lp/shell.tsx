@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { locales, localeNames, type Locale } from "~/lib/i18n";
 import { lpCopy } from "~/lib/lp-copy";
+import { appCopy, APP_STORE_URL, PLAY_LIVE, PLAY_STORE_URL } from "~/lib/app-copy";
 import "./lp.css";
 
 export const GITHUB_ORG = "https://github.com/openathar";
@@ -31,6 +32,7 @@ export function LpShell({
 }) {
   const base = home ? `/${locale}` : `/${locale}/${variant}`;
   const c = lpCopy[locale].common;
+  const a = appCopy[locale];
   return (
     <div className={`lp lp-v${variant}`}>
       <a href="#main" className="skip-link">
@@ -41,12 +43,18 @@ export function LpShell({
           <span role="img" aria-label="Athar" className="brand-logo" />
         </Link>
         <nav className="lp-header-nav" aria-label="Athar">
+          {/* Auf jeder Seite: der Weg zur App, als hervorgehobener Knopf. */}
           <Link
             href={`/${locale}/app`}
-            className="lp-nav-link"
+            className="lp-nav-cta"
             aria-current={current === "app" ? "page" : undefined}
           >
-            {c.app}
+            <svg aria-hidden viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8">
+              <rect x="6.5" y="2.5" width="11" height="19" rx="2.6" />
+              <path d="M10.5 18.5h3" strokeLinecap="round" />
+            </svg>
+            <span className="lp-long">{a.getApp}</span>
+            <span className="lp-short">{a.nav}</span>
           </Link>
           <Link href={`/${locale}/developers`} className="lp-nav-link">
             {c.developers}
@@ -84,6 +92,12 @@ export function LpShell({
         <p className="lp-footer-links">
           {!home && <Link href={`/${locale}`}>{c.fullSite}</Link>}
           <Link href={`/${locale}/app`}>{c.app}</Link>
+          <a href={APP_STORE_URL} rel="noopener">App Store</a>
+          {PLAY_LIVE ? (
+            <a href={PLAY_STORE_URL} rel="noopener">Google Play</a>
+          ) : (
+            <span>Google Play · {a.playSoon}</span>
+          )}
           <Link href={`/${locale}/developers`}>{c.developers}</Link>
           <Link href={`/${locale}/blog`}>{c.blog}</Link>
           <Link href={`/${locale}/privacy`}>{c.privacy}</Link>
