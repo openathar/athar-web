@@ -89,4 +89,25 @@ describe("content validation", () => {
     const issues = validateReflections({ ...reflections, entries: [entry] });
     assert.ok(issues.some((i) => i.code === "sentence-count"));
   });
+
+  it("Verse in reflections.json sind wörtlich die gebündelten Tanzil-/QuranEnc-Texte", () => {
+    const load = (f: string) => JSON.parse(readFileSync(join(import.meta.dirname, "..", "data", "quran", f), "utf8"));
+    const tanzil = load("tanzil-uthmani.json");
+    const en = load("english_saheeh.json");
+    const de = load("german_bubenheim.json");
+    assert.match(tanzil.copyright, /CHANGING IT IS NOT ALLOWED/);
+    for (const e of reflections.entries) {
+      const [s, a] = e.verse.split(":").map(Number);
+      assert.equal(e.fallback.arabic, tanzil.suras[s - 1][a - 1], `${e.verse} arabic`);
+      assert.equal(e.fallback.en, en.suras[s - 1][a - 1].t, `${e.verse} en`);
+      assert.equal(e.fallback.de, de.suras[s - 1][a - 1].t, `${e.verse} de`);
+      assert.equal(e.fallback.footnotes?.en ?? "", en.suras[s - 1][a - 1].f ?? "", `${e.verse} en footnotes`);
+    }
+  });
+
+  it("flaggt kaputte Fußnoten", () => {
+    const entry = { ...reflections.entries[0], fallback: { ...reflections.entries[0].fallback, footnotes: "x" } };
+    const issues = validateReflections({ ...reflections, entries: [entry] });
+    assert.ok(issues.some((i) => i.code === "invalid-footnotes"));
+  });
 });

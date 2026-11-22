@@ -7,7 +7,7 @@ import type { VerseText } from "~/lib/quran";
 export type ReflectionEntry = {
   verse: string;
   field: Record<Locale, string>;
-  fallback: { arabic: string; de: string; en: string };
+  fallback: { arabic: string; de: string; en: string; footnotes?: Partial<Record<Locale, string>> };
   observation: Record<Locale, string>;
 };
 
@@ -25,7 +25,7 @@ type Labels = {
  * Initial gilt der deterministische Tageseintrag (SSR/SEO, gleicher Stand
  * für alle Locales und Caches; der Client korrigiert nach dem Mount auf
  * sein eigenes Datum). Jeder weitere Eintrag kommt per Mausklick vom
- * Backend-Endpoint `/api/reflections` — der löst den Vers live auf und
+ * Backend-Endpoint `/api/reflections` — der löst den Vers aus den gebündelten Daten auf und
  * liefert ein anderes Paar zurück.
  */
 export function DailySign({
@@ -98,6 +98,10 @@ export function DailySign({
             {verse.arabic}
           </p>
           <p className="mt-6 text-muted">{verse.rendered}</p>
+          {/* Fußnoten der Ausgabe, wörtlich — QuranEnc erlaubt kein Weglassen. */}
+          {verse.footnotes ? (
+            <p className="mt-3 whitespace-pre-line text-xs text-muted">{verse.footnotes}</p>
+          ) : null}
           <p className="display italic mt-6 text-sm text-muted">
             {verse.attribution} ·{" "}
             <a
@@ -105,7 +109,15 @@ export function DailySign({
               onClick={(e) => e.stopPropagation()}
               className="underline underline-offset-4 transition hover:text-ink"
             >
-              quran.com
+              {verse.sourceLabel}
+            </a>
+            {" · "}
+            <a
+              href="https://tanzil.net"
+              onClick={(e) => e.stopPropagation()}
+              className="underline underline-offset-4 transition hover:text-ink"
+            >
+              {verse.arabicSource} (tanzil.net)
             </a>
           </p>
         </div>

@@ -24,7 +24,7 @@ export const privacyCopy: Record<Locale, PrivacyCopy> = {
     title: "Privacy",
     metaDescription:
       "What Athar does and does not do with your data: no accounts, no ads, no tracking — on the website, in the app and in the API.",
-    updated: "Last updated: 17 November 2026",
+    updated: "Last updated: 22 November 2026",
     intro:
       "Athar is built as a Sadaqah Jariyah: free, without ads, without accounts and without tracking. This page says exactly what that means in practice — for the website, the app and the public API.",
     sections: [
@@ -42,7 +42,7 @@ export const privacyCopy: Record<Locale, PrivacyCopy> = {
           "No cookies, no analytics, no advertising, no social-media widgets and no third-party scripts. Fonts and images are served from our own server — your browser does not contact Google or any other font or image host.",
           "Your light/dark choice is saved in your browser (local storage, key “athar-theme”). It stays on your device and is never sent to us.",
           "If you allow your browser to share your location (for the countdown or “use my location”), it is used inside your browser to calculate prayer times. It is not transmitted.",
-          "Qur’an verses are fetched by our server from quran.com; your browser does not contact quran.com. Only the verse number is sent. Links to quran.com, GitHub and other sites leave this website — their own privacy rules apply there.",
+          "Qur’an verses and their translations are stored on our own server (Arabic text: Tanzil Project, tanzil.net; translations: QuranEnc.com) — neither your browser nor our server contacts another service to show them. Links to tanzil.net, QuranEnc.com, GitHub and other sites leave this website — their own privacy rules apply there.",
         ],
       },
       {
@@ -86,7 +86,7 @@ export const privacyCopy: Record<Locale, PrivacyCopy> = {
     title: "Datenschutz",
     metaDescription:
       "Was Athar mit deinen Daten macht und was nicht: keine Konten, keine Werbung, kein Tracking — auf der Website, in der App und in der API.",
-    updated: "Stand: 17. November 2026",
+    updated: "Stand: 22. November 2026",
     intro:
       "Athar ist als Sadaqah Jariyah gebaut: kostenlos, ohne Werbung, ohne Konten und ohne Tracking. Diese Seite sagt genau, was das konkret heißt — für die Website, die App und die öffentliche API.",
     sections: [
@@ -104,7 +104,7 @@ export const privacyCopy: Record<Locale, PrivacyCopy> = {
           "Keine Cookies, keine Analyse, keine Werbung, keine Social-Media-Widgets und keine Skripte von Dritten. Schriften und Bilder kommen von unserem eigenen Server — dein Browser nimmt keinen Kontakt zu Google oder einem anderen Schrift- oder Bilderdienst auf.",
           "Deine Hell/Dunkel-Wahl wird in deinem Browser gespeichert (Local Storage, Schlüssel „athar-theme“). Sie bleibt auf deinem Gerät und wird nie an uns gesendet.",
           "Wenn du deinem Browser erlaubst, deinen Standort zu teilen (für den Countdown oder „Standort verwenden“), wird er im Browser genutzt, um Gebetszeiten zu berechnen. Er wird nicht übertragen.",
-          "Koranverse holt unser Server von quran.com; dein Browser nimmt keinen Kontakt zu quran.com auf. Gesendet wird nur die Versnummer. Links zu quran.com, GitHub und anderen Seiten verlassen diese Website — dort gelten deren eigene Datenschutzregeln.",
+          "Koranverse und ihre Übersetzungen liegen auf unserem eigenen Server (arabischer Text: Tanzil Project, tanzil.net; Übersetzungen: QuranEnc.com) — weder dein Browser noch unser Server fragt dafür einen anderen Dienst an. Links zu tanzil.net, QuranEnc.com, GitHub und anderen Seiten verlassen diese Website — dort gelten deren eigene Datenschutzregeln.",
         ],
       },
       {
@@ -148,7 +148,7 @@ export const privacyCopy: Record<Locale, PrivacyCopy> = {
     title: "الخصوصية",
     metaDescription:
       "ما يفعله «أثر» بياناتك وما لا يفعله: لا حسابات ولا إعلانات ولا تتبّع — في الموقع والتطبيق وواجهة البرمجة.",
-    updated: "آخر تحديث: ١٧ نوفمبر ٢٠٢٦",
+    updated: "آخر تحديث: ٢٢ نوفمبر ٢٠٢٦",
     intro:
       "«أثر» مبنيّ صدقةً جارية: مجاني، بلا إعلانات، بلا حسابات، وبلا تتبّع. توضّح هذه الصفحة بالضبط ما يعنيه ذلك عمليًا — للموقع والتطبيق وواجهة البرمجة العامة.",
     sections: [
@@ -166,7 +166,7 @@ export const privacyCopy: Record<Locale, PrivacyCopy> = {
           "لا ملفات تعريف ارتباط، ولا تحليلات، ولا إعلانات، ولا أدوات تواصل اجتماعي، ولا سكربتات من أطراف ثالثة. تُقدَّم الخطوط والصور من خادمنا نحن — متصفحك لا يتصل بغوغل ولا بأي خدمة خطوط أو صور أخرى.",
           "يُحفظ اختيارك للوضع الفاتح أو الداكن في متصفحك (التخزين المحلي، المفتاح «athar-theme»). يبقى على جهازك ولا يُرسَل إلينا.",
           "إذا سمحتَ لمتصفحك بمشاركة موقعك (للعدّاد التنازلي أو «استخدم موقعي») فيُستخدم داخل المتصفح لحساب المواقيت فقط، ولا يُنقل.",
-          "يجلب خادمنا آيات القرآن من quran.com؛ متصفحك لا يتصل بـ quran.com. يُرسَل رقم الآية فقط. الروابط إلى quran.com وGitHub ومواقع أخرى تخرج من هذا الموقع، وتسري هناك سياسات خصوصيتها.",
+          "آيات القرآن وتفسيرها وترجماتها محفوظة على خادمنا نحن (النص العربي: مشروع تنزيل tanzil.net؛ الترجمات والتفسير الميسر: QuranEnc.com)، فلا يتصل متصفحك ولا خادمنا بأي خدمة أخرى لعرضها. الروابط إلى tanzil.net وQuranEnc.com وGitHub ومواقع أخرى تخرج من هذا الموقع، وتسري هناك سياسات خصوصيتها.",
         ],
       },
       {

@@ -3,8 +3,9 @@
  *
  * Läuft in `npm test` (lib/*.test.ts) und blockiert die Veröffentlichung,
  * wenn irgendein Eintrag einen Fehler liefert. Die Netzwerk-Prüfung — Verse
- * byte-exakt gegen die quran.com-API — macht zusätzlich
- * scripts/verify-verses.mjs (npm run verify:content, CI-Gate).
+ * byte-exakt gegen Tanzil (Arabisch) und QuranEnc.com (Übersetzungen, Tafsir),
+ * siehe data/quran/ — macht zusätzlich scripts/verify-verses.mjs
+ * (npm run verify:content, CI-Gate).
  */
 
 export type Severity = "error" | "warning";
@@ -152,6 +153,20 @@ export function validateReflections(data: unknown): ValidationIssue[] {
           });
         }
       }
+    }
+
+    // Fußnoten der Übersetzung (QuranEnc, wörtlich): optional, aber dann je Sprache ein String.
+    const notes = (e.fallback as Record<string, unknown> | undefined)?.footnotes;
+    if (
+      notes !== undefined &&
+      (typeof notes !== "object" || notes === null || Object.values(notes).some((v) => typeof v !== "string"))
+    ) {
+      issues.push({
+        severity: "error",
+        code: "invalid-footnotes",
+        path: `${path}.fallback.footnotes`,
+        message: "fallback.footnotes muss ein Objekt { Sprache: Text } sein.",
+      });
     }
 
     // Inhalt: keine HTML-/Template-Zeichen, keine Mischschrift im Arabischen.

@@ -12,9 +12,9 @@ export const dynamic = "force-dynamic";
 /**
  * Backend für "Ein Buch, zwei Erklärungen": Auf einen Klick im Frontend
  * liefert dieser Endpoint ein zufälliges — vom gerade gezeigten
- * verschiedenes — Vers+Beobachtung-Paar. Der Vers wird live von quran.com
- * geholt (mit Rückfalltext aus dem Repo bei Netzproblemen, siehe
- * lib/quran.ts). Jeder Klick soll frische Inhalte laden, deshalb
+ * verschiedenes — Vers+Beobachtung-Paar. Der Vers kommt aus den gebündelten
+ * Tanzil-/QuranEnc-Daten (lib/quran.ts, kein Netzzugriff). Jeder Klick soll
+ * frische Inhalte laden, deshalb
  * force-dynamic statt ISR-Cache.
  *
  * Quelle: Seed (reflections.json) + Postgres-Live-Pool (n8n-generiert und
@@ -39,21 +39,21 @@ export async function GET(req: NextRequest) {
 
   if (pick >= LIVE_OFFSET) {
     const row = live.find((r) => LIVE_OFFSET + r.id === pick)!;
-    const verse = await getVerse(row.verse, locale, { arabic: "", rendered: "" });
-    return NextResponse.json({
-      dayIndex: pick,
-      field: row.field[locale],
-      observation: row.observation[locale],
-      verse,
-    });
+    // Ungültige Versnummer in der DB → stattdessen ein Seed-Eintrag (unten).
+    const verse = await getVerse(row.verse, locale).catch(() => null);
+    if (verse) {
+      return NextResponse.json({
+        dayIndex: pick,
+        field: row.field[locale],
+        observation: row.observation[locale],
+        verse,
+      });
+    }
   }
 
-  const dayIndex = pick;
+  const dayIndex = pick < LIVE_OFFSET ? pick : Math.floor(Math.random() * reflections.entries.length);
   const entry = reflections.entries[dayIndex];
-  const verse = await getVerse(entry.verse, locale, {
-    arabic: entry.fallback.arabic,
-    rendered: locale === "ar" ? entry.fallback.arabic : (entry.fallback[locale] ?? ""),
-  });
+  const verse = await getVerse(entry.verse, locale);
 
   return NextResponse.json({
     dayIndex,

@@ -50,14 +50,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     weekday: "short", day: "numeric", month: "long", year: "numeric", timeZone: "UTC",
   });
   const dayIndex = Math.floor(Date.now() / 86_400_000) % reflections.entries.length;
-  const verses = await Promise.all(
-    reflections.entries.map((e) =>
-      getVerse(e.verse, l, {
-        arabic: e.fallback.arabic,
-        rendered: l === "ar" ? e.fallback.arabic : (e.fallback[l] ?? ""),
-      }),
-    ),
-  );
+  const verses = await Promise.all(reflections.entries.map((e) => getVerse(e.verse, l)));
   const stat = c.hero.stats[0];
   const moonLabels = { ...t.cosmos.moonView, hijri: t.dates.label };
   const iso = new Date().toISOString();
