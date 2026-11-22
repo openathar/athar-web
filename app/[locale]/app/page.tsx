@@ -8,7 +8,6 @@ import {
   appCopy,
   APP_SCREENSHOTS,
   APP_SCREENSHOT_SIZE,
-  APP_SOURCE_URL,
   APP_STORE_ID,
   APP_STORE_URL,
   PLAY_LIVE,
@@ -54,7 +53,7 @@ function screenshotsFor(l: Locale) {
   );
 }
 
-/** Die iOS-App: Download, Funktionen, Datenschutz, Quellcode. Text: lib/app-copy.ts. */
+/** Die iOS-App: Download, Funktionen, Datenschutz. Text: lib/app-copy.ts. */
 export default async function AppPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   if (!locales.includes(locale as Locale)) notFound();
@@ -63,7 +62,7 @@ export default async function AppPage({ params }: { params: Promise<{ locale: st
   const shots = screenshotsFor(l);
 
   // Kapitel werden fortlaufend nummeriert; ohne Screenshots faellt "Bildschirme" weg.
-  const chapters = (["features", ...(shots.length ? ["screens"] : []), "privacy", "source"] as const).map(
+  const chapters = (["features", ...(shots.length ? ["screens"] : []), "privacy"] as const).map(
     (k, i) => ({ k, n: pad(i + 1, l) }),
   );
   const n = (k: (typeof chapters)[number]["k"]) => chapters.find((x) => x.k === k)!.n;
@@ -129,9 +128,6 @@ export default async function AppPage({ params }: { params: Promise<{ locale: st
           <p className="lp-actions">
             <StoreButton />
             <PlayButton />
-            <a href={APP_SOURCE_URL} className="lp-link" rel="noopener">
-              {c.source} <Arrow />
-            </a>
           </p>
           <p className="lp-app-note">
             {c.pending} {PLAY_LIVE ? "" : c.android}
@@ -205,17 +201,6 @@ export default async function AppPage({ params }: { params: Promise<{ locale: st
             <Link href={`/${l}/privacy`} className="lp-link">
               {c.privacyLink} <Arrow />
             </Link>
-          </p>
-        </section>
-
-        {/* ---------- Quellcode ---------- */}
-        <section className="lp-chapter" id="source">
-          <Head k="source" />
-          <p className="lp-lead">{c.sourceLead}</p>
-          <p>
-            <a href={APP_SOURCE_URL} className="lp-link mono" rel="noopener" dir="ltr">
-              github.com/openathar/athar-mobile-app
-            </a>
           </p>
         </section>
 

@@ -381,14 +381,13 @@ export const blogPosts: BlogPost[] = [
             h: "The same promise",
             p: [
               "No account, no ads, no tracking, no analytics. Your location is used on the phone and stays there. The only thing the app ever sends is a city name you type into the search, and that goes to our own API, not to a third party.",
-              "The code is open under the MIT licence: github.com/openathar/athar-mobile-app.",
             ],
           },
           {
             h: "When, and how you can help",
             p: [
               "iPhone: we submit this weekend. The app appears in the App Store as soon as Apple's review is through, usually within a few days. We will link it here.",
-              "Android follows. Google asks new developer accounts to run a closed test with at least twelve testers over fourteen days first. If you have an Android phone and would like to be one of them, open an issue on GitHub in openathar/athar-mobile-app and we will add you.",
+              "Android follows. Google asks new developer accounts to run a closed test with at least twelve testers over fourteen days first. If you have an Android phone and would like to be one of them, open an issue on GitHub in openathar/athar and we will add you.",
             ],
           },
         ],
@@ -423,14 +422,13 @@ export const blogPosts: BlogPost[] = [
             h: "Dasselbe Versprechen",
             p: [
               "Kein Konto, keine Werbung, kein Tracking, keine Analyse. Dein Standort wird auf dem Telefon genutzt und bleibt dort. Das Einzige, was die App je sendet, ist ein Städtename, den du in die Suche tippst, und der geht an unsere eigene API, nicht an Dritte.",
-              "Der Code ist offen unter der MIT-Lizenz: github.com/openathar/athar-mobile-app.",
             ],
           },
           {
             h: "Wann, und wie du helfen kannst",
             p: [
               "iPhone: Wir reichen an diesem Wochenende ein. Die App erscheint im App Store, sobald Apples Prüfung durch ist, meist innerhalb weniger Tage. Wir verlinken sie dann hier.",
-              "Android folgt. Google verlangt von neuen Entwicklerkonten zuerst einen geschlossenen Test mit mindestens zwölf Testern über vierzehn Tage. Wenn du ein Android-Telefon hast und dabei sein möchtest, eröffne ein Issue auf GitHub in openathar/athar-mobile-app, dann nehmen wir dich auf.",
+              "Android folgt. Google verlangt von neuen Entwicklerkonten zuerst einen geschlossenen Test mit mindestens zwölf Testern über vierzehn Tage. Wenn du ein Android-Telefon hast und dabei sein möchtest, eröffne ein Issue auf GitHub in openathar/athar, dann nehmen wir dich auf.",
             ],
           },
         ],
@@ -465,14 +463,13 @@ export const blogPosts: BlogPost[] = [
             h: "الوعد نفسه",
             p: [
               "بلا حساب، بلا إعلانات، بلا تتبّع، بلا أدوات تحليل. موقعك يُستخدم على الهاتف ويبقى عليه. والشيء الوحيد الذي يرسله التطبيق هو اسم مدينة تكتبه في البحث، ويذهب إلى واجهتنا البرمجية نحن، لا إلى طرف آخر.",
-              "البرمجة مفتوحة برخصة MIT على: github.com/openathar/athar-mobile-app.",
             ],
           },
           {
             h: "متى، وكيف تساعد",
             p: [
               "آيفون: نقدّم التطبيق في عطلة نهاية هذا الأسبوع، ويظهر في متجر App Store حين تنتهي مراجعة Apple، وغالبًا خلال أيام قليلة. وسنضع رابطه هنا.",
-              "أندرويد يلحق به. تطلب Google من حسابات المطوّرين الجديدة اختبارًا مغلقًا أولًا مع اثني عشر مختبِرًا على الأقل لأربعة عشر يومًا. إن كان لديك هاتف أندرويد وتودّ أن تكون منهم، افتح طلبًا (issue) على GitHub في openathar/athar-mobile-app وسنضيفك.",
+              "أندرويد يلحق به. تطلب Google من حسابات المطوّرين الجديدة اختبارًا مغلقًا أولًا مع اثني عشر مختبِرًا على الأقل لأربعة عشر يومًا. إن كان لديك هاتف أندرويد وتودّ أن تكون منهم، افتح طلبًا (issue) على GitHub في openathar/athar وسنضيفك.",
             ],
           },
         ],

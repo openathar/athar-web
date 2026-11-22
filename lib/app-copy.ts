@@ -13,7 +13,6 @@ import type { Locale } from "~/lib/i18n";
 /** App-Store-Eintrag. Wird erst nach Apples Review erreichbar. */
 export const APP_STORE_URL = "https://apps.apple.com/app/id6837805285";
 export const APP_STORE_ID = "6837805285";
-export const APP_SOURCE_URL = "https://github.com/openathar/athar-mobile-app";
 
 /**
  * Google Play: der Eintrag ist vorbereitet (Paket `org.openathar.mobile`), aber noch nicht
@@ -51,7 +50,6 @@ export type AppCopy = {
   lead: string;
   cta: string;
   ctaAria: string;
-  source: string;
   pending: string;
   android: string;
   /** Beschriftung neben dem QR-Code: mit der Handykamera scannen. */
@@ -61,13 +59,12 @@ export type AppCopy = {
   playSoon: string;
   iconAlt: string;
   facts: { k: string; v: string }[];
-  chapters: Record<"features" | "screens" | "privacy" | "source", { name: string; title: string }>;
+  chapters: Record<"features" | "screens" | "privacy", { name: string; title: string }>;
   features: { title: string; body: string }[];
   shots: Record<ShotKey, string>;
   privacyLead: string;
   privacyPoints: string[];
   privacyLink: string;
-  sourceLead: string;
   closing: string;
 };
 
@@ -76,14 +73,13 @@ export const appCopy: Record<Locale, AppCopy> = {
     nav: "App",
     metaTitle: "Athar for iPhone — Prayer Times & Qibla",
     metaDescription:
-      "Athar – Prayer Times & Qibla for iPhone: prayer times calculated on your phone, adhan alarms, Qibla, the Hijri date and the moon. Free, no ads, no accounts, no tracking. Open source.",
+      "Athar – Prayer Times & Qibla for iPhone: prayer times calculated on your phone, adhan alarms, Qibla, the Hijri date and the moon. Free, no ads, no accounts, no tracking.",
     eyebrow: "The app · iPhone",
     title: ["Prayer times and Qibla,", "on your phone."],
     appName: "Athar – Prayer Times & Qibla",
-    lead: "Athar (أثر) means “the trace you leave”. A prayer-times app built as a Sadaqah Jariyah: free for good, without ads, without accounts and without tracking. Open source.",
+    lead: "Athar (أثر) means “the trace you leave”. A prayer-times app built as a Sadaqah Jariyah: free for good, without ads, without accounts and without tracking.",
     cta: "App Store",
     ctaAria: "Download Athar on the App Store",
-    source: "Source code",
     pending: "The App Store link goes live once Apple has reviewed the app.",
     android: "Android is coming later.",
     qrHint: "Point your phone camera at the code to open Athar in the store.",
@@ -96,13 +92,11 @@ export const appCopy: Record<Locale, AppCopy> = {
       { k: "Price", v: "Free" },
       { k: "Ads · accounts · tracking", v: "None" },
       { k: "Languages", v: "5" },
-      { k: "Licence", v: "MIT" },
     ],
     chapters: {
       features: { name: "Features", title: "Everything is calculated on your phone." },
       screens: { name: "Screens", title: "A look inside." },
       privacy: { name: "Privacy", title: "Your location stays on your phone." },
-      source: { name: "Open source", title: "Built in the open." },
     },
     features: [
       { title: "Prayer times, offline", body: "For where you are, calculated on your phone — no internet needed." },
@@ -137,22 +131,19 @@ export const appCopy: Record<Locale, AppCopy> = {
       "Adhan alarms are local notifications — no push service.",
     ],
     privacyLink: "Read the full privacy policy",
-    sourceLead:
-      "Athar is built in the open under the MIT licence. The app shares its calculation engine with this website and the public API.",
     closing: "Free. No ads. No tracking.",
   },
   de: {
     nav: "App",
     metaTitle: "Athar fürs iPhone — Gebetszeiten & Qibla",
     metaDescription:
-      "Athar: Gebetszeiten & Qibla fürs iPhone — Gebetszeiten auf dem Telefon berechnet, Adhan-Alarme, Qibla, Hijri-Datum und Mond. Kostenlos, ohne Werbung, ohne Konto, ohne Tracking. Open Source.",
+      "Athar: Gebetszeiten & Qibla fürs iPhone — Gebetszeiten auf dem Telefon berechnet, Adhan-Alarme, Qibla, Hijri-Datum und Mond. Kostenlos, ohne Werbung, ohne Konto, ohne Tracking.",
     eyebrow: "Die App · iPhone",
     title: ["Gebetszeiten und Qibla,", "auf deinem Telefon."],
     appName: "Athar – Gebetszeiten & Qibla",
-    lead: "Athar (أثر) heißt „die Spur, die du hinterlässt“. Eine Gebetszeiten-App, gebaut als Sadaqah Jariyah: dauerhaft kostenlos, ohne Werbung, ohne Konto und ohne Tracking. Open Source.",
+    lead: "Athar (أثر) heißt „die Spur, die du hinterlässt“. Eine Gebetszeiten-App, gebaut als Sadaqah Jariyah: dauerhaft kostenlos, ohne Werbung, ohne Konto und ohne Tracking.",
     cta: "App Store",
     ctaAria: "Athar im App Store laden",
-    source: "Quellcode",
     pending: "Der App-Store-Link ist aktiv, sobald Apple die App geprüft hat.",
     android: "Android folgt später.",
     qrHint: "Richte die Kamera deines Handys auf den Code, um Athar im Store zu öffnen.",
@@ -165,13 +156,11 @@ export const appCopy: Record<Locale, AppCopy> = {
       { k: "Preis", v: "Kostenlos" },
       { k: "Werbung · Konto · Tracking", v: "Keins" },
       { k: "Sprachen", v: "5" },
-      { k: "Lizenz", v: "MIT" },
     ],
     chapters: {
       features: { name: "Funktionen", title: "Alles wird auf deinem Telefon berechnet." },
       screens: { name: "Bildschirme", title: "Ein Blick hinein." },
       privacy: { name: "Datenschutz", title: "Dein Standort bleibt auf deinem Telefon." },
-      source: { name: "Open Source", title: "Offen gebaut." },
     },
     features: [
       { title: "Gebetszeiten, offline", body: "Für deinen Ort, auf dem Telefon berechnet — ganz ohne Internet." },
@@ -206,22 +195,19 @@ export const appCopy: Record<Locale, AppCopy> = {
       "Adhan-Alarme sind lokale Benachrichtigungen — kein Push-Dienst.",
     ],
     privacyLink: "Die ganze Datenschutzerklärung lesen",
-    sourceLead:
-      "Athar entsteht offen unter der MIT-Lizenz. Die Berechnung teilt sich die App mit dieser Website und der öffentlichen API.",
     closing: "Kostenlos. Ohne Werbung. Ohne Tracking.",
   },
   ar: {
     nav: "التطبيق",
     metaTitle: "أثر على آيفون — مواقيت الصلاة والقبلة",
     metaDescription:
-      "أثر: مواقيت الصلاة والقبلة على آيفون — مواقيت تُحسب على هاتفك، وتنبيهات الأذان، والقبلة، والتاريخ الهجري، والقمر. مجاني، بلا إعلانات ولا حسابات ولا تتبّع، ومفتوح المصدر.",
+      "أثر: مواقيت الصلاة والقبلة على آيفون — مواقيت تُحسب على هاتفك، وتنبيهات الأذان، والقبلة، والتاريخ الهجري، والقمر. مجاني، بلا إعلانات ولا حسابات ولا تتبّع.",
     eyebrow: "التطبيق · آيفون",
     title: ["مواقيت الصلاة والقبلة", "على هاتفك."],
     appName: "أثر: مواقيت الصلاة والقبلة",
-    lead: "«أثر» هو الأثر الذي تتركه. تطبيق مواقيت صلاة مبنيّ صدقةً جارية: مجاني دائمًا، بلا إعلانات، بلا حسابات، وبلا تتبّع. مفتوح المصدر.",
+    lead: "«أثر» هو الأثر الذي تتركه. تطبيق مواقيت صلاة مبنيّ صدقةً جارية: مجاني دائمًا، بلا إعلانات، بلا حسابات، وبلا تتبّع.",
     cta: "App Store",
     ctaAria: "حمّل «أثر» من App Store",
-    source: "الشيفرة المصدرية",
     pending: "يعمل رابط App Store بعد أن تُنهي Apple مراجعة التطبيق.",
     android: "نسخة أندرويد قادمة لاحقًا.",
     qrHint: "وجّه كاميرا هاتفك نحو الرمز لفتح «أثر» في المتجر.",
@@ -234,13 +220,11 @@ export const appCopy: Record<Locale, AppCopy> = {
       { k: "السعر", v: "مجاني" },
       { k: "إعلانات · حسابات · تتبّع", v: "لا شيء" },
       { k: "اللغات", v: "٥" },
-      { k: "الرخصة", v: "MIT" },
     ],
     chapters: {
       features: { name: "المزايا", title: "كل شيء يُحسب على هاتفك." },
       screens: { name: "لقطات", title: "نظرة إلى الداخل." },
       privacy: { name: "الخصوصية", title: "يبقى موقعك على هاتفك." },
-      source: { name: "مفتوح المصدر", title: "يُبنى علنًا." },
     },
     features: [
       { title: "مواقيت الصلاة دون إنترنت", body: "لمكانك، تُحسب على هاتفك — دون حاجة إلى إنترنت." },
@@ -274,7 +258,6 @@ export const appCopy: Record<Locale, AppCopy> = {
       "تنبيهات الأذان إشعارات محلية — بلا خدمة دفع.",
     ],
     privacyLink: "اقرأ سياسة الخصوصية كاملة",
-    sourceLead: "يُبنى «أثر» علنًا برخصة MIT. يشترك التطبيق في محرّك الحساب مع هذا الموقع وواجهة البرمجة العامة.",
     closing: "مجاني. بلا إعلانات. بلا تتبّع.",
   },
 };
