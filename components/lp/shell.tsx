@@ -16,11 +16,17 @@ export function LpShell({
   locale,
   variant,
   home = false,
+  path,
+  current,
   children,
 }: {
   locale: Locale;
   variant: Variant;
   home?: boolean;
+  /** Unterseite wie "/app": die Sprachwahl bleibt dann auf dieser Seite. */
+  path?: string;
+  /** Markiert den aktiven Navigationspunkt. */
+  current?: "app";
   children: ReactNode;
 }) {
   const base = home ? `/${locale}` : `/${locale}/${variant}`;
@@ -35,6 +41,13 @@ export function LpShell({
           <span role="img" aria-label="Athar" className="brand-logo" />
         </Link>
         <nav className="lp-header-nav" aria-label="Athar">
+          <Link
+            href={`/${locale}/app`}
+            className="lp-nav-link"
+            aria-current={current === "app" ? "page" : undefined}
+          >
+            {c.app}
+          </Link>
           <Link href={`/${locale}/developers`} className="lp-nav-link">
             {c.developers}
           </Link>
@@ -53,7 +66,7 @@ export function LpShell({
             {locales.map((code) => (
               <Link
                 key={code}
-                href={home ? `/${code}` : `/${code}/${variant}`}
+                href={path ? `/${code}${path}` : home ? `/${code}` : `/${code}/${variant}`}
                 lang={code}
                 title={localeNames[code]}
                 aria-current={code === locale ? "page" : undefined}
@@ -70,6 +83,7 @@ export function LpShell({
         <p>{c.footer}</p>
         <p className="lp-footer-links">
           {!home && <Link href={`/${locale}`}>{c.fullSite}</Link>}
+          <Link href={`/${locale}/app`}>{c.app}</Link>
           <Link href={`/${locale}/developers`}>{c.developers}</Link>
           <Link href={`/${locale}/blog`}>{c.blog}</Link>
           <Link href={`/${locale}/privacy`}>{c.privacy}</Link>

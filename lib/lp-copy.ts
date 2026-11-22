@@ -13,6 +13,7 @@ export type LpCopy = {
     fullSite: string;
     github: string;
     developers: string;
+    app: string;
     privacy: string;
     blog: string;
     footer: string;
@@ -58,6 +59,7 @@ export const lpCopy: Record<Locale, LpCopy> = {
       fullSite: "Full site",
       github: "GitHub",
       developers: "Developers",
+      app: "App",
       privacy: "Privacy",
       blog: "Blog",
       footer: "Free. No ads. No tracking. Open source under the MIT licence.",
@@ -138,6 +140,7 @@ export const lpCopy: Record<Locale, LpCopy> = {
       fullSite: "Ganze Seite",
       github: "GitHub",
       developers: "Entwickler",
+      app: "App",
       privacy: "Datenschutz",
       blog: "Blog",
       footer: "Kostenlos. Ohne Werbung. Ohne Tracking. Open Source unter MIT-Lizenz.",
@@ -218,6 +221,7 @@ export const lpCopy: Record<Locale, LpCopy> = {
       fullSite: "الموقع كاملًا",
       github: "GitHub",
       developers: "المطوّرون",
+      app: "التطبيق",
       privacy: "الخصوصية",
       blog: "المدوّنة",
       footer: "مجاني، بلا إعلانات ولا تتبّع، ومفتوح المصدر برخصة MIT.",

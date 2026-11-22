@@ -482,3 +482,64 @@ html[lang=ar] .lp-privacy-sec p { line-height: 2; }
 html[lang=ar] .lp-blog-item p { line-height: 2; }
 .lp-blog-back { border-top: 1px solid var(--lp-rule); margin-top: 2.5rem; padding-top: 1.5rem; }
 .lp-blog-back a { color: var(--lp-accent); }
+
+/* ---------- App (iOS) ---------- */
+.lp-nav-link[aria-current="page"] { color: var(--lp-ink); box-shadow: inset 0 -1px 0 var(--lp-accent); padding-bottom: 0.2rem; }
+.lp-app-hero { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.9fr); gap: 3rem clamp(3rem, 7vw, 6rem); align-items: end; padding-block: clamp(2.5rem, 6vw, 5rem) clamp(3rem, 6vw, 4.5rem); }
+.lp-app-hero-text .title-xl { margin-bottom: 2rem; }
+.lp-app-hero-text .lp-lead { max-width: 36rem; margin-bottom: 2.25rem; }
+.lp-app-store { align-items: center; gap: 0.75rem; }
+.lp-app-arrow { display: inline-block; transition: transform 0.18s ease; }
+.lp-app-store:hover .lp-app-arrow, .lp-link:hover .lp-app-arrow { transform: translateX(3px); }
+[dir="rtl"] .lp-app-arrow { transform: scaleX(-1); }
+[dir="rtl"] :is(.lp-app-store, .lp-link):hover .lp-app-arrow { transform: scaleX(-1) translateX(3px); }
+.lp-app-note { margin: 1.5rem 0 0; color: var(--lp-mute); font-size: 0.9rem; max-width: 34rem; }
+.lp-app-card { display: flex; flex-direction: column; align-items: flex-start; gap: 1.25rem; padding-inline-start: clamp(0rem, 3vw, 2.5rem); border-inline-start: 1px solid var(--lp-rule); }
+.lp-app-icon { width: 7.5rem; height: auto; aspect-ratio: 1; border-radius: 22.5%; display: block; outline: 1px solid var(--lp-rule); outline-offset: -1px; }
+.lp-app-name { margin: 0; font-size: 1.25rem; font-weight: 500; letter-spacing: -0.01em; }
+html[lang="ar"] .lp-app-name { font-weight: 600; letter-spacing: 0; }
+.lp-app-facts { width: 100%; margin: 0; }
+.lp-app-facts > div { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding-block: 0.7rem; border-top: 1px solid var(--lp-rule); }
+.lp-app-facts dt { color: var(--lp-mute); font-size: 0.9rem; }
+.lp-app-facts dd { margin: 0; color: var(--lp-accent); text-align: end; }
+@media (max-width: 860px) {
+  .lp-app-hero { grid-template-columns: 1fr; align-items: start; }
+  .lp-app-card { padding-inline-start: 0; border-inline-start: 0; }
+  .lp-app-icon { width: 5.5rem; }
+}
+
+.lp-app-body > .lp-chapter:first-child { border-top: 1px solid var(--lp-rule); padding-top: clamp(3.5rem, 7vw, 5.5rem); }
+.lp-app-body .lp-chap .title-l { max-width: 18ch; }
+.lp-app-body .lp-chap { padding-inline-end: 0; }
+.lp-app-body .lp-chapter > .lp-lead { max-width: 38rem; }
+.lp-app-points { max-width: 46rem; margin: 0; }
+.lp-app-points li { padding-block: 1rem; line-height: 1.65; }
+html[lang="ar"] .lp-app-points li { line-height: 1.95; }
+.lp-app-body .lp-chapter > p { margin: 0; }
+
+.lp-app-shots { list-style: none; margin: 0; padding: 0 0 1rem; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(11rem, 15rem); gap: clamp(1rem, 2.5vw, 2rem); overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; }
+.lp-app-shots li { scroll-snap-align: start; display: flex; flex-direction: column; gap: 0.9rem; }
+.lp-app-shots img { width: 100%; height: auto; display: block; border-radius: 1.6rem; outline: 1px solid var(--lp-rule); outline-offset: -1px; }
+.lp-app-shots p { margin: 0; color: var(--lp-mute); font-size: 0.9rem; }
+
+.lp-app-closing { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 2rem 3rem; border-top: 1px solid var(--lp-rule); padding-top: clamp(3.5rem, 7vw, 5.5rem); }
+.lp-app-closing .title-l { max-width: 14ch; }
+.lp-app-closing-cta { display: flex; flex-direction: column; align-items: flex-start; }
+.lp-app-closing-cta .lp-app-note { margin-top: 1rem; }
+@media (prefers-reduced-motion: reduce) { .lp-app-arrow { transition: none; } }
+.lp-app-body .lp-list li:last-child { border-bottom: 0; }
+@media (max-width: 420px) { .lp-logo .brand-logo { height: 2.6rem; } .lp-header-nav { gap: 0.5rem; } .lp-pills a { padding: 0.25rem 0.4rem; } }
+html[lang="ar"] .lp-app-closing .title-l { max-width: 22ch; }
+
+/* ---------- App page: store QR codes + Google Play ---------- */
+.lp-btn-ghost { background: transparent; color: var(--lp-accent) !important; border: 1px solid var(--lp-accent); }
+.lp-app-soon { display: inline-flex; align-items: center; padding: 0.95rem 1.4rem; border-radius: 999px; border: 1px dashed var(--lp-rule); color: var(--lp-mute); font-size: 0.85rem; letter-spacing: 0.04em; }
+.lp-qr-row { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 0.5rem; }
+.lp-qr { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 0.6rem; }
+.lp-qr-code { width: 148px; height: 148px; border-radius: 14px; overflow: hidden; background: #f4efe4; }
+.lp-qr-code svg { display: block; width: 100%; height: 100%; }
+.lp-qr figcaption { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lp-mute); }
+.lp-qr-hint { margin-top: 0; font-size: 0.85rem; max-width: 18rem; }
+.lp-app-closing-cta .lp-qr-row { margin-top: 2rem; }
+/* On a phone the store button is right there — the codes are for someone on a computer. */
+@media (max-width: 720px) { .lp-qr-row, .lp-qr-hint { display: none; } }

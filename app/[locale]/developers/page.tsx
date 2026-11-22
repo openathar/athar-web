@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { locales, type Locale } from "~/lib/i18n";
 import { dictionaries } from "~/lib/dictionaries";
+import { appCopy } from "~/lib/app-copy";
 import { SiteHeader } from "~/components/site-header";
 import { ForceDark } from "~/components/force-dark";
 import "~/components/lp/lp.css";
@@ -103,9 +104,14 @@ export default async function Developers({
         languageLabel={t.nav.language}
         themeLabels={t.theme}
         nav={
-          <Link href={`/${l}`} className="mono text-muted transition hover:text-ink">
-            {t.devs.backHome}
-          </Link>
+          <>
+            <Link href={`/${l}`} className="mono text-muted transition hover:text-ink">
+              {t.devs.backHome}
+            </Link>
+            <Link href={`/${l}/app`} className="mono text-muted transition hover:text-ink">
+              {appCopy[l].nav}
+            </Link>
+          </>
         }
       />
 
