@@ -24,7 +24,7 @@ export const privacyCopy: Record<Locale, PrivacyCopy> = {
     title: "Privacy",
     metaDescription:
       "What Athar does and does not do with your data: no accounts, no ads, no tracking — on the website, in the app and in the API.",
-    updated: "Last updated: 22 November 2026",
+    updated: "Last updated: 24 November 2026",
     intro:
       "Athar is built as a Sadaqah Jariyah: free, without ads, without accounts and without tracking. This page says exactly what that means in practice — for the website, the app and the public API.",
     sections: [
@@ -69,7 +69,8 @@ export const privacyCopy: Record<Locale, PrivacyCopy> = {
         h: "Technical logs",
         p: [
           "Like any web service, Cloudflare, which sits in front of the website and the API, processes technical data such as your IP address, the requested address and the time in order to deliver pages and to protect against abuse.",
-          "Our own server keeps an access log: time, requested address including its parameters (for example the city you searched for) and the response status. It does not contain your IP address, because requests reach our server through Cloudflare. These logs are deleted after 30 days. We use them only to operate and secure the service — not for analytics, advertising or profiling.",
+          "For the website, our own server keeps an access log: time, requested address and response status. It does not contain your IP address, because requests reach our server through Cloudflare. These logs are deleted after 30 days. We use them only to operate and secure the website — not for analytics, advertising or profiling.",
+          "The API (api.openathar.org), which the app uses for the city search, keeps no access log at all: what you search for is used only to answer the request and is not stored.",
         ],
       },
       {
@@ -86,7 +87,7 @@ export const privacyCopy: Record<Locale, PrivacyCopy> = {
     title: "Datenschutz",
     metaDescription:
       "Was Athar mit deinen Daten macht und was nicht: keine Konten, keine Werbung, kein Tracking — auf der Website, in der App und in der API.",
-    updated: "Stand: 22. November 2026",
+    updated: "Stand: 24. November 2026",
     intro:
       "Athar ist als Sadaqah Jariyah gebaut: kostenlos, ohne Werbung, ohne Konten und ohne Tracking. Diese Seite sagt genau, was das konkret heißt — für die Website, die App und die öffentliche API.",
     sections: [
@@ -131,7 +132,8 @@ export const privacyCopy: Record<Locale, PrivacyCopy> = {
         h: "Technische Protokolle",
         p: [
           "Wie jeder Webdienst verarbeitet Cloudflare, das vor Website und API sitzt, technische Daten wie deine IP-Adresse, die angeforderte Adresse und die Uhrzeit, um Seiten auszuliefern und vor Missbrauch zu schützen.",
-          "Unser eigener Server führt ein Zugriffsprotokoll: Uhrzeit, angeforderte Adresse samt Parametern (zum Beispiel die Stadt, nach der du gesucht hast) und Antwortstatus. Deine IP-Adresse steht nicht darin, weil Anfragen über Cloudflare bei unserem Server ankommen. Diese Protokolle werden nach 30 Tagen gelöscht. Wir nutzen sie nur zum Betrieb und zur Absicherung — nicht für Analyse, Werbung oder Profilbildung.",
+          "Für die Website führt unser eigener Server ein Zugriffsprotokoll: Uhrzeit, angeforderte Adresse und Antwortstatus. Deine IP-Adresse steht nicht darin, weil Anfragen über Cloudflare bei unserem Server ankommen. Diese Protokolle werden nach 30 Tagen gelöscht. Wir nutzen sie nur zum Betrieb und zur Absicherung der Website — nicht für Analyse, Werbung oder Profilbildung.",
+          "Die API (api.openathar.org), die die App für die Städtesuche nutzt, führt überhaupt kein Zugriffsprotokoll: Wonach du suchst, wird nur zur Beantwortung der Anfrage verwendet und nicht gespeichert.",
         ],
       },
       {
@@ -148,7 +150,7 @@ export const privacyCopy: Record<Locale, PrivacyCopy> = {
     title: "الخصوصية",
     metaDescription:
       "ما يفعله «أثر» بياناتك وما لا يفعله: لا حسابات ولا إعلانات ولا تتبّع — في الموقع والتطبيق وواجهة البرمجة.",
-    updated: "آخر تحديث: ٢٢ نوفمبر ٢٠٢٦",
+    updated: "آخر تحديث: ٢٤ نوفمبر ٢٠٢٦",
     intro:
       "«أثر» مبنيّ صدقةً جارية: مجاني، بلا إعلانات، بلا حسابات، وبلا تتبّع. توضّح هذه الصفحة بالضبط ما يعنيه ذلك عمليًا — للموقع والتطبيق وواجهة البرمجة العامة.",
     sections: [
@@ -193,7 +195,8 @@ export const privacyCopy: Record<Locale, PrivacyCopy> = {
         h: "السجلات التقنية",
         p: [
           "كأي خدمة ويب، تعالج Cloudflare — الموضوعة أمام الموقع والواجهة — بيانات تقنية مثل عنوان IP والعنوان المطلوب والوقت، من أجل تقديم الصفحات والحماية من إساءة الاستخدام.",
-          "يحتفظ خادمنا بسجلّ وصول: الوقت والعنوان المطلوب بمعاملاته (مثل المدينة التي بحثتَ عنها) وحالة الردّ. لا يتضمن عنوان IP الخاص بك لأن الطلبات تصل إلى خادمنا عبر Cloudflare. تُحذف هذه السجلات بعد ٣٠ يومًا. نستخدمها فقط لتشغيل الخدمة وتأمينها — لا للتحليل ولا للإعلان ولا لبناء ملفات تعريفية.",
+          "بالنسبة للموقع، يحتفظ خادمنا بسجلّ وصول: الوقت والعنوان المطلوب وحالة الردّ. لا يتضمن عنوان IP الخاص بك لأن الطلبات تصل إلى خادمنا عبر Cloudflare. تُحذف هذه السجلات بعد ٣٠ يومًا. نستخدمها فقط لتشغيل الموقع وتأمينه — لا للتحليل ولا للإعلان ولا لبناء ملفات تعريفية.",
+          "أما الواجهة البرمجية (api.openathar.org)، التي يستخدمها التطبيق للبحث عن المدن، فلا تحتفظ بأي سجلّ وصول: ما تبحث عنه يُستخدم فقط للإجابة عن الطلب ولا يُخزَّن.",
         ],
       },
       {
