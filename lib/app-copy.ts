@@ -97,7 +97,7 @@ export const appCopy: Record<Locale, AppCopy> = {
     playKicker: "Coming soon to",
     playLiveKicker: "Get it on",
     playSoon: "coming soon",
-    note: "Version 1.0 is out now for iPhone. Android follows on Google Play.",
+    note: "Version 1.0 is out now for iPhone. Android is in testing on Google Play and opens to everyone soon.",
     noData: {
       label: "Data Not Collected",
       body: "That is the privacy label on the App Store — and we mean it.",
@@ -106,7 +106,7 @@ export const appCopy: Record<Locale, AppCopy> = {
     qrAria: "QR code: open Athar on the {store}",
     iconAlt: "Athar app icon",
     facts: [
-      { k: "Platform", v: "iPhone · Android soon" },
+      { k: "Platform", v: "iPhone · Android in testing" },
       { k: "Price", v: "Free" },
       { k: "Ads · account · tracking", v: "None" },
       { k: "Data collected", v: "None" },
@@ -120,7 +120,7 @@ export const appCopy: Record<Locale, AppCopy> = {
     features: [
       {
         title: "Prayer times, on the device",
-        body: "Calculated on your phone for where you are — no internet needed. Muslim World League, ISNA, Egypt, Umm al-Qura, Karachi or Tehran.",
+        body: "Calculated on your phone for where you are — no internet needed. Ten methods — Muslim World League, ISNA, Egypt, Umm al-Qura, Karachi, Tehran, JAKIM, MUIS, UOIF, Russia — or Athar picks the usual one for your region.",
       },
       { title: "Next-prayer countdown", body: "The prayer you are in, and a live countdown to the next one." },
       {
@@ -136,8 +136,12 @@ export const appCopy: Record<Locale, AppCopy> = {
         body: "Tonight’s real moon phase, the Hijri date, the coming Islamic dates and the Sunnah fasting days.",
       },
       {
+        title: "Anywhere",
+        body: "The prayer times of any city in the world, calculated on your phone. Only the name you type in the search leaves the phone — and it is not stored.",
+      },
+      {
         title: "Tasbih tree",
-        body: "A counter (33 · 33 · 34) that lights a tree with every count. Every full tree joins your grove — counted on your phone only.",
+        body: "A counter (33 · 33 · 34) that lights a tree with every count. Four dhikr from the Sunnah take turns round by round, and every full tree joins your grove — counted on your phone only.",
       },
       { title: "Daily du’as", body: "A du’a for each part of the day, quoted from the hadith collections with its source." },
       { title: "The 99 Names of Allah", body: "A Name for today, and all ninety-nine with their meaning." },
@@ -193,7 +197,7 @@ export const appCopy: Record<Locale, AppCopy> = {
     playKicker: "Demnächst bei",
     playLiveKicker: "Jetzt bei",
     playSoon: "demnächst",
-    note: "Version 1.0 ist jetzt für das iPhone da. Android folgt bei Google Play.",
+    note: "Version 1.0 ist jetzt für das iPhone da. Android ist bei Google Play im Test und bald für alle offen.",
     noData: {
       label: "Keine Daten erfasst",
       body: "So steht es im Datenschutz-Etikett im App Store — und so meinen wir es.",
@@ -202,7 +206,7 @@ export const appCopy: Record<Locale, AppCopy> = {
     qrAria: "QR-Code: Athar im {store} öffnen",
     iconAlt: "App-Symbol von Athar",
     facts: [
-      { k: "Plattform", v: "iPhone · Android folgt" },
+      { k: "Plattform", v: "iPhone · Android im Test" },
       { k: "Preis", v: "Kostenlos" },
       { k: "Werbung · Konto · Tracking", v: "Keins" },
       { k: "Erfasste Daten", v: "Keine" },
@@ -216,7 +220,7 @@ export const appCopy: Record<Locale, AppCopy> = {
     features: [
       {
         title: "Gebetszeiten, auf dem Gerät",
-        body: "Auf deinem Telefon für deinen Ort berechnet — ganz ohne Internet. Muslim World League, ISNA, Ägypten, Umm al-Qura, Karatschi oder Teheran.",
+        body: "Auf deinem Telefon für deinen Ort berechnet — ganz ohne Internet. Zehn Methoden — Muslim World League, ISNA, Ägypten, Umm al-Qura, Karatschi, Teheran, JAKIM, MUIS, UOIF, Russland — oder Athar wählt die übliche für deine Region.",
       },
       { title: "Countdown zum nächsten Gebet", body: "Das Gebet, in dem du gerade bist, und ein laufender Countdown bis zum nächsten." },
       {
@@ -232,8 +236,12 @@ export const appCopy: Record<Locale, AppCopy> = {
         body: "Die echte Mondphase heute Nacht, das Hijri-Datum, die nächsten islamischen Daten und die Fastentage der Sunnah.",
       },
       {
+        title: "Anderswo",
+        body: "Die Gebetszeiten jeder Stadt der Welt, auf deinem Telefon berechnet. Nur der Name, den du in die Suche tippst, verlässt das Telefon — und wird nicht gespeichert.",
+      },
+      {
         title: "Tasbih-Baum",
-        body: "Ein Zähler (33 · 33 · 34), der mit jeder Zählung einen Baum erleuchtet. Jeder volle Baum wandert in deinen Hain — gezählt nur auf deinem Telefon.",
+        body: "Ein Zähler (33 · 33 · 34), der mit jeder Zählung einen Baum erleuchtet. Vier Dhikr aus der Sunnah wechseln sich Runde für Runde ab, und jeder volle Baum wandert in deinen Hain — gezählt nur auf deinem Telefon.",
       },
       { title: "Du’as für den Tag", body: "Ein Du’a für jede Tageszeit, aus den Hadith-Sammlungen zitiert, mit Quelle." },
       { title: "Die 99 Namen Allahs", body: "Ein Name für heute, und alle neunundneunzig mit ihrer Bedeutung." },
@@ -289,7 +297,7 @@ export const appCopy: Record<Locale, AppCopy> = {
     playKicker: "قريبًا على",
     playLiveKicker: "حمّله من",
     playSoon: "قريبًا",
-    note: "الإصدار ١٫٠ متاح الآن للآيفون. ونسخة أندرويد قادمة على Google Play.",
+    note: "الإصدار ١٫٠ متاح الآن للآيفون. ونسخة أندرويد قيد الاختبار على Google Play، وستُتاح للجميع قريبًا.",
     noData: {
       label: "لا يتم جمع البيانات",
       body: "هذا ما يقوله ملصق الخصوصية في App Store — ونحن نعنيه.",
@@ -298,7 +306,7 @@ export const appCopy: Record<Locale, AppCopy> = {
     qrAria: "رمز QR: افتح «أثر» في {store}",
     iconAlt: "أيقونة تطبيق أثر",
     facts: [
-      { k: "المنصّة", v: "آيفون · أندرويد قريبًا" },
+      { k: "المنصّة", v: "آيفون · أندرويد قيد الاختبار" },
       { k: "السعر", v: "مجاني" },
       { k: "إعلانات · حساب · تتبّع", v: "لا شيء" },
       { k: "البيانات المجموعة", v: "لا شيء" },
@@ -312,7 +320,7 @@ export const appCopy: Record<Locale, AppCopy> = {
     features: [
       {
         title: "مواقيت الصلاة على جهازك",
-        body: "تُحسب على هاتفك لمكانك — دون حاجة إلى إنترنت. رابطة العالم الإسلامي، ISNA، مصر، أم القرى، كراتشي أو طهران.",
+        body: "تُحسب على هاتفك لمكانك — دون حاجة إلى إنترنت. عشر طرق حساب — رابطة العالم الإسلامي، ISNA، مصر، أم القرى، كراتشي، طهران، JAKIM، MUIS، UOIF، روسيا — أو يختار «أثر» الطريقة المعتادة في منطقتك.",
       },
       { title: "العدّ التنازلي للصلاة القادمة", body: "الصلاة التي أنت في وقتها، وعدّ تنازلي حيّ حتى الصلاة التالية." },
       {
@@ -328,8 +336,12 @@ export const appCopy: Record<Locale, AppCopy> = {
         body: "طور القمر الحقيقي الليلة، والتاريخ الهجري، والمناسبات الإسلامية القادمة، وأيام الصيام من السنّة.",
       },
       {
+        title: "في مكان آخر",
+        body: "مواقيت الصلاة لأي مدينة في العالم، تُحسب على هاتفك. لا يغادر الهاتفَ إلا اسمُ المدينة الذي تكتبه في البحث — ولا يُحفظ.",
+      },
+      {
         title: "شجرة التسبيح",
-        body: "عدّاد تسبيح (٣٣ · ٣٣ · ٣٤) يضيء شجرة مع كل تسبيحة. وكل شجرة تكتمل تنضمّ إلى بستانك — يُعَدّ على هاتفك وحده.",
+        body: "عدّاد تسبيح (٣٣ · ٣٣ · ٣٤) يضيء شجرة مع كل تسبيحة. أربعة أذكار من السنّة تتناوب جولةً بعد جولة، وكل شجرة تكتمل تنضمّ إلى بستانك — يُعَدّ على هاتفك وحده.",
       },
       { title: "أدعية اليوم", body: "دعاء لكل وقت من اليوم، منقول من كتب الحديث مع مصدره." },
       { title: "أسماء الله الحسنى", body: "اسم لهذا اليوم، والأسماء التسعة والتسعون كلها مع معانيها." },
