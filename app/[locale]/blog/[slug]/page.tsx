@@ -6,6 +6,7 @@ import { findPost } from "~/lib/blog";
 import { blogCopy, formatBlogDate } from "~/lib/blog-copy";
 import { LpShell } from "~/components/lp/shell";
 import { ForceDark } from "~/components/force-dark";
+import { StoreButtons } from "~/components/lp/app-store";
 
 export const revalidate = 3600;
 
@@ -53,6 +54,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             {s.p.map((para) => (
               <p key={para.slice(0, 24)}>{para}</p>
             ))}
+            {s.store && <StoreButtons locale={l} />}
           </section>
         ))}
         <p className="lp-blog-back">

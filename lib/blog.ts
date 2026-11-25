@@ -16,7 +16,8 @@ import type { Locale } from "./i18n";
  * Arabisch: noch ohne muttersprachliche Prüfung.
  */
 
-export type BlogSection = { h?: string; p: string[] };
+/** `store`: unter dem Abschnitt die App-Store-Knöpfe (wie auf /app). */
+export type BlogSection = { h?: string; p: string[]; store?: true };
 
 export type BlogText = {
   title: string;
@@ -386,9 +387,10 @@ export const blogPosts: BlogPost[] = [
           {
             h: "When, and how you can help",
             p: [
-              "iPhone: we submit this weekend. The app appears in the App Store as soon as Apple's review is through, usually within a few days. We will link it here.",
+              "iPhone: Apple's review is through. Version 1.0 is in the App Store now.",
               "Android follows. Google asks new developer accounts to run a closed test with at least twelve testers over fourteen days first. If you have an Android phone and would like to be one of them, open an issue on GitHub in openathar/athar and we will add you.",
             ],
+            store: true,
           },
         ],
       },
@@ -427,9 +429,10 @@ export const blogPosts: BlogPost[] = [
           {
             h: "Wann, und wie du helfen kannst",
             p: [
-              "iPhone: Wir reichen an diesem Wochenende ein. Die App erscheint im App Store, sobald Apples Prüfung durch ist, meist innerhalb weniger Tage. Wir verlinken sie dann hier.",
+              "iPhone: Apples Prüfung ist durch. Version 1.0 ist jetzt im App Store.",
               "Android folgt. Google verlangt von neuen Entwicklerkonten zuerst einen geschlossenen Test mit mindestens zwölf Testern über vierzehn Tage. Wenn du ein Android-Telefon hast und dabei sein möchtest, eröffne ein Issue auf GitHub in openathar/athar, dann nehmen wir dich auf.",
             ],
+            store: true,
           },
         ],
       },
@@ -468,9 +471,10 @@ export const blogPosts: BlogPost[] = [
           {
             h: "متى، وكيف تساعد",
             p: [
-              "آيفون: نقدّم التطبيق في عطلة نهاية هذا الأسبوع، ويظهر في متجر App Store حين تنتهي مراجعة Apple، وغالبًا خلال أيام قليلة. وسنضع رابطه هنا.",
+              "آيفون: انتهت مراجعة Apple، والإصدار ١٫٠ متاح الآن في متجر App Store.",
               "أندرويد يلحق به. تطلب Google من حسابات المطوّرين الجديدة اختبارًا مغلقًا أولًا مع اثني عشر مختبِرًا على الأقل لأربعة عشر يومًا. إن كان لديك هاتف أندرويد وتودّ أن تكون منهم، افتح طلبًا (issue) على GitHub في openathar/athar وسنضيفك.",
             ],
+            store: true,
           },
         ],
       },

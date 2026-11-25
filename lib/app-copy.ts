@@ -14,7 +14,7 @@ import type { Locale } from "~/lib/i18n";
  * muttersprachlichen Proofread.
  */
 
-/** App-Store-Eintrag. Version 1.0 ist bei Apple im Review; der Link wird danach erreichbar. */
+/** App-Store-Eintrag. Version 1.0 ist seit 2026-11-25 im App Store. */
 export const APP_STORE_URL = "https://apps.apple.com/app/id6837805285";
 export const APP_STORE_ID = "6837805285";
 
@@ -62,7 +62,7 @@ export type AppCopy = {
   playLiveKicker: string;
   /** Kurz, für die Fußzeile: "Google Play · coming soon". */
   playSoon: string;
-  pending: string;
+  note: string;
   /** Apples Datenschutz-Etikett, wie es im Store der jeweiligen Sprache heißt. */
   noData: { label: string; body: string };
   qrHint: string;
@@ -97,7 +97,7 @@ export const appCopy: Record<Locale, AppCopy> = {
     playKicker: "Coming soon to",
     playLiveKicker: "Get it on",
     playSoon: "coming soon",
-    pending: "Version 1.0 is in Apple’s review right now — the App Store link works as soon as it is approved. Android follows on Google Play.",
+    note: "Version 1.0 is out now for iPhone. Android follows on Google Play.",
     noData: {
       label: "Data Not Collected",
       body: "That is the privacy label on the App Store — and we mean it.",
@@ -193,7 +193,7 @@ export const appCopy: Record<Locale, AppCopy> = {
     playKicker: "Demnächst bei",
     playLiveKicker: "Jetzt bei",
     playSoon: "demnächst",
-    pending: "Version 1.0 liegt gerade bei Apple zur Prüfung — der App-Store-Link funktioniert, sobald sie freigegeben ist. Android folgt bei Google Play.",
+    note: "Version 1.0 ist jetzt für das iPhone da. Android folgt bei Google Play.",
     noData: {
       label: "Keine Daten erfasst",
       body: "So steht es im Datenschutz-Etikett im App Store — und so meinen wir es.",
@@ -289,7 +289,7 @@ export const appCopy: Record<Locale, AppCopy> = {
     playKicker: "قريبًا على",
     playLiveKicker: "حمّله من",
     playSoon: "قريبًا",
-    pending: "الإصدار ١٫٠ قيد مراجعة Apple الآن — يعمل رابط App Store فور الموافقة عليه. ونسخة أندرويد قادمة على Google Play.",
+    note: "الإصدار ١٫٠ متاح الآن للآيفون. ونسخة أندرويد قادمة على Google Play.",
     noData: {
       label: "لا يتم جمع البيانات",
       body: "هذا ما يقوله ملصق الخصوصية في App Store — ونحن نعنيه.",

@@ -95,7 +95,7 @@ export default async function AppPage({ params }: { params: Promise<{ locale: st
           <p className="lp-lead">{c.lead}</p>
           <StoreButtons locale={l} />
           <NoDataBadge locale={l} />
-          <p className="lp-app-note">{c.pending}</p>
+          <p className="lp-app-note">{c.note}</p>
         </div>
 
         {heroShot && (
